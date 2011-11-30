@@ -7,25 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B8923A91484BAAA0083025F /* GHPushedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B8923A81484BAAA0083025F /* GHPushedViewController.m */; };
 		6BE3FCA9147A096500CDEC04 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE3FCA8147A096500CDEC04 /* UIKit.framework */; };
 		6BE3FCAB147A096500CDEC04 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE3FCAA147A096500CDEC04 /* Foundation.framework */; };
 		6BE3FCAD147A096500CDEC04 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE3FCAC147A096500CDEC04 /* CoreGraphics.framework */; };
 		6BE3FCB3147A096500CDEC04 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6BE3FCB1147A096500CDEC04 /* InfoPlist.strings */; };
 		6BE3FCB5147A096500CDEC04 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCB4147A096500CDEC04 /* main.m */; };
 		6BE3FCB9147A096500CDEC04 /* GHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCB8147A096500CDEC04 /* GHAppDelegate.m */; };
+		6BE3FCC4147A09E400CDEC04 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE3FCC3147A09E400CDEC04 /* QuartzCore.framework */; };
+		6BE3FCCD147A117700CDEC04 /* SearchBarBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE3FCCB147A117700CDEC04 /* SearchBarBG.png */; };
+		6BE3FCCE147A117700CDEC04 /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE3FCCC147A117700CDEC04 /* user.png */; };
+		6BE3FCD7147A118200CDEC04 /* GHSidebarMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCD0147A118100CDEC04 /* GHSidebarMenuCell.m */; };
+		6BE3FCD8147A118200CDEC04 /* GHRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCD2147A118100CDEC04 /* GHRootViewController.m */; };
+		6BE3FCD9147A118200CDEC04 /* GHSidebarSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCD4147A118100CDEC04 /* GHSidebarSearchViewController.m */; };
+		6BE3FCDA147A118200CDEC04 /* GHSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCD6147A118200CDEC04 /* GHSidebarViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6B8923A71484BAAA0083025F /* GHPushedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHPushedViewController.h; sourceTree = "<group>"; };
+		6B8923A81484BAAA0083025F /* GHPushedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHPushedViewController.m; sourceTree = "<group>"; };
 		6BE3FCA4147A096500CDEC04 /* GHSidebarNav.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GHSidebarNav.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BE3FCA8147A096500CDEC04 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6BE3FCAA147A096500CDEC04 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6BE3FCAC147A096500CDEC04 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		6BE3FCB0147A096500CDEC04 /* GHSidebarNav-Info.plist */ = {isa = PBXFileReference; path = "GHSidebarNav-Info.plist"; sourceTree = "<group>"; };
+		6BE3FCB0147A096500CDEC04 /* GHSidebarNav-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GHSidebarNav-Info.plist"; sourceTree = "<group>"; };
 		6BE3FCB2147A096500CDEC04 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6BE3FCB4147A096500CDEC04 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		6BE3FCB6147A096500CDEC04 /* GHSidebarNav-Prefix.pch */ = {isa = PBXFileReference; path = "GHSidebarNav-Prefix.pch"; sourceTree = "<group>"; };
-		6BE3FCB7147A096500CDEC04 /* GHAppDelegate.h */ = {isa = PBXFileReference; path = GHAppDelegate.h; sourceTree = "<group>"; };
+		6BE3FCB6147A096500CDEC04 /* GHSidebarNav-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GHSidebarNav-Prefix.pch"; sourceTree = "<group>"; };
+		6BE3FCB7147A096500CDEC04 /* GHAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GHAppDelegate.h; sourceTree = "<group>"; };
 		6BE3FCB8147A096500CDEC04 /* GHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GHAppDelegate.m; sourceTree = "<group>"; };
+		6BE3FCC3147A09E400CDEC04 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6BE3FCCB147A117700CDEC04 /* SearchBarBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SearchBarBG.png; sourceTree = "<group>"; };
+		6BE3FCCC147A117700CDEC04 /* user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user.png; sourceTree = "<group>"; };
+		6BE3FCCF147A118100CDEC04 /* GHSidebarMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarMenuCell.h; sourceTree = "<group>"; };
+		6BE3FCD0147A118100CDEC04 /* GHSidebarMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHSidebarMenuCell.m; sourceTree = "<group>"; };
+		6BE3FCD1147A118100CDEC04 /* GHRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHRootViewController.h; sourceTree = "<group>"; };
+		6BE3FCD2147A118100CDEC04 /* GHRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHRootViewController.m; sourceTree = "<group>"; };
+		6BE3FCD3147A118100CDEC04 /* GHSidebarSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarSearchViewController.h; sourceTree = "<group>"; };
+		6BE3FCD4147A118100CDEC04 /* GHSidebarSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHSidebarSearchViewController.m; sourceTree = "<group>"; };
+		6BE3FCD5147A118100CDEC04 /* GHSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarViewController.h; sourceTree = "<group>"; };
+		6BE3FCD6147A118200CDEC04 /* GHSidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHSidebarViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BE3FCC4147A09E400CDEC04 /* QuartzCore.framework in Frameworks */,
 				6BE3FCA9147A096500CDEC04 /* UIKit.framework in Frameworks */,
 				6BE3FCAB147A096500CDEC04 /* Foundation.framework in Frameworks */,
 				6BE3FCAD147A096500CDEC04 /* CoreGraphics.framework in Frameworks */,
@@ -46,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				6BE3FCAE147A096500CDEC04 /* GHSidebarNav */,
+				6BE3FCCA147A115600CDEC04 /* Resources */,
 				6BE3FCA7147A096500CDEC04 /* Frameworks */,
 				6BE3FCA5147A096500CDEC04 /* Products */,
 			);
@@ -62,6 +85,7 @@
 		6BE3FCA7147A096500CDEC04 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6BE3FCC3147A09E400CDEC04 /* QuartzCore.framework */,
 				6BE3FCA8147A096500CDEC04 /* UIKit.framework */,
 				6BE3FCAA147A096500CDEC04 /* Foundation.framework */,
 				6BE3FCAC147A096500CDEC04 /* CoreGraphics.framework */,
@@ -74,6 +98,16 @@
 			children = (
 				6BE3FCB7147A096500CDEC04 /* GHAppDelegate.h */,
 				6BE3FCB8147A096500CDEC04 /* GHAppDelegate.m */,
+				6B8923A71484BAAA0083025F /* GHPushedViewController.h */,
+				6B8923A81484BAAA0083025F /* GHPushedViewController.m */,
+				6BE3FCD1147A118100CDEC04 /* GHRootViewController.h */,
+				6BE3FCD2147A118100CDEC04 /* GHRootViewController.m */,
+				6BE3FCCF147A118100CDEC04 /* GHSidebarMenuCell.h */,
+				6BE3FCD0147A118100CDEC04 /* GHSidebarMenuCell.m */,
+				6BE3FCD3147A118100CDEC04 /* GHSidebarSearchViewController.h */,
+				6BE3FCD4147A118100CDEC04 /* GHSidebarSearchViewController.m */,
+				6BE3FCD5147A118100CDEC04 /* GHSidebarViewController.h */,
+				6BE3FCD6147A118200CDEC04 /* GHSidebarViewController.m */,
 				6BE3FCAF147A096500CDEC04 /* Supporting Files */,
 			);
 			path = GHSidebarNav;
@@ -88,6 +122,16 @@
 				6BE3FCB6147A096500CDEC04 /* GHSidebarNav-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6BE3FCCA147A115600CDEC04 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6BE3FCCB147A117700CDEC04 /* SearchBarBG.png */,
+				6BE3FCCC147A117700CDEC04 /* user.png */,
+			);
+			name = Resources;
+			path = GHSidebarNav;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +185,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BE3FCB3147A096500CDEC04 /* InfoPlist.strings in Resources */,
+				6BE3FCCD147A117700CDEC04 /* SearchBarBG.png in Resources */,
+				6BE3FCCE147A117700CDEC04 /* user.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +199,11 @@
 			files = (
 				6BE3FCB5147A096500CDEC04 /* main.m in Sources */,
 				6BE3FCB9147A096500CDEC04 /* GHAppDelegate.m in Sources */,
+				6BE3FCD7147A118200CDEC04 /* GHSidebarMenuCell.m in Sources */,
+				6BE3FCD8147A118200CDEC04 /* GHRootViewController.m in Sources */,
+				6BE3FCD9147A118200CDEC04 /* GHSidebarSearchViewController.m in Sources */,
+				6BE3FCDA147A118200CDEC04 /* GHSidebarViewController.m in Sources */,
+				6B8923A91484BAAA0083025F /* GHPushedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +309,7 @@
 				6BE3FCBE147A096500CDEC04 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

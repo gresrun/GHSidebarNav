@@ -3,13 +3,14 @@
 //  GHSidebarNav
 //
 //  Created by Greg Haines on 11/20/11.
-//  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+@class GHSidebarViewController;
+
 
 @interface GHAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property (strong, nonatomic) UIWindow *window;
+@property(nonatomic, strong) UIWindow *window;
+@property(nonatomic, strong) GHSidebarViewController *viewController;
 
 @end
