@@ -72,17 +72,13 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		return YES;
-	} else {
-		switch (orientation) {
-			case UIInterfaceOrientationPortrait:
-			case UIInterfaceOrientationLandscapeLeft:
-			case UIInterfaceOrientationLandscapeRight:
-				return YES;
-			default:
-				return NO;
-		}
+	switch (orientation) {
+		case UIInterfaceOrientationPortrait:
+		case UIInterfaceOrientationLandscapeLeft:
+		case UIInterfaceOrientationLandscapeRight:
+			return YES;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 	}
 }
 
