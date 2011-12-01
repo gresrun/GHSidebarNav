@@ -25,9 +25,10 @@
     if (self = [super initWithNibName:nil bundle:nil]) {
 		self.title = title;
 		_revealBlock = [revealBlock copy];
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
-																							  target:self 
-																							  action:@selector(revealSidebar)];
+		self.navigationItem.leftBarButtonItem = 
+			[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
+														  target:self 
+														  action:@selector(revealSidebar)];
 	}
 	return self;
 }
@@ -55,7 +56,9 @@
 #pragma mark -
 #pragma mark Private Methods
 - (void)pushViewController {
-	[self.navigationController pushViewController:[[GHPushedViewController alloc] initWithTitle:[self.title stringByAppendingString:@" - Pushed"]] 
+	NSString *vcTitle = [self.title stringByAppendingString:@" - Pushed"];
+	UIViewController *vc = [[GHPushedViewController alloc] initWithTitle:vcTitle];
+	[self.navigationController pushViewController:vc 
 										 animated:YES];
 }
 

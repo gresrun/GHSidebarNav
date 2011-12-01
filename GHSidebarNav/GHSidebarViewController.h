@@ -8,22 +8,30 @@
 @class GHSidebarSearchViewController;
 
 
+extern NSString const *kSidebarCellTextKey;
+extern NSString const *kSidebarCellImageKey;
+
+
 @interface GHSidebarViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+	@private
+	BOOL _isSidebarShowing;
+	BOOL _isSearching;
+	NSArray *_menuHeaders;
+	NSArray *_menuControllers;
+	NSArray *_menuCellInfos;
 	GHSidebarSearchViewController *_searchVC;
 	UIView *_sidebarView;
 	UIView *_contentView;
 	UITableView *_menuTableView;
-	BOOL _isSidebarShowing;
-	BOOL _isSearching;
 	UITapGestureRecognizer *_tapRecog;
-	CGRect _sidebarOrigFrame;
-	NSMutableArray *_menuHeaders;
-	NSMutableArray *_menuControllers;
-	NSMutableArray *_menuCellInfo;
 	UIViewController *_selectedContentVC;
 }
 
+@property(nonatomic, readonly) BOOL sidebarShowing;
+@property(nonatomic, readonly) BOOL searching;
+
+- (id)initWithHeaders:(NSArray *)headers withContollers:(NSArray *)controllers withCellInfos:(NSArray *)cellInfos;
 - (void)toggleSidebar:(BOOL)show animated:(BOOL)animate;
-- (void)toggleSearch:(BOOL)searching animated:(BOOL)animate withSearchTable:(UITableView *)searchTable;
+- (void)toggleSearch:(BOOL)searching withSearchTable:(UITableView *)searchTable animated:(BOOL)animate;
 
 @end

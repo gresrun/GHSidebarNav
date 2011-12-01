@@ -113,17 +113,17 @@
 #pragma mark UISearchDisplayDelegate
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
 	[self.searchDisplayController.searchBar setShowsCancelButton:YES animated:YES];
-	[_sidebarVC toggleSearch:YES animated:YES withSearchTable:nil];
+	[_sidebarVC toggleSearch:YES withSearchTable:nil animated:YES];
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-	[_sidebarVC toggleSearch:YES animated:NO withSearchTable:tableView];
+	[_sidebarVC toggleSearch:YES withSearchTable:tableView animated:NO];
 	tableView.backgroundColor = [UIColor clearColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-	[_sidebarVC toggleSearch:NO animated:YES withSearchTable:searchDisplayController.searchResultsTableView];
+	[_sidebarVC toggleSearch:NO withSearchTable:searchDisplayController.searchResultsTableView animated:YES];
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {

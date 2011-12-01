@@ -9,6 +9,7 @@
 
 
 @interface GHSidebarSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate> {
+	@private
 	GHSidebarViewController *_sidebarVC;
 	NSOperationQueue *_searchQueue;
 	NSTimer *_timer;

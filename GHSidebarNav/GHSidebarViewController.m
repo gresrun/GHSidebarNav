@@ -6,23 +6,22 @@
 //
 
 #import "GHSidebarViewController.h"
-#import "GHRootViewController.h"
 #import "GHSidebarMenuCell.h"
 #import "GHSidebarSearchViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 
 #pragma mark Constants
-#define kCellText @"CellText"
-#define kCellImage @"CellImage"
+NSString const *kSidebarCellTextKey = @"CellText";
+NSString const *kSidebarCellImageKey = @"CellImage";
 #define kSidebarAnimationDuration 0.3
-#define kSidebarWidth 260
+#define kSidebarWidth 260.0
 
 
 #pragma mark Private Interface
 @interface GHSidebarViewController ()
 - (void)hideSidebar;
-- (void)toggleSidebar;
+- (CGRect)calculateSidebarFrame:(BOOL)searching;
 - (CGRect)calculateSideTableFrame:(BOOL)searching;
 @end
 
@@ -31,44 +30,17 @@
 @implementation GHSidebarViewController
 
 #pragma mark -
+#pragma mark Properties
+@synthesize sidebarShowing = _isSidebarShowing, searching = _isSearching;
+
+#pragma mark -
 #pragma mark Memory Management
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		_menuHeaders = [[NSMutableArray alloc] initWithCapacity:2];
-        _menuCellInfo = [[NSMutableArray alloc] initWithCapacity:2];
-		_menuControllers = [[NSMutableArray alloc] initWithCapacity:2];
-		
-		__block GHSidebarViewController *selfRef = self;
-		void (^revealBlock)() = ^(){
-			[selfRef toggleSidebar];
-		};
-		
-		NSMutableArray *profileInfos = [[NSMutableArray alloc] initWithCapacity:1];
-		NSMutableArray *profileControllers = [[NSMutableArray alloc] initWithCapacity:1];
-		[profileInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kCellImage, NSLocalizedString(@"Profile", @""), kCellText, nil]];
-		[profileControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Profile" withRevealBlock:revealBlock]]];
-		[_menuHeaders addObject:[NSNull null]];
-		[_menuCellInfo addObject:profileInfos];
-		[_menuControllers addObject:profileControllers];
-		
-		NSMutableArray *favoritesInfos = [[NSMutableArray alloc] initWithCapacity:5];
-		NSMutableArray *favoritesControllers = [[NSMutableArray alloc] initWithCapacity:5];
-		[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kCellImage, NSLocalizedString(@"News Feed", @""), kCellText, nil]];
-		[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"News Feed" withRevealBlock:revealBlock]]];
-		[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kCellImage, NSLocalizedString(@"Messages", @""), kCellText, nil]];
-		[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Messages" withRevealBlock:revealBlock]]];
-		[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kCellImage, NSLocalizedString(@"Nearby", @""), kCellText, nil]];
-		[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Nearby" withRevealBlock:revealBlock]]];
-		[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kCellImage, NSLocalizedString(@"Events", @""), kCellText, nil]];
-		[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Events" withRevealBlock:revealBlock]]];
-		[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kCellImage, NSLocalizedString(@"Friends", @""), kCellText, nil]];
-		[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Friends" withRevealBlock:revealBlock]]];
-		[_menuHeaders addObject:@"FAVORITES"];
-		[_menuCellInfo addObject:favoritesInfos];
-		[_menuControllers addObject:favoritesControllers];
-		
+- (id)initWithHeaders:(NSArray *)headers withContollers:(NSArray *)controllers withCellInfos:(NSArray *)cellInfos {
+	if (self = [super initWithNibName:nil bundle:nil]) {
+		_menuHeaders = headers;
+		_menuControllers = controllers;
+		_menuCellInfos = cellInfos;
 		_isSidebarShowing = NO;
-		_sidebarOrigFrame = CGRectZero;
 		_tapRecog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSidebar)];
 		_tapRecog.cancelsTouchesInView = YES;
     }
@@ -84,7 +56,6 @@
 	_sidebarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSidebarWidth, CGRectGetHeight(self.view.bounds))];
 	_sidebarView.backgroundColor = [UIColor colorWithRed:0.196 green:0.224 blue:0.29 alpha:1.0];
 	_sidebarView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
-	_sidebarOrigFrame = _sidebarView.frame;
 	[self.view addSubview:_sidebarView];
 	_contentView = [[UIView alloc] initWithFrame:self.view.bounds];
 	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -170,7 +141,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[_menuCellInfo objectAtIndex:section] count];
+    return [[_menuCellInfos objectAtIndex:section] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -179,9 +150,9 @@
     if (cell == nil) {
         cell = [[GHSidebarMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-	NSDictionary *info = [[_menuCellInfo objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	cell.textLabel.text = [info objectForKey:kCellText];
-	cell.imageView.image = [info objectForKey:kCellImage];
+	NSDictionary *info = [[_menuCellInfos objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	cell.textLabel.text = [info objectForKey:kSidebarCellTextKey];
+	cell.imageView.image = [info objectForKey:kSidebarCellImageKey];
     return cell;
 }
 
@@ -264,7 +235,7 @@
 		[_contentView addGestureRecognizer:_tapRecog];
     } else {
 		if (_isSearching) {
-			_sidebarView.frame = _sidebarOrigFrame;
+			_sidebarView.frame = [self calculateSidebarFrame:NO];
 		} else {
 			[_contentView removeGestureRecognizer:_tapRecog];
 		}
@@ -276,27 +247,28 @@
     _isSidebarShowing = show;
 }
 
-- (void)toggleSearch:(BOOL)searching animated:(BOOL)animate withSearchTable:(UITableView *)searchTable {
+- (void)toggleSearch:(BOOL)searching withSearchTable:(UITableView *)searchTable animated:(BOOL)animate {
 	if (animate) {
 		[UIView beginAnimations:@"" context:nil];
 		[UIView setAnimationDuration:kSidebarAnimationDuration];
 	}
 	if (searching) {
 		[_contentView removeGestureRecognizer:_tapRecog];
-		CGRect screenRect = [UIScreen mainScreen].bounds;
-		screenRect = UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) 
-			? screenRect
-			: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
-						 CGRectGetHeight(screenRect), CGRectGetWidth(screenRect));
-		_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(screenRect), 0);
-		_sidebarView.frame = screenRect;
+//		CGRect screenRect = [UIScreen mainScreen].bounds;
+//		screenRect = UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) 
+//			? screenRect
+//			: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
+//						 CGRectGetHeight(screenRect), CGRectGetWidth(screenRect));
+		CGRect sidebarFrame = [self calculateSidebarFrame:searching];
+		_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(sidebarFrame), 0);
+		_sidebarView.frame = sidebarFrame;
 		[_menuTableView removeFromSuperview];
 		if (searchTable != nil) {
 			searchTable.frame = [self calculateSideTableFrame:searching];
 			[_sidebarView addSubview:searchTable];
 		}
 	} else {
-		_sidebarView.frame = _sidebarOrigFrame;
+		_sidebarView.frame = [self calculateSidebarFrame:searching];
 		_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(_sidebarView.frame), 0);
 		[_contentView addGestureRecognizer:_tapRecog];
 		_menuTableView.frame = [self calculateSideTableFrame:searching];
@@ -318,6 +290,12 @@
 
 - (void)toggleSidebar {
     [self toggleSidebar:!_isSidebarShowing animated:YES];
+}
+
+- (CGRect)calculateSidebarFrame:(BOOL)searching {
+	CGRect bounds = self.view.bounds;
+	CGFloat frameWidth = (searching) ? CGRectGetWidth(bounds) : kSidebarWidth;
+	return CGRectMake(0, 0, frameWidth, CGRectGetHeight(bounds));
 }
 
 - (CGRect)calculateSideTableFrame:(BOOL)searching {
