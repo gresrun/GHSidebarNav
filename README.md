@@ -12,8 +12,7 @@ How Do I Use It?
 ----------------
 
  1. Copy the core components (GHSidebarViewController, GHSidebarSearchViewController and GHSidebarMenuCell) into your project. 
- 1. Use GHAppDelegate as a template to integrate GHSidebarViewController into your main window in your project's AppDelegate.
- 1. Modify GHSidebarController to use your navigation items and images.
+ 1. Use GHAppDelegate as a template to integrate GHSidebarViewController into your main window in your project's AppDelegate, sending your own headers, controllers and cellInfos.
  1. Modify GHSidebarSearchViewController to use your web service to find search results.
  1. Modify the colors and appearance to match your color scheme. 
 
@@ -23,4 +22,14 @@ License
 -------
 Copyright 2011 Greg Haines
 
-Haven't decided yet...
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   <http://www.apache.org/licenses/LICENSE-2.0>
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
