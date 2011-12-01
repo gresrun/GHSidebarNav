@@ -100,37 +100,45 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		return YES;
-	} else {
-		switch (orientation) {
-			case UIInterfaceOrientationPortrait:
-			case UIInterfaceOrientationLandscapeLeft:
-			case UIInterfaceOrientationLandscapeRight:
-				return YES;
-			default:
-				return NO;
-		}
+	BOOL doAutorotate = NO;
+	switch (orientation) {
+		case UIInterfaceOrientationLandscapeLeft:
+		case UIInterfaceOrientationLandscapeRight:
+		case UIInterfaceOrientationPortrait:
+			doAutorotate = YES;
+			break;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			doAutorotate = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+			break;
 	}
+	UIInterfaceOrientation curOrientation = [UIApplication sharedApplication].statusBarOrientation;
+	if (doAutorotate && _isSearching &&
+			curOrientation != UIDeviceOrientationFaceUp && 
+			curOrientation != UIDeviceOrientationFaceDown && 
+			curOrientation != UIDeviceOrientationUnknown && 
+			curOrientation != orientation) {
+		CGRect screenRect = [UIScreen mainScreen].bounds;
+		screenRect = UIDeviceOrientationIsPortrait(orientation) 
+			? CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
+						 CGRectGetWidth(screenRect), CGRectGetWidth(screenRect))
+			: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
+						 CGRectGetHeight(screenRect), CGRectGetHeight(screenRect));
+		_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(screenRect), 0);
+		_sidebarView.frame = screenRect;
+		[_searchVC.searchBar sizeToFit];
+	}
+	return doAutorotate;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-	UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
-	if (orientation != UIDeviceOrientationFaceUp && 
-		orientation != UIDeviceOrientationFaceDown && 
-		orientation != UIDeviceOrientationUnknown && 
-		fromInterfaceOrientation != orientation) {
-		if (_isSearching) {
-			CGRect screenRect = [UIScreen mainScreen].bounds;
-			screenRect = UIDeviceOrientationIsPortrait(orientation) 
-				? screenRect
-				: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
-							 CGRectGetHeight(screenRect), CGRectGetWidth(screenRect));
-			_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(screenRect), 0);
-			_sidebarView.frame = screenRect;
-			_searchVC.searchDisplayController.searchResultsTableView.frame = [self calculateSideTableFrame:YES];
-			[_searchVC.searchBar sizeToFit];
-		}
+	UIInterfaceOrientation curOrientation = [UIApplication sharedApplication].statusBarOrientation;
+	if (_isSearching) {
+		_searchVC.searchDisplayController.searchResultsTableView.frame = [self calculateSideTableFrame:YES];
+		CGRect screenRect = [UIScreen mainScreen].bounds;
+		screenRect = UIDeviceOrientationIsPortrait(curOrientation) 
+			? screenRect
+			: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), CGRectGetHeight(screenRect), CGRectGetWidth(screenRect));
+		_sidebarView.frame = screenRect;
 	}
 }
 
