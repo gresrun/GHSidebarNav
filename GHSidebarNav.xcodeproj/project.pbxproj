@@ -11,7 +11,6 @@
 		6BBA75C114873DFE004E1A5E /* GHPushedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BD14873DFD004E1A5E /* GHPushedViewController.m */; };
 		6BBA75C214873DFE004E1A5E /* GHRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BF14873DFD004E1A5E /* GHRootViewController.m */; };
 		6BBA75C914873E18004E1A5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6BBA75C414873E18004E1A5E /* InfoPlist.strings */; };
-		6BBA75CA14873E18004E1A5E /* GHSidebarNav-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6BBA75C614873E18004E1A5E /* GHSidebarNav-Info.plist */; };
 		6BBA75CB14873E18004E1A5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75C814873E18004E1A5E /* main.m */; };
 		6BBA75CE14873E74004E1A5E /* searchBarBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BBA75CC14873E74004E1A5E /* searchBarBG.png */; };
 		6BBA75CF14873E74004E1A5E /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BBA75CD14873E74004E1A5E /* user.png */; };
@@ -205,7 +204,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6BBA75C914873E18004E1A5E /* InfoPlist.strings in Resources */,
-				6BBA75CA14873E18004E1A5E /* GHSidebarNav-Info.plist in Resources */,
 				6BBA75CE14873E74004E1A5E /* searchBarBG.png in Resources */,
 				6BBA75CF14873E74004E1A5E /* user.png in Resources */,
 			);
@@ -293,8 +291,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GHSidebarNav/GHSidebarNav-Prefix.pch";
-				INFOPLIST_FILE = "GHSidebarNav/GHSidebarNav-Info.plist";
+				GCC_PREFIX_HEADER = "Demo/GHSidebarNav-Prefix.pch";
+				INFOPLIST_FILE = "Demo/GHSidebarNav-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -304,8 +302,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "GHSidebarNav/GHSidebarNav-Prefix.pch";
-				INFOPLIST_FILE = "GHSidebarNav/GHSidebarNav-Info.plist";
+				GCC_PREFIX_HEADER = "Demo/GHSidebarNav-Prefix.pch";
+				INFOPLIST_FILE = "Demo/GHSidebarNav-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
