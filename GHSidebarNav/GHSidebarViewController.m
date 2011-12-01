@@ -211,7 +211,7 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 		[self transitionFromViewController:prevContentVC 
 						  toViewController:_selectedContentVC 
 								  duration:0
-								   options:UIViewAnimationOptionLayoutSubviews
+								   options:UIViewAnimationOptionTransitionNone
 								animations:^{} 
 								completion:^(BOOL finished){
 									self.view.userInteractionEnabled = YES;
