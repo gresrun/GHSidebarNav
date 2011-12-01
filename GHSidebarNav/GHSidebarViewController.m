@@ -54,7 +54,7 @@ NSString const *kSidebarCellImageKey = @"CellImage";
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
 	_sidebarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSidebarWidth, CGRectGetHeight(self.view.bounds))];
-	_sidebarView.backgroundColor = [UIColor colorWithRed:0.196 green:0.224 blue:0.29 alpha:1.0];
+	_sidebarView.backgroundColor = [UIColor colorWithRed:(50.0/255.0) green:(57.0/255.0) blue:(74.0/255.0) alpha:1.0];
 	_sidebarView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
 	[self.view addSubview:_sidebarView];
 	_contentView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -252,24 +252,16 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 		[UIView beginAnimations:@"" context:nil];
 		[UIView setAnimationDuration:kSidebarAnimationDuration];
 	}
+	_sidebarView.frame = [self calculateSidebarFrame:searching];
+	_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(_sidebarView.frame), 0);
 	if (searching) {
 		[_contentView removeGestureRecognizer:_tapRecog];
-//		CGRect screenRect = [UIScreen mainScreen].bounds;
-//		screenRect = UIDeviceOrientationIsPortrait([UIDevice currentDevice].orientation) 
-//			? screenRect
-//			: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
-//						 CGRectGetHeight(screenRect), CGRectGetWidth(screenRect));
-		CGRect sidebarFrame = [self calculateSidebarFrame:searching];
-		_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(sidebarFrame), 0);
-		_sidebarView.frame = sidebarFrame;
 		[_menuTableView removeFromSuperview];
 		if (searchTable != nil) {
 			searchTable.frame = [self calculateSideTableFrame:searching];
 			[_sidebarView addSubview:searchTable];
 		}
 	} else {
-		_sidebarView.frame = [self calculateSidebarFrame:searching];
-		_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(_sidebarView.frame), 0);
 		[_contentView addGestureRecognizer:_tapRecog];
 		_menuTableView.frame = [self calculateSideTableFrame:searching];
 		[searchTable removeFromSuperview];
@@ -286,10 +278,6 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 #pragma mark Private Methods
 - (void)hideSidebar {
 	[self toggleSidebar:NO animated:YES];
-}
-
-- (void)toggleSidebar {
-    [self toggleSidebar:!_isSidebarShowing animated:YES];
 }
 
 - (CGRect)calculateSidebarFrame:(BOOL)searching {
