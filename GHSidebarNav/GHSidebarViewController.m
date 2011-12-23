@@ -53,13 +53,19 @@ NSString const *kSidebarCellImageKey = @"CellImage";
     [super viewDidLoad];
     self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	
-	_sidebarView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kSidebarWidth, CGRectGetHeight(self.view.bounds))];
-	_sidebarView.backgroundColor = [UIColor colorWithRed:(50.0/255.0) green:(57.0/255.0) blue:(74.0/255.0) alpha:1.0];
+	_sidebarView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kSidebarWidth, CGRectGetHeight(self.view.bounds))];
 	_sidebarView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
+	_sidebarView.backgroundColor = [UIColor colorWithRed:(50.0f/255.0f) green:(57.0f/255.0f) blue:(74.0f/255.0f) alpha:1.0f];
 	[self.view addSubview:_sidebarView];
 	_contentView = [[UIView alloc] initWithFrame:self.view.bounds];
 	_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(_sidebarView.frame), 0);
+	_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(_sidebarView.frame), 0.0f);
+	_contentView.layer.masksToBounds = NO;
+	_contentView.layer.shadowColor = [UIColor blackColor].CGColor;
+	_contentView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+	_contentView.layer.shadowOpacity = 1.0f;
+	_contentView.layer.shadowRadius = 2.5f;
+	_contentView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_contentView.bounds].CGPath;
 	[self.view addSubview:_contentView];
 	
 	_searchVC = [[GHSidebarSearchViewController alloc] initWithSidebarViewController:self];
