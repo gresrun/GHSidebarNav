@@ -13,7 +13,7 @@
 #pragma mark -
 #pragma mark Private Interface
 @interface GHAppDelegate ()
-@property(nonatomic, strong) GHSidebarViewController *viewController;
+@property(nonatomic, readwrite, strong) GHSidebarViewController *viewController;
 @end
 
 

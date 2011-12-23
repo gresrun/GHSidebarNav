@@ -19,7 +19,7 @@ const CGFloat kSearchDelay = 0.8f;
 #pragma mark Private Interface
 @interface GHSidebarSearchViewController ()
 @property(nonatomic, readwrite, strong) UISearchDisplayController *searchDisplayController;
-@property(nonatomic, strong) NSMutableArray *entries;
+@property(nonatomic, readwrite, strong) NSMutableArray *entries;
 - (void)performSearch;
 @end
 
