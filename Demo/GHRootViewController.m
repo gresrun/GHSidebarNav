@@ -58,7 +58,7 @@
 }
 
 - (void)revealSidebar {
-	((void (^)()) _revealBlock)();
+	_revealBlock();
 }
 
 @end

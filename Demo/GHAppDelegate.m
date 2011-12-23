@@ -34,7 +34,7 @@
 	NSMutableArray *cellInfos = [[NSMutableArray alloc] initWithCapacity:2];
 	self.viewController = [[GHSidebarViewController alloc] initWithHeaders:headers withContollers:controllers withCellInfos:cellInfos];
     
-	void (^revealBlock)() = ^(){
+	RevealBlock revealBlock = ^(){
 		[self.viewController toggleSidebar:!self.viewController.sidebarShowing animated:YES];
 	};
 	

@@ -5,11 +5,14 @@
 //  Created by Greg Haines on 11/20/11.
 //
 
+typedef void (^RevealBlock)();
+
+
 @interface GHRootViewController : UIViewController {
 @private
-	id _revealBlock;
+	RevealBlock _revealBlock;
 }
 
-- (id)initWithTitle:(NSString *)title withRevealBlock:(void (^)())revealBlock;
+- (id)initWithTitle:(NSString *)title withRevealBlock:(RevealBlock)revealBlock;
 
 @end
