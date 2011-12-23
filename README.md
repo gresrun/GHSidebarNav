@@ -13,7 +13,6 @@ How Do I Use It?
  1. Copy the core components (GHSidebarViewController, GHSidebarSearchViewController and GHSidebarMenuCell) into your project. 
  1. Use GHAppDelegate as a template to integrate GHSidebarViewController into your main window in your project's AppDelegate, sending your own headers, controllers and cellInfos.
  1. Modify [GHSidebarSearchViewController performSearch] to find your search results (call a web service, etc.).
- 1. Modify [GHSidebarSearchViewController tableView::didSelectRowAtIndexPath:] to do something with the selected search result.
  1. Modify [GHSidebarSearchViewController tableView:didSelectRowAtIndexPath:] to do something with the selected search result.
  1. Modify the colors and appearance to match your color scheme. 
 
