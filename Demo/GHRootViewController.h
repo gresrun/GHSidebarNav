@@ -6,7 +6,7 @@
 //
 
 @interface GHRootViewController : UIViewController {
-	@private
+@private
 	id _revealBlock;
 }
 

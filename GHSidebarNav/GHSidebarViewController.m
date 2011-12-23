@@ -14,15 +14,17 @@
 #pragma mark Constants
 NSString const *kSidebarCellTextKey = @"CellText";
 NSString const *kSidebarCellImageKey = @"CellImage";
-#define kSidebarAnimationDuration 0.3
-#define kSidebarWidth 260.0
+const CGFloat kSidebarAnimationDuration = 0.3f;
+const CGFloat kSidebarWidth = 260.0f;
 
 
 #pragma mark Private Interface
 @interface GHSidebarViewController ()
+@property(nonatomic, readwrite, getter = isSidebarShowing) BOOL sidebarShowing;
+@property(nonatomic, readwrite, getter = isSearching) BOOL searching;
 - (void)hideSidebar;
-- (CGRect)calculateSidebarFrame:(BOOL)searching;
-- (CGRect)calculateSideTableFrame:(BOOL)searching;
+- (CGRect)calculateSidebarFrame:(BOOL)showingSearch;
+- (CGRect)calculateSideTableFrame:(BOOL)showingSearch;
 @end
 
 
@@ -31,16 +33,18 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 
 #pragma mark -
 #pragma mark Properties
-@synthesize sidebarShowing = _isSidebarShowing, searching = _isSearching;
+@synthesize sidebarShowing;
+@synthesize searching;
 
 #pragma mark -
 #pragma mark Memory Management
 - (id)initWithHeaders:(NSArray *)headers withContollers:(NSArray *)controllers withCellInfos:(NSArray *)cellInfos {
 	if (self = [super initWithNibName:nil bundle:nil]) {
+		self.sidebarShowing = NO;
+		self.searching = NO;
 		_menuHeaders = headers;
 		_menuControllers = controllers;
 		_menuCellInfos = cellInfos;
-		_isSidebarShowing = NO;
 		_tapRecog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSidebar)];
 		_tapRecog.cancelsTouchesInView = YES;
     }
@@ -74,7 +78,7 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 	[_searchVC.searchBar sizeToFit];
 	[_searchVC didMoveToParentViewController:self];
 	
-	_menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kSidebarWidth, CGRectGetHeight(self.view.bounds)) style:UITableViewStylePlain];
+	_menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kSidebarWidth, CGRectGetHeight(self.view.bounds)) style:UITableViewStylePlain];
     _menuTableView.delegate = self;
     _menuTableView.dataSource = self;
     _menuTableView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
@@ -91,17 +95,24 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 	[self addChildViewController:_selectedContentVC];
 	[_selectedContentVC didMoveToParentViewController:self];
 	
-	_isSidebarShowing = YES;
-	_isSearching = NO;
+	self.sidebarShowing = YES;
+	self.searching = NO;
 	[self toggleSidebar:NO animated:NO];
 }
 
 - (void)viewDidUnload {
     [super viewDidUnload];
-	_menuTableView = nil;
+	[_searchVC.view removeFromSuperview];
+	[_searchVC removeFromParentViewController];
 	_searchVC = nil;
+	[_selectedContentVC.view removeFromSuperview];
+	[_selectedContentVC removeFromParentViewController];
 	_selectedContentVC = nil;
+	[_menuTableView removeFromSuperview];
+	_menuTableView = nil;
+	[_sidebarView removeFromSuperview];
 	_sidebarView = nil;
+	[_contentView removeFromSuperview];
 	_contentView = nil;
 }
 
@@ -118,18 +129,18 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 			break;
 	}
 	UIInterfaceOrientation curOrientation = [UIApplication sharedApplication].statusBarOrientation;
-	if (doAutorotate && _isSearching &&
-			curOrientation != UIDeviceOrientationFaceUp && 
-			curOrientation != UIDeviceOrientationFaceDown && 
-			curOrientation != UIDeviceOrientationUnknown && 
-			curOrientation != orientation) {
+	if (doAutorotate && self.isSearching &&
+		curOrientation != UIDeviceOrientationFaceUp && 
+		curOrientation != UIDeviceOrientationFaceDown && 
+		curOrientation != UIDeviceOrientationUnknown && 
+		curOrientation != orientation) {
 		CGRect screenRect = [UIScreen mainScreen].bounds;
 		screenRect = UIDeviceOrientationIsPortrait(orientation) 
-			? CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
-						 CGRectGetWidth(screenRect), CGRectGetWidth(screenRect))
-			: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
-						 CGRectGetHeight(screenRect), CGRectGetHeight(screenRect));
-		_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(screenRect), 0);
+		? CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
+					 CGRectGetWidth(screenRect), CGRectGetWidth(screenRect))
+		: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), 
+					 CGRectGetHeight(screenRect), CGRectGetHeight(screenRect));
+		_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(screenRect), 0.0f);
 		_sidebarView.frame = screenRect;
 		[_searchVC.searchBar sizeToFit];
 	}
@@ -138,12 +149,12 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 	UIInterfaceOrientation curOrientation = [UIApplication sharedApplication].statusBarOrientation;
-	if (_isSearching) {
+	if (self.isSearching) {
 		_searchVC.searchDisplayController.searchResultsTableView.frame = [self calculateSideTableFrame:YES];
 		CGRect screenRect = [UIScreen mainScreen].bounds;
 		screenRect = UIDeviceOrientationIsPortrait(curOrientation) 
-			? screenRect
-			: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), CGRectGetHeight(screenRect), CGRectGetWidth(screenRect));
+		? screenRect
+		: CGRectMake(CGRectGetMinX(screenRect), CGRectGetMinY(screenRect), CGRectGetHeight(screenRect), CGRectGetWidth(screenRect));
 		_sidebarView.frame = screenRect;
 	}
 }
@@ -174,37 +185,37 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	NSObject *headerText = [_menuHeaders objectAtIndex:section];
-	return (headerText == [NSNull null]) ? 0 : 21;
+	return (headerText == [NSNull null]) ? 0.0f : 21.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSObject *headerText = [_menuHeaders objectAtIndex:section];
 	UIView *headerView = nil;
 	if (headerText != [NSNull null]) {
-		headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.height, 21)];
+		headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.height, 21.0f)];
 		CAGradientLayer *gradient = [CAGradientLayer layer];
 		gradient.frame = headerView.bounds;
 		gradient.colors = [NSArray arrayWithObjects:
-						   (id)[[UIColor colorWithRed:(67.0/255.0) green:(74.0/255.0) blue:(94.0/255.0) alpha:1.0] CGColor], 
-						   (id)[[UIColor colorWithRed:(57.0/255.0) green:(64.0/255.0) blue:(82.0/255.0) alpha:1.0] CGColor], 
+						   (id)[[UIColor colorWithRed:(67.0f/255.0f) green:(74.0f/255.0f) blue:(94.0f/255.0f) alpha:1.0f] CGColor], 
+						   (id)[[UIColor colorWithRed:(57.0f/255.0f) green:(64.0f/255.0f) blue:(82.0f/255.0f) alpha:1.0f] CGColor], 
 						   nil];
 		[headerView.layer insertSublayer:gradient atIndex:0];
 		
-		UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectInset(headerView.bounds, 12, 5)];
+		UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectInset(headerView.bounds, 12.0f, 5.0f)];
 		textLabel.text = (NSString *) headerText;
-		textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:([UIFont systemFontSize] * 0.8)];
-		textLabel.shadowOffset = CGSizeMake(0, 1);
-		textLabel.shadowColor = [UIColor colorWithWhite:0 alpha:0.25];
-		textLabel.textColor = [UIColor colorWithRed:(125.0/255.0) green:(129.0/255.0) blue:(146.0/255.0) alpha:1.0];
+		textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:([UIFont systemFontSize] * 0.8f)];
+		textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+		textLabel.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.25f];
+		textLabel.textColor = [UIColor colorWithRed:(125.0f/255.0f) green:(129.0f/255.0f) blue:(146.0f/255.0f) alpha:1.0f];
 		textLabel.backgroundColor = [UIColor clearColor];
 		[headerView addSubview:textLabel];
 		
-		UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.height, 1)];
-		topLine.backgroundColor = [UIColor colorWithRed:(78.0/255.0) green:(86.0/255.0) blue:(103.0/255.0) alpha:1.0];
+		UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.height, 1.0f)];
+		topLine.backgroundColor = [UIColor colorWithRed:(78.0f/255.0f) green:(86.0f/255.0f) blue:(103.0f/255.0f) alpha:1.0f];
 		[headerView addSubview:topLine];
 		
-		UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, 21, [UIScreen mainScreen].bounds.size.height, 1)];
-		bottomLine.backgroundColor = [UIColor colorWithRed:(36.0/255.0) green:(42.0/255.0) blue:(5.0/255.0) alpha:1.0];
+		UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 21.0f, [UIScreen mainScreen].bounds.size.height, 1.0f)];
+		bottomLine.backgroundColor = [UIColor colorWithRed:(36.0f/255.0f) green:(42.0f/255.0f) blue:(5.0f/255.0f) alpha:1.0f];
 		[headerView addSubview:bottomLine];
 	}
 	return headerView;
@@ -231,7 +242,7 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 									self.view.userInteractionEnabled = YES;
 									[prevContentVC removeFromParentViewController];
 								}
-		];
+		 ];
 		[_selectedContentVC didMoveToParentViewController:self];
 	}
 	[self toggleSidebar:NO animated:YES];
@@ -245,47 +256,47 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 		[UIView setAnimationDuration:kSidebarAnimationDuration];
 	}
     if (show) {
-        _contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(_sidebarView.frame), 0);
+        _contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(_sidebarView.frame), 0.0f);
 		[_contentView addGestureRecognizer:_tapRecog];
     } else {
-		if (_isSearching) {
+		if (self.isSearching) {
 			_sidebarView.frame = [self calculateSidebarFrame:NO];
 		} else {
 			[_contentView removeGestureRecognizer:_tapRecog];
 		}
 		_contentView.frame = _contentView.bounds;
 	}
+    self.sidebarShowing = show;
 	if (animate) {
 		[UIView commitAnimations];
 	}
-    _isSidebarShowing = show;
 }
 
-- (void)toggleSearch:(BOOL)searching withSearchTable:(UITableView *)searchTable animated:(BOOL)animate {
+- (void)toggleSearch:(BOOL)showSearch withSearchTable:(UITableView *)searchTable animated:(BOOL)animate {
 	if (animate) {
 		[UIView beginAnimations:@"" context:nil];
 		[UIView setAnimationDuration:kSidebarAnimationDuration];
 	}
-	_sidebarView.frame = [self calculateSidebarFrame:searching];
-	_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(_sidebarView.frame), 0);
-	if (searching) {
+	_sidebarView.frame = [self calculateSidebarFrame:showSearch];
+	_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(_sidebarView.frame), 0.0f);
+	if (showSearch) {
 		[_contentView removeGestureRecognizer:_tapRecog];
 		[_menuTableView removeFromSuperview];
 		if (searchTable != nil) {
-			searchTable.frame = [self calculateSideTableFrame:searching];
+			searchTable.frame = [self calculateSideTableFrame:showSearch];
 			[_sidebarView addSubview:searchTable];
 		}
 	} else {
 		[_contentView addGestureRecognizer:_tapRecog];
-		_menuTableView.frame = [self calculateSideTableFrame:searching];
+		_menuTableView.frame = [self calculateSideTableFrame:showSearch];
 		[searchTable removeFromSuperview];
 		[_sidebarView addSubview:_menuTableView];
 	}
+    self.sidebarShowing = YES;
+	self.searching = showSearch;
 	if (animate) {
 		[UIView commitAnimations];
 	}
-    _isSidebarShowing = YES;
-	_isSearching = searching;
 }
 
 #pragma mark -
@@ -294,17 +305,17 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 	[self toggleSidebar:NO animated:YES];
 }
 
-- (CGRect)calculateSidebarFrame:(BOOL)searching {
+- (CGRect)calculateSidebarFrame:(BOOL)showingSearch {
 	CGRect bounds = self.view.bounds;
-	CGFloat frameWidth = (searching) ? CGRectGetWidth(bounds) : kSidebarWidth;
-	return CGRectMake(0, 0, frameWidth, CGRectGetHeight(bounds));
+	CGFloat frameWidth = (showingSearch) ? CGRectGetWidth(bounds) : kSidebarWidth;
+	return CGRectMake(0.0f, 0.0f, frameWidth, CGRectGetHeight(bounds));
 }
 
-- (CGRect)calculateSideTableFrame:(BOOL)searching {
+- (CGRect)calculateSideTableFrame:(BOOL)showingSearch {
 	CGRect bounds = self.view.bounds;
 	CGFloat searchBarHeight = CGRectGetHeight(_searchVC.searchBar.frame);
-	CGFloat frameWidth = (searching) ? CGRectGetWidth(bounds) : kSidebarWidth;
-	return CGRectMake(0, searchBarHeight, frameWidth, CGRectGetHeight(bounds) - searchBarHeight);
+	CGFloat frameWidth = (showingSearch) ? CGRectGetWidth(bounds) : kSidebarWidth;
+	return CGRectMake(0.0f, searchBarHeight, frameWidth, CGRectGetHeight(bounds) - searchBarHeight);
 }
 
 @end

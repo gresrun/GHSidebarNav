@@ -31,8 +31,4 @@
 	[self.view addSubview:view];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-}
-
 @end

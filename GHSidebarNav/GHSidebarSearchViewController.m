@@ -11,7 +11,7 @@
 
 
 #pragma mark Constants
-#define kSearchDelay 0.8
+const CGFloat kSearchDelay = 0.8f;
 
 
 #pragma mark Private Interface
@@ -27,7 +27,8 @@
 
 #pragma mark -
 #pragma mark Properties
-@synthesize entries, searchDisplayController;
+@synthesize entries;
+@synthesize searchDisplayController;
 
 - (UISearchBar *)searchBar {
 	return self.searchDisplayController.searchBar;
@@ -50,11 +51,11 @@
 		self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		self.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 		self.searchBar.backgroundImage = [UIImage imageNamed:@"SearchBarBG.png"];
-		self.searchBar.tintColor = [UIColor colorWithRed:(58.0/255.0) green:(67.0/255.0) blue:(104.0/255.0) alpha:1.0];
+		self.searchBar.tintColor = [UIColor colorWithRed:(58.0f/255.0f) green:(67.0f/255.0f) blue:(104.0f/255.0f) alpha:1.0f];
 		for (UIView *subview in self.searchBar.subviews) {
 			if ([subview isKindOfClass:[UITextField class]]) {
 				UITextField *searchTextField = (UITextField *) subview;
-				searchTextField.textColor = [UIColor colorWithRed:(154.0/255.0) green:(162.0/255.0) blue:(176.0/255.0) alpha:1.0];
+				searchTextField.textColor = [UIColor colorWithRed:(154.0f/255.0f) green:(162.0f/255.0f) blue:(176.0f/255.0f) alpha:1.0f];
 			}
 		}
 	}
@@ -63,14 +64,6 @@
 
 #pragma mark -
 #pragma mark UIViewController
-- (void)viewDidLoad {
-   [super viewDidLoad];
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
 	switch (orientation) {
 		case UIInterfaceOrientationPortrait:
@@ -85,6 +78,7 @@
 #pragma mark -
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	// Do something with selected row here
 	NSLog(@"Search Results - selected %@", [self.entries objectAtIndex:indexPath.row]);
 }
 

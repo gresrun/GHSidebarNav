@@ -26,9 +26,9 @@
 		self.title = title;
 		_revealBlock = [revealBlock copy];
 		self.navigationItem.leftBarButtonItem = 
-			[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
-														  target:self 
-														  action:@selector(revealSidebar)];
+		[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
+													  target:self 
+													  action:@selector(revealSidebar)];
 	}
 	return self;
 }
@@ -47,10 +47,6 @@
 	[pushButton sizeToFit];
 	[view addSubview:pushButton];
 	[self.view addSubview:view];
-}
-
-- (void)viewDidUnload {
-    [super viewDidUnload];
 }
 
 #pragma mark -

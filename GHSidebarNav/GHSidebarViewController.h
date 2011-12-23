@@ -13,9 +13,7 @@ extern NSString const *kSidebarCellImageKey;
 
 
 @interface GHSidebarViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
-	@private
-	BOOL _isSidebarShowing;
-	BOOL _isSearching;
+@private
 	NSArray *_menuHeaders;
 	NSArray *_menuControllers;
 	NSArray *_menuCellInfos;
@@ -27,11 +25,11 @@ extern NSString const *kSidebarCellImageKey;
 	UIViewController *_selectedContentVC;
 }
 
-@property(nonatomic, readonly) BOOL sidebarShowing;
-@property(nonatomic, readonly) BOOL searching;
+@property(nonatomic, readonly, getter = isSidebarShowing) BOOL sidebarShowing;
+@property(nonatomic, readonly, getter = isSearching) BOOL searching;
 
 - (id)initWithHeaders:(NSArray *)headers withContollers:(NSArray *)controllers withCellInfos:(NSArray *)cellInfos;
 - (void)toggleSidebar:(BOOL)show animated:(BOOL)animate;
-- (void)toggleSearch:(BOOL)searching withSearchTable:(UITableView *)searchTable animated:(BOOL)animate;
+- (void)toggleSearch:(BOOL)showSearch withSearchTable:(UITableView *)searchTable animated:(BOOL)animate;
 
 @end

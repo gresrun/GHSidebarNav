@@ -21,7 +21,8 @@
 
 #pragma mark -
 #pragma mark Properties
-@synthesize window, viewController;
+@synthesize window;
+@synthesize viewController;
 
 #pragma mark -
 #pragma mark UIApplicationDelegate
