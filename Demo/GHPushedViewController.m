@@ -8,10 +8,10 @@
 #import "GHPushedViewController.h"
 
 
+#pragma mark -
 #pragma mark Implementation
 @implementation GHPushedViewController
 
-#pragma mark -
 #pragma mark Memory Management
 - (id)initWithTitle:(NSString *)title {
 	if (self = [super initWithNibName:nil bundle:nil]) {
@@ -20,7 +20,6 @@
 	return self;
 }
 
-#pragma mark -
 #pragma mark UIViewController
 - (void)viewDidLoad {
     [super viewDidLoad];

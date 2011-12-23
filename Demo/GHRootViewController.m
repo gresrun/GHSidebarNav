@@ -9,6 +9,7 @@
 #import "GHPushedViewController.h"
 
 
+#pragma mark -
 #pragma mark Private Interface
 @interface GHRootViewController ()
 - (void)pushViewController;
@@ -16,10 +17,10 @@
 @end
 
 
+#pragma mark -
 #pragma mark Implementation
 @implementation GHRootViewController
 
-#pragma mark -
 #pragma mark Memory Management
 - (id)initWithTitle:(NSString *)title withRevealBlock:(void (^)())revealBlock {
     if (self = [super initWithNibName:nil bundle:nil]) {
@@ -33,7 +34,6 @@
 	return self;
 }
 
-#pragma mark -
 #pragma mark UIViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -49,7 +49,6 @@
 	[self.view addSubview:view];
 }
 
-#pragma mark -
 #pragma mark Private Methods
 - (void)pushViewController {
 	NSString *vcTitle = [self.title stringByAppendingString:@" - Pushed"];

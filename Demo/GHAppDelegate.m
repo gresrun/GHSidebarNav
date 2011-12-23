@@ -10,21 +10,21 @@
 #import "GHRootViewController.h"
 
 
+#pragma mark -
 #pragma mark Private Interface
 @interface GHAppDelegate ()
 @property(nonatomic, strong) GHSidebarViewController *viewController;
 @end
 
 
+#pragma mark -
 #pragma mark Implementation
 @implementation GHAppDelegate
 
-#pragma mark -
 #pragma mark Properties
 @synthesize window;
 @synthesize viewController;
 
-#pragma mark -
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];

@@ -10,10 +10,12 @@
 #import "GHSidebarMenuCell.h"
 
 
+#pragma mark -
 #pragma mark Constants
 const CGFloat kSearchDelay = 0.8f;
 
 
+#pragma mark -
 #pragma mark Private Interface
 @interface GHSidebarSearchViewController ()
 @property(nonatomic, readwrite, strong) UISearchDisplayController *searchDisplayController;
@@ -22,10 +24,10 @@ const CGFloat kSearchDelay = 0.8f;
 @end
 
 
+#pragma mark -
 #pragma mark Implementation
 @implementation GHSidebarSearchViewController
 
-#pragma mark -
 #pragma mark Properties
 @synthesize entries;
 @synthesize searchDisplayController;
@@ -34,7 +36,6 @@ const CGFloat kSearchDelay = 0.8f;
 	return self.searchDisplayController.searchBar;
 }
 
-#pragma mark -
 #pragma mark Memory Management
 - (id)initWithSidebarViewController:(GHSidebarViewController *)sidebarVC {
 	if (self = [super initWithNibName:nil bundle:nil]){
@@ -62,7 +63,6 @@ const CGFloat kSearchDelay = 0.8f;
 	return self;
 }
 
-#pragma mark -
 #pragma mark UIViewController
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
 	switch (orientation) {
@@ -75,14 +75,12 @@ const CGFloat kSearchDelay = 0.8f;
 	}
 }
 
-#pragma mark -
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	// Do something with selected row here
 	NSLog(@"Search Results - selected %@", [self.entries objectAtIndex:indexPath.row]);
 }
 
-#pragma mark -
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.entries count];
@@ -99,7 +97,6 @@ const CGFloat kSearchDelay = 0.8f;
 	return cell;
 }
 
-#pragma mark -
 #pragma mark UISearchDisplayDelegate
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
 	[self.searchDisplayController.searchBar setShowsCancelButton:YES animated:YES];
@@ -133,7 +130,6 @@ const CGFloat kSearchDelay = 0.8f;
 	return NO;
 }
 
-#pragma mark -
 #pragma mark Private Methods
 - (void)performSearch {
 	NSString *searchString = searchDisplayController.searchBar.text;

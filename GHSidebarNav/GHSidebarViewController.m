@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 
+#pragma mark -
 #pragma mark Constants
 NSString const *kSidebarCellTextKey = @"CellText";
 NSString const *kSidebarCellImageKey = @"CellImage";
@@ -18,6 +19,7 @@ const CGFloat kSidebarAnimationDuration = 0.3f;
 const CGFloat kSidebarWidth = 260.0f;
 
 
+#pragma mark -
 #pragma mark Private Interface
 @interface GHSidebarViewController ()
 @property(nonatomic, readwrite, getter = isSidebarShowing) BOOL sidebarShowing;
@@ -28,15 +30,14 @@ const CGFloat kSidebarWidth = 260.0f;
 @end
 
 
+#pragma mark -
 #pragma mark Implementation
 @implementation GHSidebarViewController
 
-#pragma mark -
 #pragma mark Properties
 @synthesize sidebarShowing;
 @synthesize searching;
 
-#pragma mark -
 #pragma mark Memory Management
 - (id)initWithHeaders:(NSArray *)headers withContollers:(NSArray *)controllers withCellInfos:(NSArray *)cellInfos {
 	if (self = [super initWithNibName:nil bundle:nil]) {
@@ -51,7 +52,6 @@ const CGFloat kSidebarWidth = 260.0f;
     return self;
 }
 
-#pragma mark -
 #pragma mark UIViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -159,7 +159,6 @@ const CGFloat kSidebarWidth = 260.0f;
 	}
 }
 
-#pragma mark -
 #pragma mark UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [_menuHeaders count];
@@ -181,7 +180,6 @@ const CGFloat kSidebarWidth = 260.0f;
     return cell;
 }
 
-#pragma mark -
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	NSObject *headerText = [_menuHeaders objectAtIndex:section];
@@ -248,7 +246,6 @@ const CGFloat kSidebarWidth = 260.0f;
 	[self toggleSidebar:NO animated:YES];
 }
 
-#pragma mark -
 #pragma mark Public Methods
 - (void)toggleSidebar:(BOOL)show animated:(BOOL)animate {
 	if (animate) {
@@ -299,7 +296,6 @@ const CGFloat kSidebarWidth = 260.0f;
 	}
 }
 
-#pragma mark -
 #pragma mark Private Methods
 - (void)hideSidebar {
 	[self toggleSidebar:NO animated:YES];

@@ -8,10 +8,10 @@
 #import "GHSidebarMenuCell.h"
 
 
+#pragma mark -
 #pragma mark Implementation
 @implementation GHSidebarMenuCell
 
-#pragma mark -
 #pragma mark Memory Management
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
@@ -43,7 +43,6 @@
 	return self;
 }
 
-#pragma mark -
 #pragma mark UIView
 - (void)layoutSubviews {
 	[super layoutSubviews];
