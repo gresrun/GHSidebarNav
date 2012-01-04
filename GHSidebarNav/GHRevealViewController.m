@@ -176,6 +176,7 @@ const CGFloat kSidebarWidth = 260.0f;
 	if (showSearch) {
 		srchView.frame = self.view.bounds;
 	} else {
+		_sidebarView.alpha = 0.0f;
 		_contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
 		[self.view addSubview:_contentView];
 	}
@@ -188,6 +189,7 @@ const CGFloat kSidebarWidth = 260.0f;
 			[self.view insertSubview:self.searchView atIndex:0];
 		} else {
 			_sidebarView.frame = CGRectMake(0.0f, 0.0f, kSidebarWidth, CGRectGetHeight(self.view.bounds));
+			_sidebarView.alpha = 1.0f;
 			[self.view insertSubview:_sidebarView atIndex:0];
 			self.searchView.frame = _sidebarView.frame;
 			_contentView.frame = CGRectOffset(_contentView.bounds, kSidebarWidth, 0.0f);

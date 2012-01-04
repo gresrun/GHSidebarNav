@@ -128,10 +128,10 @@
 		6BE3FCAE147A096500CDEC04 /* GHSidebarNav */ = {
 			isa = PBXGroup;
 			children = (
-				6B014F5514B41DB6001E922B /* GHSidebarSearchViewController.h */,
-				6B014F5614B41DB6001E922B /* GHSidebarSearchViewController.m */,
 				6BE3FCD5147A118100CDEC04 /* GHRevealViewController.h */,
 				6BE3FCD6147A118200CDEC04 /* GHRevealViewController.m */,
+				6B014F5514B41DB6001E922B /* GHSidebarSearchViewController.h */,
+				6B014F5614B41DB6001E922B /* GHSidebarSearchViewController.m */,
 			);
 			path = GHSidebarNav;
 			sourceTree = "<group>";

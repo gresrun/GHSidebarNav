@@ -9,7 +9,6 @@
 #import "GHMenuCell.h"
 #import "GHMenuViewController.h"
 #import "GHRootViewController.h"
-#import "GHSidebarSearchViewController.h"
 #import "GHRevealViewController.h"
 
 
@@ -73,6 +72,7 @@
 	[controllers addObject:favoritesControllers];
 	
 	self.searchController = [[GHSidebarSearchViewController alloc] initWithSidebarViewController:self.revealController];
+	self.searchController.searchDelegate = self;
 	self.searchController.view.backgroundColor = [UIColor clearColor];
     self.menuController = [[GHMenuViewController alloc] initWithSidebarViewController:self.revealController 
 																		withSearchBar:self.searchController.searchBar 
@@ -84,6 +84,10 @@
     self.window.rootViewController = self.revealController;
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (NSArray *)searchResultsForText:(NSString *)text withScope:(NSString *)scope {
+	return [NSArray arrayWithObjects:@"Foo", @"Bar", @"Baz", nil];
 }
 
 @end
