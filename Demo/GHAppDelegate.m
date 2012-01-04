@@ -6,14 +6,19 @@
 //
 
 #import "GHAppDelegate.h"
-#import "GHSidebarViewController.h"
+#import "GHMenuCell.h"
+#import "GHMenuViewController.h"
 #import "GHRootViewController.h"
+#import "GHSidebarSearchViewController.h"
+#import "GHRevealViewController.h"
 
 
 #pragma mark -
 #pragma mark Private Interface
 @interface GHAppDelegate ()
-@property(nonatomic, readwrite, strong) GHSidebarViewController *viewController;
+@property (nonatomic, strong) GHRevealViewController *revealController;
+@property (nonatomic, strong) GHSidebarSearchViewController *searchController;
+@property (nonatomic, strong) GHMenuViewController *menuController;
 @end
 
 
@@ -23,20 +28,25 @@
 
 #pragma mark Properties
 @synthesize window;
-@synthesize viewController;
+@synthesize revealController;
+@synthesize searchController;
+@synthesize menuController;
 
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
 	
+	UIColor *bgColor = [UIColor colorWithRed:(50.0f/255.0f) green:(57.0f/255.0f) blue:(74.0f/255.0f) alpha:1.0f];
+	self.revealController = [[GHRevealViewController alloc] initWithNibName:nil bundle:nil];
+	self.revealController.view.backgroundColor = bgColor;
+	
+	RevealBlock revealBlock = ^(){
+		[self.revealController toggleSidebar:!self.revealController.sidebarShowing animated:YES];
+	};
+	
 	NSMutableArray *headers = [[NSMutableArray alloc] initWithCapacity:2];
 	NSMutableArray *controllers = [[NSMutableArray alloc] initWithCapacity:2];
 	NSMutableArray *cellInfos = [[NSMutableArray alloc] initWithCapacity:2];
-	self.viewController = [[GHSidebarViewController alloc] initWithHeaders:headers withContollers:controllers withCellInfos:cellInfos];
-    
-	RevealBlock revealBlock = ^(){
-		[self.viewController toggleSidebar:!self.viewController.sidebarShowing animated:YES];
-	};
 	
 	NSMutableArray *profileInfos = [[NSMutableArray alloc] initWithCapacity:1];
 	NSMutableArray *profileControllers = [[NSMutableArray alloc] initWithCapacity:1];
@@ -62,8 +72,16 @@
 	[cellInfos addObject:favoritesInfos];
 	[controllers addObject:favoritesControllers];
 	
+	self.searchController = [[GHSidebarSearchViewController alloc] initWithSidebarViewController:self.revealController];
+	self.searchController.view.backgroundColor = [UIColor clearColor];
+    self.menuController = [[GHMenuViewController alloc] initWithSidebarViewController:self.revealController 
+																		withSearchBar:self.searchController.searchBar 
+																		  withHeaders:headers 
+																	  withControllers:controllers 
+																		withCellInfos:cellInfos];
+	
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.window.rootViewController = self.viewController;
+    self.window.rootViewController = self.revealController;
     [self.window makeKeyAndVisible];
     return YES;
 }

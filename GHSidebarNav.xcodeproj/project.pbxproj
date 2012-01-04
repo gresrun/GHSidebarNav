@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B014F5214B3DAC4001E922B /* GHMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B014F5114B3DAC4001E922B /* GHMenuViewController.m */; };
+		6B014F5714B41DB6001E922B /* GHSidebarSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B014F5614B41DB6001E922B /* GHSidebarSearchViewController.m */; };
+		6B4BD80214B10447004BE0CC /* GHMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B4BD80114B10447004BE0CC /* GHMenuCell.m */; };
 		6BBA75C014873DFE004E1A5E /* GHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BB14873DFD004E1A5E /* GHAppDelegate.m */; };
 		6BBA75C114873DFE004E1A5E /* GHPushedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BD14873DFD004E1A5E /* GHPushedViewController.m */; };
 		6BBA75C214873DFE004E1A5E /* GHRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BF14873DFD004E1A5E /* GHRootViewController.m */; };
@@ -18,12 +21,16 @@
 		6BE3FCAB147A096500CDEC04 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE3FCAA147A096500CDEC04 /* Foundation.framework */; };
 		6BE3FCAD147A096500CDEC04 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE3FCAC147A096500CDEC04 /* CoreGraphics.framework */; };
 		6BE3FCC4147A09E400CDEC04 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BE3FCC3147A09E400CDEC04 /* QuartzCore.framework */; };
-		6BE3FCD7147A118200CDEC04 /* GHSidebarMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCD0147A118100CDEC04 /* GHSidebarMenuCell.m */; };
-		6BE3FCD9147A118200CDEC04 /* GHSidebarSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCD4147A118100CDEC04 /* GHSidebarSearchViewController.m */; };
-		6BE3FCDA147A118200CDEC04 /* GHSidebarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCD6147A118200CDEC04 /* GHSidebarViewController.m */; };
+		6BE3FCDA147A118200CDEC04 /* GHRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3FCD6147A118200CDEC04 /* GHRevealViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6B014F5014B3DAC4001E922B /* GHMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHMenuViewController.h; path = Demo/GHMenuViewController.h; sourceTree = SOURCE_ROOT; };
+		6B014F5114B3DAC4001E922B /* GHMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHMenuViewController.m; path = Demo/GHMenuViewController.m; sourceTree = SOURCE_ROOT; };
+		6B014F5514B41DB6001E922B /* GHSidebarSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarSearchViewController.h; sourceTree = "<group>"; };
+		6B014F5614B41DB6001E922B /* GHSidebarSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHSidebarSearchViewController.m; sourceTree = "<group>"; };
+		6B4BD80014B10447004BE0CC /* GHMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHMenuCell.h; path = Demo/GHMenuCell.h; sourceTree = SOURCE_ROOT; };
+		6B4BD80114B10447004BE0CC /* GHMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHMenuCell.m; path = Demo/GHMenuCell.m; sourceTree = SOURCE_ROOT; };
 		6BBA75BA14873DFD004E1A5E /* GHAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHAppDelegate.h; path = Demo/GHAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		6BBA75BB14873DFD004E1A5E /* GHAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHAppDelegate.m; path = Demo/GHAppDelegate.m; sourceTree = SOURCE_ROOT; };
 		6BBA75BC14873DFD004E1A5E /* GHPushedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHPushedViewController.h; path = Demo/GHPushedViewController.h; sourceTree = SOURCE_ROOT; };
@@ -41,12 +48,8 @@
 		6BE3FCAA147A096500CDEC04 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6BE3FCAC147A096500CDEC04 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6BE3FCC3147A09E400CDEC04 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		6BE3FCCF147A118100CDEC04 /* GHSidebarMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarMenuCell.h; sourceTree = "<group>"; };
-		6BE3FCD0147A118100CDEC04 /* GHSidebarMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHSidebarMenuCell.m; sourceTree = "<group>"; };
-		6BE3FCD3147A118100CDEC04 /* GHSidebarSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarSearchViewController.h; sourceTree = "<group>"; };
-		6BE3FCD4147A118100CDEC04 /* GHSidebarSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHSidebarSearchViewController.m; sourceTree = "<group>"; };
-		6BE3FCD5147A118100CDEC04 /* GHSidebarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarViewController.h; sourceTree = "<group>"; };
-		6BE3FCD6147A118200CDEC04 /* GHSidebarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHSidebarViewController.m; sourceTree = "<group>"; };
+		6BE3FCD5147A118100CDEC04 /* GHRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHRevealViewController.h; sourceTree = "<group>"; };
+		6BE3FCD6147A118200CDEC04 /* GHRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHRevealViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +72,10 @@
 			children = (
 				6BBA75BA14873DFD004E1A5E /* GHAppDelegate.h */,
 				6BBA75BB14873DFD004E1A5E /* GHAppDelegate.m */,
+				6B4BD80014B10447004BE0CC /* GHMenuCell.h */,
+				6B4BD80114B10447004BE0CC /* GHMenuCell.m */,
+				6B014F5014B3DAC4001E922B /* GHMenuViewController.h */,
+				6B014F5114B3DAC4001E922B /* GHMenuViewController.m */,
 				6BBA75BC14873DFD004E1A5E /* GHPushedViewController.h */,
 				6BBA75BD14873DFD004E1A5E /* GHPushedViewController.m */,
 				6BBA75BE14873DFD004E1A5E /* GHRootViewController.h */,
@@ -121,12 +128,10 @@
 		6BE3FCAE147A096500CDEC04 /* GHSidebarNav */ = {
 			isa = PBXGroup;
 			children = (
-				6BE3FCCF147A118100CDEC04 /* GHSidebarMenuCell.h */,
-				6BE3FCD0147A118100CDEC04 /* GHSidebarMenuCell.m */,
-				6BE3FCD3147A118100CDEC04 /* GHSidebarSearchViewController.h */,
-				6BE3FCD4147A118100CDEC04 /* GHSidebarSearchViewController.m */,
-				6BE3FCD5147A118100CDEC04 /* GHSidebarViewController.h */,
-				6BE3FCD6147A118200CDEC04 /* GHSidebarViewController.m */,
+				6B014F5514B41DB6001E922B /* GHSidebarSearchViewController.h */,
+				6B014F5614B41DB6001E922B /* GHSidebarSearchViewController.m */,
+				6BE3FCD5147A118100CDEC04 /* GHRevealViewController.h */,
+				6BE3FCD6147A118200CDEC04 /* GHRevealViewController.m */,
 			);
 			path = GHSidebarNav;
 			sourceTree = "<group>";
@@ -216,13 +221,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6BE3FCD7147A118200CDEC04 /* GHSidebarMenuCell.m in Sources */,
-				6BE3FCD9147A118200CDEC04 /* GHSidebarSearchViewController.m in Sources */,
-				6BE3FCDA147A118200CDEC04 /* GHSidebarViewController.m in Sources */,
+				6BE3FCDA147A118200CDEC04 /* GHRevealViewController.m in Sources */,
 				6BBA75C014873DFE004E1A5E /* GHAppDelegate.m in Sources */,
 				6BBA75C114873DFE004E1A5E /* GHPushedViewController.m in Sources */,
 				6BBA75C214873DFE004E1A5E /* GHRootViewController.m in Sources */,
 				6BBA75CB14873E18004E1A5E /* main.m in Sources */,
+				6B4BD80214B10447004BE0CC /* GHMenuCell.m in Sources */,
+				6B014F5214B3DAC4001E922B /* GHMenuViewController.m in Sources */,
+				6B014F5714B41DB6001E922B /* GHSidebarSearchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
