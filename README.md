@@ -6,7 +6,7 @@ A clone of the new Facebook iOS UI paradigm; a sidebar navigation table that is 
 This project uses the Container View Controller methods introduced iOS 5.0 so, it won't work on any version prior.  
 This project uses ARC so, you'll need Mac OS 10.7+ (Lion) and Xcode 4.2.1+ to build it.
 
-
+***
 How Do I Use It?
 ----------------
 
@@ -16,7 +16,7 @@ How Do I Use It?
  1. Modify [GHSidebarSearchViewController tableView:didSelectRowAtIndexPath:] to do something with the selected search result.
  1. Modify the colors and appearance to match your color scheme. 
 
-
+***
 License
 -------
 Copyright 2011 Greg Haines
