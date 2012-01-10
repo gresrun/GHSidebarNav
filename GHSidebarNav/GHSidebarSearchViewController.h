@@ -5,8 +5,11 @@
 //  Created by Greg Haines on 11/20/11.
 //
 
+#import <Foundation/Foundation.h>
+#import "GHSidebarSearchViewControllerDelegate.h"
 @class GHRevealViewController;
-@protocol GHSidebarSearchViewControllerDelegate;
+
+extern const NSTimeInterval kGHSidebarDefaultSearchDelay;
 
 @interface GHSidebarSearchViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate> {
 @private
@@ -19,12 +22,8 @@
 
 @property (nonatomic, readonly) UISearchBar *searchBar;
 @property (nonatomic, weak) id<GHSidebarSearchViewControllerDelegate> searchDelegate;
+@property (nonatomic) NSTimeInterval searchDelay;
 
 - (id)initWithSidebarViewController:(GHRevealViewController *)sidebarVC;
 
-@end
-
-@protocol GHSidebarSearchViewControllerDelegate <NSObject>
-@required
-- (NSArray *)searchResultsForText:(NSString *)text withScope:(NSString *)scope;
 @end

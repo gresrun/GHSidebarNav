@@ -29,21 +29,6 @@
 		_controllers = controllers;
 		_cellInfos = cellInfos;
 		
-		self.view.frame = CGRectMake(0.0f, 0.0f, kSidebarWidth, CGRectGetHeight(self.view.bounds));
-		
-		[self.view addSubview:_searchBar];
-		[_searchBar sizeToFit];
-		
-		CGFloat tableHeight = CGRectGetHeight(self.view.bounds) - CGRectGetHeight(_searchBar.frame);
-		_menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, CGRectGetHeight(_searchBar.frame), kSidebarWidth, tableHeight) 
-													  style:UITableViewStylePlain];
-		_menuTableView.delegate = self;
-		_menuTableView.dataSource = self;
-		_menuTableView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
-		_menuTableView.backgroundColor = [UIColor clearColor];
-		_menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		[self.view addSubview:_menuTableView];
-		
 		_sidebarVC.sidebarViewController = self;
 		_sidebarVC.contentViewController = [[_controllers objectAtIndex:0] objectAtIndex:0];
 	}
@@ -51,8 +36,38 @@
 }
 
 #pragma mark UIViewController
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	self.view.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+	
+	[self.view addSubview:_searchBar];;
+	
+	_menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 44.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds) - 44.0f) 
+												  style:UITableViewStylePlain];
+	_menuTableView.delegate = self;
+	_menuTableView.dataSource = self;
+	_menuTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+	_menuTableView.backgroundColor = [UIColor clearColor];
+	_menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	[self.view addSubview:_menuTableView];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
+	self.view.frame = CGRectMake(0.0f, 0.0f,kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
+	[_searchBar sizeToFit];
 	[self selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
+	switch (orientation) {
+		case UIInterfaceOrientationLandscapeLeft:
+		case UIInterfaceOrientationLandscapeRight:
+		case UIInterfaceOrientationPortrait:
+			return YES;
+		case UIInterfaceOrientationPortraitUpsideDown:
+			return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+	}
 }
 
 #pragma mark UITableViewDataSource
@@ -117,7 +132,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	_sidebarVC.contentViewController = [[_controllers objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	[_sidebarVC toggleSidebar:NO animated:YES];
+	[_sidebarVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
 }
 
 #pragma mark Public Methods

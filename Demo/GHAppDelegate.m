@@ -40,7 +40,7 @@
 	self.revealController.view.backgroundColor = bgColor;
 	
 	RevealBlock revealBlock = ^(){
-		[self.revealController toggleSidebar:!self.revealController.sidebarShowing animated:YES];
+		[self.revealController toggleSidebar:!self.revealController.sidebarShowing duration:kGHRevealSidebarDefaultAnimationDuration];
 	};
 	
 	NSMutableArray *headers = [[NSMutableArray alloc] initWithCapacity:2];
@@ -72,9 +72,34 @@
 	[controllers addObject:favoritesControllers];
 	
 	self.searchController = [[GHSidebarSearchViewController alloc] initWithSidebarViewController:self.revealController];
-	self.searchController.searchDelegate = self;
 	self.searchController.view.backgroundColor = [UIColor clearColor];
-    self.menuController = [[GHMenuViewController alloc] initWithSidebarViewController:self.revealController 
+    self.searchController.searchDelegate = self;
+	self.searchController.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	self.searchController.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+	self.searchController.searchBar.backgroundImage = [UIImage imageNamed:@"searchBarBG.png"];
+	self.searchController.searchBar.placeholder = NSLocalizedString(@"Search", @"");
+	self.searchController.searchBar.tintColor = [UIColor colorWithRed:(58.0f/255.0f) green:(67.0f/255.0f) blue:(104.0f/255.0f) alpha:1.0f];
+	for (UIView *subview in self.searchController.searchBar.subviews) {
+		if ([subview isKindOfClass:[UITextField class]]) {
+			UITextField *searchTextField = (UITextField *) subview;
+			searchTextField.textColor = [UIColor colorWithRed:(154.0f/255.0f) green:(162.0f/255.0f) blue:(176.0f/255.0f) alpha:1.0f];
+		}
+	}
+	UIEdgeInsets insets = UIEdgeInsetsMake(16.0f, 17.0f, 16.0f, 17.0f);
+	UIImage *searchTextBG = [[UIImage imageNamed:@"searchTextBG.png"] resizableImageWithCapInsets:insets];
+	UIImage *searchBarIcon = [UIImage imageNamed:@"searchBarIcon.png"];
+	[self.searchController.searchBar setSearchFieldBackgroundImage:searchTextBG	
+														  forState:UIControlStateNormal];
+	[self.searchController.searchBar setSearchFieldBackgroundImage:searchTextBG	
+														  forState:UIControlStateDisabled];
+	[self.searchController.searchBar setImage:searchBarIcon 
+							 forSearchBarIcon:UISearchBarIconSearch 
+										state:UIControlStateNormal];
+	[self.searchController.searchBar setImage:searchBarIcon 
+							 forSearchBarIcon:UISearchBarIconSearch 
+										state:UIControlStateHighlighted];
+	
+	self.menuController = [[GHMenuViewController alloc] initWithSidebarViewController:self.revealController 
 																		withSearchBar:self.searchController.searchBar 
 																		  withHeaders:headers 
 																	  withControllers:controllers 
@@ -86,8 +111,8 @@
     return YES;
 }
 
-- (NSArray *)searchResultsForText:(NSString *)text withScope:(NSString *)scope {
-	return [NSArray arrayWithObjects:@"Foo", @"Bar", @"Baz", nil];
+- (void)searchResultsForText:(NSString *)text withScope:(NSString *)scope callback:(SearchResultsBlock)callback {
+	callback([NSArray arrayWithObjects:@"Foo", @"Bar", @"Baz", nil]);
 }
 
 @end

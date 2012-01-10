@@ -5,7 +5,10 @@
 //  Created by Greg Haines on 11/20/11.
 //
 
-extern const CGFloat kSidebarWidth;
+#import <Foundation/Foundation.h>
+
+extern const NSTimeInterval kGHRevealSidebarDefaultAnimationDuration;
+extern const CGFloat kGHRevealSidebarWidth;
 
 @interface GHRevealViewController : UIViewController {
 @private
@@ -19,9 +22,9 @@ extern const CGFloat kSidebarWidth;
 @property (nonatomic, strong) UIViewController *sidebarViewController;
 @property (nonatomic, strong) UIViewController *contentViewController;
 
-- (void)toggleSidebar:(BOOL)show animated:(BOOL)animated;
-- (void)toggleSidebar:(BOOL)show animated:(BOOL)animated completion:(void (^)(BOOL finsihed))completion;
-- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)searchView animated:(BOOL)animated;
-- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)searchView animated:(BOOL)animated completion:(void (^)(BOOL finsihed))completion;
+- (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration;
+- (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration completion:(void (^)(BOOL finished))completion;
+- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)searchView duration:(NSTimeInterval)duration;
+- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)searchView duration:(NSTimeInterval)duration completion:(void (^)(BOOL finished))completion;
 
 @end

@@ -5,8 +5,9 @@
 //  Created by Greg Haines on 11/20/11.
 //
 
-typedef void (^RevealBlock)();
+#import <Foundation/Foundation.h>
 
+typedef void (^RevealBlock)();
 
 @interface GHRootViewController : UIViewController {
 @private

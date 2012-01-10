@@ -10,6 +10,9 @@
 		6B014F5214B3DAC4001E922B /* GHMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B014F5114B3DAC4001E922B /* GHMenuViewController.m */; };
 		6B014F5714B41DB6001E922B /* GHSidebarSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B014F5614B41DB6001E922B /* GHSidebarSearchViewController.m */; };
 		6B4BD80214B10447004BE0CC /* GHMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B4BD80114B10447004BE0CC /* GHMenuCell.m */; };
+		6B71B28814B8C77B00588FB6 /* searchBarIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B71B28614B8C77B00588FB6 /* searchBarIcon.png */; };
+		6B71B28914B8C77B00588FB6 /* searchBarIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B71B28714B8C77B00588FB6 /* searchBarIcon@2x.png */; };
+		6B71B28B14B8C82600588FB6 /* searchTextBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B71B28A14B8C82600588FB6 /* searchTextBG.png */; };
 		6BBA75C014873DFE004E1A5E /* GHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BB14873DFD004E1A5E /* GHAppDelegate.m */; };
 		6BBA75C114873DFE004E1A5E /* GHPushedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BD14873DFD004E1A5E /* GHPushedViewController.m */; };
 		6BBA75C214873DFE004E1A5E /* GHRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BF14873DFD004E1A5E /* GHRootViewController.m */; };
@@ -31,6 +34,10 @@
 		6B014F5614B41DB6001E922B /* GHSidebarSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHSidebarSearchViewController.m; sourceTree = "<group>"; };
 		6B4BD80014B10447004BE0CC /* GHMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHMenuCell.h; path = Demo/GHMenuCell.h; sourceTree = SOURCE_ROOT; };
 		6B4BD80114B10447004BE0CC /* GHMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHMenuCell.m; path = Demo/GHMenuCell.m; sourceTree = SOURCE_ROOT; };
+		6B71B28614B8C77B00588FB6 /* searchBarIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchBarIcon.png; sourceTree = "<group>"; };
+		6B71B28714B8C77B00588FB6 /* searchBarIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "searchBarIcon@2x.png"; sourceTree = "<group>"; };
+		6B71B28A14B8C82600588FB6 /* searchTextBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = searchTextBG.png; sourceTree = "<group>"; };
+		6B71B28C14B8C98E00588FB6 /* GHSidebarSearchViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarSearchViewControllerDelegate.h; sourceTree = "<group>"; };
 		6BBA75BA14873DFD004E1A5E /* GHAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHAppDelegate.h; path = Demo/GHAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		6BBA75BB14873DFD004E1A5E /* GHAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHAppDelegate.m; path = Demo/GHAppDelegate.m; sourceTree = SOURCE_ROOT; };
 		6BBA75BC14873DFD004E1A5E /* GHPushedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHPushedViewController.h; path = Demo/GHPushedViewController.h; sourceTree = SOURCE_ROOT; };
@@ -130,6 +137,7 @@
 			children = (
 				6BE3FCD5147A118100CDEC04 /* GHRevealViewController.h */,
 				6BE3FCD6147A118200CDEC04 /* GHRevealViewController.m */,
+				6B71B28C14B8C98E00588FB6 /* GHSidebarSearchViewControllerDelegate.h */,
 				6B014F5514B41DB6001E922B /* GHSidebarSearchViewController.h */,
 				6B014F5614B41DB6001E922B /* GHSidebarSearchViewController.m */,
 			);
@@ -152,6 +160,9 @@
 			isa = PBXGroup;
 			children = (
 				6BBA75CC14873E74004E1A5E /* searchBarBG.png */,
+				6B71B28614B8C77B00588FB6 /* searchBarIcon.png */,
+				6B71B28714B8C77B00588FB6 /* searchBarIcon@2x.png */,
+				6B71B28A14B8C82600588FB6 /* searchTextBG.png */,
 				6BBA75CD14873E74004E1A5E /* user.png */,
 			);
 			name = Resources;
@@ -211,6 +222,9 @@
 				6BBA75C914873E18004E1A5E /* InfoPlist.strings in Resources */,
 				6BBA75CE14873E74004E1A5E /* searchBarBG.png in Resources */,
 				6BBA75CF14873E74004E1A5E /* user.png in Resources */,
+				6B71B28814B8C77B00588FB6 /* searchBarIcon.png in Resources */,
+				6B71B28914B8C77B00588FB6 /* searchBarIcon@2x.png in Resources */,
+				6B71B28B14B8C82600588FB6 /* searchTextBG.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

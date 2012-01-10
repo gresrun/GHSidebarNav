@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Greg Haines. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 @class GHRevealViewController;
-
 
 @interface GHMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
 @private
@@ -24,6 +24,7 @@
 						withHeaders:(NSArray *)headers 
 					withControllers:(NSArray *)controllers 
 					  withCellInfos:(NSArray *)cellInfos;
+
 - (void)selectRowAtIndexPath:(NSIndexPath *)indexPath 
 					animated:(BOOL)animated 
 			  scrollPosition:(UITableViewScrollPosition)scrollPosition;

@@ -6,15 +6,13 @@
 //
 
 #import "GHRevealViewController.h"
-#import "GHMenuCell.h"
-#import "GHSidebarSearchViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 
 #pragma mark -
 #pragma mark Constants
-const CGFloat kSidebarAnimationDuration = 0.3f;
-const CGFloat kSidebarWidth = 260.0f;
+const NSTimeInterval kGHRevealSidebarDefaultAnimationDuration = 0.25;
+const CGFloat kGHRevealSidebarWidth = 260.0f;
 
 
 #pragma mark -
@@ -39,13 +37,14 @@ const CGFloat kSidebarWidth = 260.0f;
 @synthesize searchView;
 
 - (void)setSidebarViewController:(UIViewController *)svc {
-	svc.view.frame = _sidebarView.bounds;
 	if (sidebarViewController == nil) {
+		svc.view.frame = _sidebarView.bounds;
 		sidebarViewController = svc;
 		[self addChildViewController:sidebarViewController];
 		[_sidebarView addSubview:sidebarViewController.view];
 		[sidebarViewController didMoveToParentViewController:self];
 	} else if (sidebarViewController != svc) {
+		svc.view.frame = _sidebarView.bounds;
 		[sidebarViewController willMoveToParentViewController:nil];
 		[self addChildViewController:svc];
 		self.view.userInteractionEnabled = NO;
@@ -65,13 +64,14 @@ const CGFloat kSidebarWidth = 260.0f;
 }
 
 - (void)setContentViewController:(UIViewController *)cvc {
-	cvc.view.frame = _contentView.bounds;
 	if (contentViewController == nil) {
+		cvc.view.frame = _contentView.bounds;
 		contentViewController = cvc;
 		[self addChildViewController:contentViewController];
 		[_contentView addSubview:contentViewController.view];
 		[contentViewController didMoveToParentViewController:self];
 	} else if (contentViewController != cvc) {
+		cvc.view.frame = _contentView.bounds;
 		[contentViewController willMoveToParentViewController:nil];
 		[self addChildViewController:cvc];
 		self.view.userInteractionEnabled = NO;
@@ -100,13 +100,14 @@ const CGFloat kSidebarWidth = 260.0f;
 		
 		self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 		
-		_sidebarView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kSidebarWidth, CGRectGetHeight(self.view.bounds))];
-		_sidebarView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin;
+		_sidebarView = [[UIView alloc] initWithFrame:self.view.bounds];
+		_sidebarView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_sidebarView.backgroundColor = [UIColor clearColor];
 		[self.view addSubview:_sidebarView];
 		
 		_contentView = [[UIView alloc] initWithFrame:self.view.bounds];
 		_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_contentView.backgroundColor = [UIColor clearColor];
 		_contentView.layer.masksToBounds = NO;
 		_contentView.layer.shadowColor = [UIColor blackColor].CGColor;
 		_contentView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
@@ -120,37 +121,29 @@ const CGFloat kSidebarWidth = 260.0f;
 
 #pragma mark UIViewController
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-	BOOL doAutorotate = NO;
 	switch (orientation) {
 		case UIInterfaceOrientationLandscapeLeft:
 		case UIInterfaceOrientationLandscapeRight:
 		case UIInterfaceOrientationPortrait:
-			doAutorotate = YES;
-			break;
+			return YES;
 		case UIInterfaceOrientationPortraitUpsideDown:
-			doAutorotate = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-			break;
+			return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
 	}
-	if (doAutorotate && self.isSearching && self.interfaceOrientation != orientation) {
-		_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
-		_sidebarView.frame = self.view.bounds;
-	}
-	return doAutorotate;
 }
 
 #pragma mark Public Methods
-- (void)toggleSidebar:(BOOL)show animated:(BOOL)animated {
-	[self toggleSidebar:show animated:animated completion:^(BOOL finshed){}];
+- (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration {
+	[self toggleSidebar:show duration:duration completion:^(BOOL finshed){}];
 }
 
-- (void)toggleSidebar:(BOOL)show animated:(BOOL)animated completion:(void (^)(BOOL finsihed))completion {
+- (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
 	void (^animations)(void) = ^{
 		if (show) {
-			_contentView.frame = CGRectOffset(_contentView.bounds, kSidebarWidth, 0.0f);
+			_contentView.frame = CGRectOffset(_contentView.bounds, kGHRevealSidebarWidth, 0.0f);
 			[_contentView addGestureRecognizer:_tapRecog];
 		} else {
 			if (self.isSearching) {
-				_sidebarView.frame = CGRectMake(0.0f, 0.0f, kSidebarWidth, CGRectGetHeight(self.view.bounds));
+				_sidebarView.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
 			} else {
 				[_contentView removeGestureRecognizer:_tapRecog];
 			}
@@ -158,8 +151,10 @@ const CGFloat kSidebarWidth = 260.0f;
 		}
 		self.sidebarShowing = show;
 	};
-	if (animated) {
-		[UIView animateWithDuration:kSidebarAnimationDuration
+	if (duration > 0.0) {
+		[UIView animateWithDuration:duration
+							  delay:0
+							options:UIViewAnimationOptionCurveEaseInOut
 						 animations:animations
 						 completion:completion];
 	} else {
@@ -168,11 +163,11 @@ const CGFloat kSidebarWidth = 260.0f;
 	}
 }
 
-- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)srchView animated:(BOOL)animated {
-	[self toggleSearch:showSearch withSearchView:srchView animated:animated completion:^(BOOL finished){}];
+- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)srchView duration:(NSTimeInterval)duration {
+	[self toggleSearch:showSearch withSearchView:srchView duration:duration completion:^(BOOL finished){}];
 }
 
-- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)srchView animated:(BOOL)animated completion:(void (^)(BOOL finsihed))completion {
+- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)srchView duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
 	if (showSearch) {
 		srchView.frame = self.view.bounds;
 	} else {
@@ -188,15 +183,16 @@ const CGFloat kSidebarWidth = 260.0f;
 			self.searchView = srchView;
 			[self.view insertSubview:self.searchView atIndex:0];
 		} else {
-			_sidebarView.frame = CGRectMake(0.0f, 0.0f, kSidebarWidth, CGRectGetHeight(self.view.bounds));
+			_sidebarView.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
 			_sidebarView.alpha = 1.0f;
 			[self.view insertSubview:_sidebarView atIndex:0];
 			self.searchView.frame = _sidebarView.frame;
-			_contentView.frame = CGRectOffset(_contentView.bounds, kSidebarWidth, 0.0f);
+			_contentView.frame = CGRectOffset(_contentView.bounds, kGHRevealSidebarWidth, 0.0f);
 		}
 	};
 	void (^fullCompletion)(BOOL) = ^(BOOL finished){
 		if (showSearch) {
+			_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetHeight([UIScreen mainScreen].bounds), 0.0f);
 			[_contentView removeFromSuperview];
 		} else {
 			[_contentView addGestureRecognizer:_tapRecog];
@@ -207,8 +203,10 @@ const CGFloat kSidebarWidth = 260.0f;
 		self.searching = showSearch;
 		completion(finished);
 	};
-	if (animated) {
-		[UIView animateWithDuration:kSidebarAnimationDuration
+	if (duration > 0.0) {
+		[UIView animateWithDuration:duration
+							  delay:0
+							options:UIViewAnimationOptionCurveEaseInOut
 						 animations:animations
 						 completion:fullCompletion];
 	} else {
@@ -219,7 +217,7 @@ const CGFloat kSidebarWidth = 260.0f;
 
 #pragma mark Private Methods
 - (void)hideSidebar {
-	[self toggleSidebar:NO animated:YES];
+	[self toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
 }
 
 @end
