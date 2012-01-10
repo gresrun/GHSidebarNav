@@ -6,14 +6,18 @@
 //
 
 #import "GHAppDelegate.h"
-#import "GHSidebarViewController.h"
+#import "GHMenuCell.h"
+#import "GHMenuViewController.h"
 #import "GHRootViewController.h"
+#import "GHRevealViewController.h"
 
 
 #pragma mark -
 #pragma mark Private Interface
 @interface GHAppDelegate ()
-@property(nonatomic, readwrite, strong) GHSidebarViewController *viewController;
+@property (nonatomic, strong) GHRevealViewController *revealController;
+@property (nonatomic, strong) GHSidebarSearchViewController *searchController;
+@property (nonatomic, strong) GHMenuViewController *menuController;
 @end
 
 
@@ -23,20 +27,25 @@
 
 #pragma mark Properties
 @synthesize window;
-@synthesize viewController;
+@synthesize revealController;
+@synthesize searchController;
+@synthesize menuController;
 
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:NO];
 	
+	UIColor *bgColor = [UIColor colorWithRed:(50.0f/255.0f) green:(57.0f/255.0f) blue:(74.0f/255.0f) alpha:1.0f];
+	self.revealController = [[GHRevealViewController alloc] initWithNibName:nil bundle:nil];
+	self.revealController.view.backgroundColor = bgColor;
+	
+	RevealBlock revealBlock = ^(){
+		[self.revealController toggleSidebar:!self.revealController.sidebarShowing duration:kGHRevealSidebarDefaultAnimationDuration];
+	};
+	
 	NSMutableArray *headers = [[NSMutableArray alloc] initWithCapacity:2];
 	NSMutableArray *controllers = [[NSMutableArray alloc] initWithCapacity:2];
 	NSMutableArray *cellInfos = [[NSMutableArray alloc] initWithCapacity:2];
-	self.viewController = [[GHSidebarViewController alloc] initWithHeaders:headers withContollers:controllers withCellInfos:cellInfos];
-    
-	RevealBlock revealBlock = ^(){
-		[self.viewController toggleSidebar:!self.viewController.sidebarShowing animated:YES];
-	};
 	
 	NSMutableArray *profileInfos = [[NSMutableArray alloc] initWithCapacity:1];
 	NSMutableArray *profileControllers = [[NSMutableArray alloc] initWithCapacity:1];
@@ -62,10 +71,48 @@
 	[cellInfos addObject:favoritesInfos];
 	[controllers addObject:favoritesControllers];
 	
+	self.searchController = [[GHSidebarSearchViewController alloc] initWithSidebarViewController:self.revealController];
+	self.searchController.view.backgroundColor = [UIColor clearColor];
+    self.searchController.searchDelegate = self;
+	self.searchController.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	self.searchController.searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+	self.searchController.searchBar.backgroundImage = [UIImage imageNamed:@"searchBarBG.png"];
+	self.searchController.searchBar.placeholder = NSLocalizedString(@"Search", @"");
+	self.searchController.searchBar.tintColor = [UIColor colorWithRed:(58.0f/255.0f) green:(67.0f/255.0f) blue:(104.0f/255.0f) alpha:1.0f];
+	for (UIView *subview in self.searchController.searchBar.subviews) {
+		if ([subview isKindOfClass:[UITextField class]]) {
+			UITextField *searchTextField = (UITextField *) subview;
+			searchTextField.textColor = [UIColor colorWithRed:(154.0f/255.0f) green:(162.0f/255.0f) blue:(176.0f/255.0f) alpha:1.0f];
+		}
+	}
+	UIEdgeInsets insets = UIEdgeInsetsMake(16.0f, 17.0f, 16.0f, 17.0f);
+	UIImage *searchTextBG = [[UIImage imageNamed:@"searchTextBG.png"] resizableImageWithCapInsets:insets];
+	UIImage *searchBarIcon = [UIImage imageNamed:@"searchBarIcon.png"];
+	[self.searchController.searchBar setSearchFieldBackgroundImage:searchTextBG	
+														  forState:UIControlStateNormal];
+	[self.searchController.searchBar setSearchFieldBackgroundImage:searchTextBG	
+														  forState:UIControlStateDisabled];
+	[self.searchController.searchBar setImage:searchBarIcon 
+							 forSearchBarIcon:UISearchBarIconSearch 
+										state:UIControlStateNormal];
+	[self.searchController.searchBar setImage:searchBarIcon 
+							 forSearchBarIcon:UISearchBarIconSearch 
+										state:UIControlStateHighlighted];
+	
+	self.menuController = [[GHMenuViewController alloc] initWithSidebarViewController:self.revealController 
+																		withSearchBar:self.searchController.searchBar 
+																		  withHeaders:headers 
+																	  withControllers:controllers 
+																		withCellInfos:cellInfos];
+	
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    self.window.rootViewController = self.viewController;
+    self.window.rootViewController = self.revealController;
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)searchResultsForText:(NSString *)text withScope:(NSString *)scope callback:(SearchResultsBlock)callback {
+	callback([NSArray arrayWithObjects:@"Foo", @"Bar", @"Baz", nil]);
 }
 
 @end

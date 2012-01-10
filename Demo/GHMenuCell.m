@@ -5,12 +5,17 @@
 //  Created by Greg Haines on 11/20/11.
 //
 
-#import "GHSidebarMenuCell.h"
+#import "GHMenuCell.h"
+
+#pragma mark -
+#pragma mark Constants
+NSString const *kSidebarCellTextKey = @"CellText";
+NSString const *kSidebarCellImageKey = @"CellImage";
 
 
 #pragma mark -
 #pragma mark Implementation
-@implementation GHSidebarMenuCell
+@implementation GHMenuCell
 
 #pragma mark Memory Management
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {

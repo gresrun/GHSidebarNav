@@ -5,6 +5,9 @@
 //  Created by Greg Haines on 11/20/11.
 //
 
-@interface GHAppDelegate : UIResponder <UIApplicationDelegate>
+#import <Foundation/Foundation.h>
+#import "GHSidebarSearchViewController.h"
+
+@interface GHAppDelegate : UIResponder <UIApplicationDelegate, GHSidebarSearchViewControllerDelegate>
 
 @end
