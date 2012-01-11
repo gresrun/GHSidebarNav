@@ -3,7 +3,7 @@ GHSideBarNav
 
 A clone of the new Facebook iOS UI paradigm; a sidebar navigation table that is revealed by sliding the main content panel to the right. The search goes full-screen and everything supports the standard orientations.
 
-This project uses the Container View Controller methods introduced iOS 5.0 so, it won't work on any version prior.  
+This project uses the Container View Controller methods introduced in iOS 5.0 so, it won't work on any version prior.  
 This project uses ARC so, you'll need Mac OS 10.7+ (Lion) and Xcode 4.2.1+ to build it.
 
 [![](http://gresrun.github.com/GHSidebarNav/sidebarScreenshot.png)](http://gresrun.github.com/GHSidebarNav/sidebarScreenshot.png)
