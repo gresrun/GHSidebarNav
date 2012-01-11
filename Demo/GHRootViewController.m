@@ -38,15 +38,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
-	view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	view.backgroundColor = [UIColor lightGrayColor];
+	self.view.backgroundColor = [UIColor lightGrayColor];
 	UIButton *pushButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[pushButton setTitle:@"Push" forState:UIControlStateNormal];
 	[pushButton addTarget:self action:@selector(pushViewController) forControlEvents:UIControlEventTouchUpInside];
 	[pushButton sizeToFit];
-	[view addSubview:pushButton];
-	[self.view addSubview:view];
+	[self.view addSubview:pushButton];
 }
 
 #pragma mark Private Methods

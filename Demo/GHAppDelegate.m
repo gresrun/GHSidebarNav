@@ -41,7 +41,8 @@
 	self.revealController.view.backgroundColor = bgColor;
 	
 	RevealBlock revealBlock = ^(){
-		[self.revealController toggleSidebar:!self.revealController.sidebarShowing duration:kGHRevealSidebarDefaultAnimationDuration];
+		[self.revealController toggleSidebar:!self.revealController.sidebarShowing 
+									duration:kGHRevealSidebarDefaultAnimationDuration];
 	};
 	
 	NSMutableArray *headers = [[NSMutableArray alloc] initWithCapacity:2];
@@ -50,24 +51,36 @@
 	
 	NSMutableArray *profileInfos = [[NSMutableArray alloc] initWithCapacity:1];
 	NSMutableArray *profileControllers = [[NSMutableArray alloc] initWithCapacity:1];
-	[profileInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, NSLocalizedString(@"Profile", @""), kSidebarCellTextKey, nil]];
-	[profileControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Profile" withRevealBlock:revealBlock]]];
+	[profileInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
+							 NSLocalizedString(@"Profile", @""), kSidebarCellTextKey, nil]];
+	[profileControllers addObject:[[UINavigationController alloc] initWithRootViewController:
+								   [[GHRootViewController alloc] initWithTitle:@"Profile" withRevealBlock:revealBlock]]];
 	[headers addObject:[NSNull null]];
 	[cellInfos addObject:profileInfos];
 	[controllers addObject:profileControllers];
 	
 	NSMutableArray *favoritesInfos = [[NSMutableArray alloc] initWithCapacity:5];
 	NSMutableArray *favoritesControllers = [[NSMutableArray alloc] initWithCapacity:5];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, NSLocalizedString(@"News Feed", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"News Feed" withRevealBlock:revealBlock]]];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, NSLocalizedString(@"Messages", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Messages" withRevealBlock:revealBlock]]];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, NSLocalizedString(@"Nearby", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Nearby" withRevealBlock:revealBlock]]];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, NSLocalizedString(@"Events", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Events" withRevealBlock:revealBlock]]];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, NSLocalizedString(@"Friends", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Friends" withRevealBlock:revealBlock]]];
+	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
+							   NSLocalizedString(@"News Feed", @""), kSidebarCellTextKey, nil]];
+	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
+									 [[GHRootViewController alloc] initWithTitle:@"News Feed" withRevealBlock:revealBlock]]];
+	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
+							   NSLocalizedString(@"Messages", @""), kSidebarCellTextKey, nil]];
+	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
+									 [[GHRootViewController alloc] initWithTitle:@"Messages" withRevealBlock:revealBlock]]];
+	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
+							   NSLocalizedString(@"Nearby", @""), kSidebarCellTextKey, nil]];
+	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
+									 [[GHRootViewController alloc] initWithTitle:@"Nearby" withRevealBlock:revealBlock]]];
+	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
+							   NSLocalizedString(@"Events", @""), kSidebarCellTextKey, nil]];
+	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
+									 [[GHRootViewController alloc] initWithTitle:@"Events" withRevealBlock:revealBlock]]];
+	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
+							   NSLocalizedString(@"Friends", @""), kSidebarCellTextKey, nil]];
+	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
+									 [[GHRootViewController alloc] initWithTitle:@"Friends" withRevealBlock:revealBlock]]];
 	[headers addObject:@"FAVORITES"];
 	[cellInfos addObject:favoritesInfos];
 	[controllers addObject:favoritesControllers];
@@ -96,19 +109,12 @@
 			searchTextField.textColor = [UIColor colorWithRed:(154.0f/255.0f) green:(162.0f/255.0f) blue:(176.0f/255.0f) alpha:1.0f];
 		}
 	}
-	UIEdgeInsets insets = UIEdgeInsetsMake(16.0f, 17.0f, 16.0f, 17.0f);
-	UIImage *searchTextBG = [[UIImage imageNamed:@"searchTextBG.png"] resizableImageWithCapInsets:insets];
-	UIImage *searchBarIcon = [UIImage imageNamed:@"searchBarIcon.png"];
-	[self.searchController.searchBar setSearchFieldBackgroundImage:searchTextBG	
+	[self.searchController.searchBar setSearchFieldBackgroundImage:[[UIImage imageNamed:@"searchTextBG.png"] 
+																		resizableImageWithCapInsets:UIEdgeInsetsMake(16.0f, 17.0f, 16.0f, 17.0f)]	
 														  forState:UIControlStateNormal];
-	[self.searchController.searchBar setSearchFieldBackgroundImage:searchTextBG	
-														  forState:UIControlStateDisabled];
-	[self.searchController.searchBar setImage:searchBarIcon 
+	[self.searchController.searchBar setImage:[UIImage imageNamed:@"searchBarIcon.png"] 
 							 forSearchBarIcon:UISearchBarIconSearch 
 										state:UIControlStateNormal];
-	[self.searchController.searchBar setImage:searchBarIcon 
-							 forSearchBarIcon:UISearchBarIconSearch 
-										state:UIControlStateHighlighted];
 	
 	self.menuController = [[GHMenuViewController alloc] initWithSidebarViewController:self.revealController 
 																		withSearchBar:self.searchController.searchBar 
@@ -122,6 +128,7 @@
     return YES;
 }
 
+#pragma mark GHSidebarSearchViewControllerDelegate
 - (void)searchResultsForText:(NSString *)text withScope:(NSString *)scope callback:(SearchResultsBlock)callback {
 	callback([NSArray arrayWithObjects:@"Foo", @"Bar", @"Baz", nil]);
 }
