@@ -10,6 +10,7 @@
 #import "GHMenuViewController.h"
 #import "GHRootViewController.h"
 #import "GHRevealViewController.h"
+#import "GHSidebarSearchViewController.h"
 
 
 #pragma mark -

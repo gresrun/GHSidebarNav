@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "GHSidebarSearchViewController.h"
+#import "GHSidebarSearchViewControllerDelegate.h"
 
 @interface GHAppDelegate : UIResponder <UIApplicationDelegate, GHSidebarSearchViewControllerDelegate>
 
