@@ -137,9 +137,9 @@
 			children = (
 				6BE3FCD5147A118100CDEC04 /* GHRevealViewController.h */,
 				6BE3FCD6147A118200CDEC04 /* GHRevealViewController.m */,
-				6B71B28C14B8C98E00588FB6 /* GHSidebarSearchViewControllerDelegate.h */,
 				6B014F5514B41DB6001E922B /* GHSidebarSearchViewController.h */,
 				6B014F5614B41DB6001E922B /* GHSidebarSearchViewController.m */,
+				6B71B28C14B8C98E00588FB6 /* GHSidebarSearchViewControllerDelegate.h */,
 			);
 			path = GHSidebarNav;
 			sourceTree = "<group>";

@@ -13,6 +13,7 @@
 #pragma mark Constants
 const NSTimeInterval kGHRevealSidebarDefaultAnimationDuration = 0.25;
 const CGFloat kGHRevealSidebarWidth = 260.0f;
+const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 
 
 #pragma mark -
@@ -132,6 +133,40 @@ const CGFloat kGHRevealSidebarWidth = 260.0f;
 }
 
 #pragma mark Public Methods
+- (void)dragContentView:(UIPanGestureRecognizer *)panGesture {
+	CGFloat translation = [panGesture translationInView:self.view].x;
+	if (panGesture.state == UIGestureRecognizerStateChanged) {
+		if (sidebarShowing) {
+			if (translation > 0.0f) {
+				_contentView.frame = CGRectOffset(_contentView.bounds, kGHRevealSidebarWidth, 0.0f);
+				self.sidebarShowing = YES;
+			} else if (translation < -kGHRevealSidebarWidth) {
+				_contentView.frame = _contentView.bounds;
+				self.sidebarShowing = NO;
+			} else {
+				_contentView.frame = CGRectOffset(_contentView.bounds, (kGHRevealSidebarWidth + translation), 0.0f);
+			}
+		} else {
+			if (translation < 0.0f) {
+				_contentView.frame = _contentView.bounds;
+				self.sidebarShowing = NO;
+			} else if (translation > kGHRevealSidebarWidth) {
+				_contentView.frame = CGRectOffset(_contentView.bounds, kGHRevealSidebarWidth, 0.0f);
+				self.sidebarShowing = YES;
+			} else {
+				_contentView.frame = CGRectOffset(_contentView.bounds, translation, 0.0f);
+			}
+		}
+	} else if (panGesture.state == UIGestureRecognizerStateEnded) {
+		CGFloat velocity = [panGesture velocityInView:self.view].x;
+		BOOL show = (fabs(velocity) > kGHRevealSidebarFlickVelocity)
+			? (velocity > 0)
+			: (translation > (kGHRevealSidebarWidth / 2));
+		[self toggleSidebar:show duration:kGHRevealSidebarDefaultAnimationDuration];
+		
+	}
+}
+
 - (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration {
 	[self toggleSidebar:show duration:duration completion:^(BOOL finshed){}];
 }

@@ -71,6 +71,16 @@
 	[cellInfos addObject:favoritesInfos];
 	[controllers addObject:favoritesControllers];
 	
+	// Add drag feature to each root navigation controller
+	[controllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+		[((NSArray *)obj) enumerateObjectsUsingBlock:^(id obj2, NSUInteger idx2, BOOL *stop2){
+			UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealController 
+																						 action:@selector(dragContentView:)];
+			panGesture.cancelsTouchesInView = YES;
+			[((UINavigationController *)obj2).navigationBar addGestureRecognizer:panGesture];
+		}];
+	}];
+	
 	self.searchController = [[GHSidebarSearchViewController alloc] initWithSidebarViewController:self.revealController];
 	self.searchController.view.backgroundColor = [UIColor clearColor];
     self.searchController.searchDelegate = self;
