@@ -12,4 +12,5 @@ typedef void (^SearchResultsBlock)(NSArray *);
 @protocol GHSidebarSearchViewControllerDelegate <NSObject>
 @required
 - (void)searchResultsForText:(NSString *)text withScope:(NSString *)scope callback:(SearchResultsBlock)callback;
+- (void)searchResult:(id)result selectedAtIndexPath:(NSIndexPath *)indexPath;
 @end

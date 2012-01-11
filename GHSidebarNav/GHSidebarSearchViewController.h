@@ -21,6 +21,7 @@ extern const NSTimeInterval kGHSidebarDefaultSearchDelay;
 }
 
 @property (nonatomic, readonly) UISearchBar *searchBar;
+@property (nonatomic, readonly) NSArray *entries;
 @property (nonatomic, weak) id<GHSidebarSearchViewControllerDelegate> searchDelegate;
 @property (nonatomic) NSTimeInterval searchDelay;
 

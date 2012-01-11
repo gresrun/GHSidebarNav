@@ -125,4 +125,8 @@
 	callback([NSArray arrayWithObjects:@"Foo", @"Bar", @"Baz", nil]);
 }
 
+- (void)searchResult:(id)result selectedAtIndexPath:(NSIndexPath *)indexPath {
+	NSLog(@"Selected Search Result - result: %@ indexPath: %@", result, indexPath);
+}
+
 @end

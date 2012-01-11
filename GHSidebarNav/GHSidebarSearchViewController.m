@@ -19,7 +19,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 #pragma mark Private Interface
 @interface GHSidebarSearchViewController ()
 @property (nonatomic, strong) UISearchDisplayController *searchDisplayController;
-@property (nonatomic, strong) NSMutableArray *entries;
+@property (nonatomic, strong) NSMutableArray *mutableEntries;
 - (void)performSearch;
 @end
 
@@ -30,12 +30,16 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 
 #pragma mark Properties
 @synthesize searchDelegate;
-@synthesize entries;
+@synthesize mutableEntries;
 @synthesize searchDisplayController;
 @synthesize searchDelay;
 
 - (UISearchBar *)searchBar {
 	return searchDisplayController.searchBar;
+}
+
+- (NSArray *)entries {
+	return mutableEntries;
 }
 
 #pragma mark Memory Management
@@ -46,7 +50,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 		_searchQueue.maxConcurrentOperationCount = 1;
 		
 		self.searchDelay = kGHSidebarDefaultSearchDelay;
-		self.entries = [[NSMutableArray alloc] initWithCapacity:10];
+		self.mutableEntries = [[NSMutableArray alloc] initWithCapacity:10];
 		
 		self.searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:[[UISearchBar alloc] init] contentsController:self];
 		searchDisplayController.delegate = self;
@@ -75,13 +79,14 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	// Do something with selected row here
-	NSLog(@"Search Results - selected: %@", [entries objectAtIndex:indexPath.row]);
+	if (searchDelegate) {
+		[searchDelegate searchResult:[mutableEntries objectAtIndex:indexPath.row] selectedAtIndexPath:indexPath];
+	}
 }
 
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return entries.count;
+    return mutableEntries.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -90,7 +95,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
     if (cell == nil) {
         cell = [[GHMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-	cell.textLabel.text = [entries objectAtIndex:indexPath.row];
+	cell.textLabel.text = [mutableEntries objectAtIndex:indexPath.row];
 	cell.imageView.image = [UIImage imageNamed:@"user.png"];
 	return cell;
 }
@@ -152,7 +157,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 		? [self.searchBar.scopeButtonTitles objectAtIndex:self.searchBar.selectedScopeButtonIndex] 
 		: nil;
 	if ([@"" isEqualToString:text]) {
-		[entries removeAllObjects];
+		[mutableEntries removeAllObjects];
 		[searchDisplayController.searchResultsTableView reloadData];
 	} else {
 		if (searchDelegate) {
@@ -160,8 +165,8 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 			[_searchQueue addOperationWithBlock:^{
 				[selfRef.searchDelegate searchResultsForText:text withScope:scope callback:^(NSArray *results){
 					[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-						[selfRef.entries removeAllObjects];
-						[selfRef.entries addObjectsFromArray:results];
+						[selfRef.mutableEntries removeAllObjects];
+						[selfRef.mutableEntries addObjectsFromArray:results];
 						[selfRef.searchDisplayController.searchResultsTableView reloadData];
 					}];
 				}];
