@@ -6,6 +6,9 @@ A clone of the new Facebook iOS UI paradigm; a sidebar navigation table that is 
 This project uses the Container View Controller methods introduced iOS 5.0 so, it won't work on any version prior.  
 This project uses ARC so, you'll need Mac OS 10.7+ (Lion) and Xcode 4.2.1+ to build it.
 
+[![](http://gresrun.github.com/GHSidebarNav/sidebarScreenshot.png)](http://gresrun.github.com/GHSidebarNav/sidebarScreenshot.png)
+[![](http://gresrun.github.com/GHSidebarNav/searchScreenshot.png)](http://gresrun.github.com/GHSidebarNav/searchScreenshot.png)
+
 ***
 How Do I Use It?
 ----------------
