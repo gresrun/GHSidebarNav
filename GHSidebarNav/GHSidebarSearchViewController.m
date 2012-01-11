@@ -60,6 +60,11 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 	return self;
 }
 
+- (void)dealloc {
+	[_timer invalidate];
+	[_searchQueue cancelAllOperations];
+}
+
 #pragma mark UIViewController
 - (void)viewDidLoad {
 	[super viewDidLoad];
@@ -162,15 +167,20 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 	} else {
 		if (searchDelegate) {
 			__block GHSidebarSearchViewController *selfRef = self;
-			[_searchQueue addOperationWithBlock:^{
+			__block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
 				[selfRef.searchDelegate searchResultsForText:text withScope:scope callback:^(NSArray *results){
-					[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-						[selfRef.mutableEntries removeAllObjects];
-						[selfRef.mutableEntries addObjectsFromArray:results];
-						[selfRef.searchDisplayController.searchResultsTableView reloadData];
-					}];
+					if (![operation isCancelled]) {
+						[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+							if (![operation isCancelled]) {
+								[selfRef.mutableEntries removeAllObjects];
+								[selfRef.mutableEntries addObjectsFromArray:results];
+								[selfRef.searchDisplayController.searchResultsTableView reloadData];
+							}
+						}];
+					}
 				}];
 			}];
+			[_searchQueue addOperation:operation];
 		}
 	}
 }
