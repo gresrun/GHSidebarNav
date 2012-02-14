@@ -57,10 +57,10 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 								completion:^(BOOL finished){
 									self.view.userInteractionEnabled = YES;
 									[sidebarViewController removeFromParentViewController];
+									[svc didMoveToParentViewController:self];
 									sidebarViewController = svc;
 								}
 		 ];
-		[sidebarViewController didMoveToParentViewController:self];
 	}
 }
 
@@ -84,10 +84,10 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 								completion:^(BOOL finished){
 									self.view.userInteractionEnabled = YES;
 									[contentViewController removeFromParentViewController];
+									[cvc didMoveToParentViewController:self];
 									contentViewController = cvc;
 								}
 		];
-		[contentViewController didMoveToParentViewController:self];
 	}
 }
 
