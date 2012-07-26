@@ -7,7 +7,6 @@
 
 #import "GHSidebarSearchViewController.h"
 #import "GHRevealViewController.h"
-#import "GHMenuCell.h"
 
 
 #pragma mark -
@@ -95,13 +94,20 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *CellIdentifier = @"GHSearchMenuCell";
-	GHMenuCell *cell = (GHMenuCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[GHMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    id entry = [mutableEntries objectAtIndex:indexPath.row];
+    UITableViewCell* cell;
+    if ([searchDelegate respondsToSelector:@selector(tableView:indexPath:object:)]) {
+        cell = [searchDelegate tableView:tableView indexPath:indexPath object:entry];
     }
-	cell.textLabel.text = [mutableEntries objectAtIndex:indexPath.row];
-	cell.imageView.image = [UIImage imageNamed:@"user.png"];
+    if (cell == nil) {
+        static NSString *CellIdentifier = @"GHSearchMenuCell";
+        cell = (UITableViewCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault 
+                                          reuseIdentifier:CellIdentifier];
+        }
+        cell.textLabel.text = entry;
+    }
 	return cell;
 }
 

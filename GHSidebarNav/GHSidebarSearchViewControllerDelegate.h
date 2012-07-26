@@ -13,4 +13,6 @@ typedef void (^SearchResultsBlock)(NSArray *);
 @required
 - (void)searchResultsForText:(NSString *)text withScope:(NSString *)scope callback:(SearchResultsBlock)callback;
 - (void)searchResult:(id)result selectedAtIndexPath:(NSIndexPath *)indexPath;
+@optional
+- (UITableViewCell *)tableView:(UITableView *)tableView indexPath:(NSIndexPath*)indexPath object:(id)object;
 @end
