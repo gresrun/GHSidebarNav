@@ -137,4 +137,16 @@
 	NSLog(@"Selected Search Result - result: %@ indexPath: %@", result, indexPath);
 }
 
+- (UITableViewCell *)tableView:(UITableView *)tableView indexPath:(NSIndexPath*)indexPath object:(id)object {
+    static NSString* identifier = @"mycell";
+    GHMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (!cell) {
+        cell = [[GHMenuCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                 reuseIdentifier:identifier];
+    }
+    cell.textLabel.text = object;
+    cell.imageView.image = [UIImage imageNamed:@"user"];
+    return cell;
+}
+
 @end
