@@ -11,11 +11,12 @@
 #import "GHRootViewController.h"
 #import "GHRevealViewController.h"
 #import "GHSidebarSearchViewController.h"
+#import "GHSidebarSearchViewControllerDelegate.h"
 
 
 #pragma mark -
 #pragma mark Private Interface
-@interface GHAppDelegate ()
+@interface GHAppDelegate () <GHSidebarSearchViewControllerDelegate>
 @property (nonatomic, strong) GHRevealViewController *revealController;
 @property (nonatomic, strong) GHSidebarSearchViewController *searchController;
 @property (nonatomic, strong) GHMenuViewController *menuController;
@@ -28,9 +29,7 @@
 
 #pragma mark Properties
 @synthesize window;
-@synthesize revealController;
-@synthesize searchController;
-@synthesize menuController;
+@synthesize revealController, searchController, menuController;
 
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -45,45 +44,34 @@
 									duration:kGHRevealSidebarDefaultAnimationDuration];
 	};
 	
-	NSMutableArray *headers = [[NSMutableArray alloc] initWithCapacity:2];
-	NSMutableArray *controllers = [[NSMutableArray alloc] initWithCapacity:2];
-	NSMutableArray *cellInfos = [[NSMutableArray alloc] initWithCapacity:2];
-	
-	NSMutableArray *profileInfos = [[NSMutableArray alloc] initWithCapacity:1];
-	NSMutableArray *profileControllers = [[NSMutableArray alloc] initWithCapacity:1];
-	[profileInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
-							 NSLocalizedString(@"Profile", @""), kSidebarCellTextKey, nil]];
-	[profileControllers addObject:[[UINavigationController alloc] initWithRootViewController:
-								   [[GHRootViewController alloc] initWithTitle:@"Profile" withRevealBlock:revealBlock]]];
-	[headers addObject:[NSNull null]];
-	[cellInfos addObject:profileInfos];
-	[controllers addObject:profileControllers];
-	
-	NSMutableArray *favoritesInfos = [[NSMutableArray alloc] initWithCapacity:5];
-	NSMutableArray *favoritesControllers = [[NSMutableArray alloc] initWithCapacity:5];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
-							   NSLocalizedString(@"News Feed", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
-									 [[GHRootViewController alloc] initWithTitle:@"News Feed" withRevealBlock:revealBlock]]];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
-							   NSLocalizedString(@"Messages", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
-									 [[GHRootViewController alloc] initWithTitle:@"Messages" withRevealBlock:revealBlock]]];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
-							   NSLocalizedString(@"Nearby", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
-									 [[GHRootViewController alloc] initWithTitle:@"Nearby" withRevealBlock:revealBlock]]];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
-							   NSLocalizedString(@"Events", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
-									 [[GHRootViewController alloc] initWithTitle:@"Events" withRevealBlock:revealBlock]]];
-	[favoritesInfos addObject:[NSDictionary dictionaryWithObjectsAndKeys:[UIImage imageNamed:@"user.png"], kSidebarCellImageKey, 
-							   NSLocalizedString(@"Friends", @""), kSidebarCellTextKey, nil]];
-	[favoritesControllers addObject:[[UINavigationController alloc] initWithRootViewController:
-									 [[GHRootViewController alloc] initWithTitle:@"Friends" withRevealBlock:revealBlock]]];
-	[headers addObject:@"FAVORITES"];
-	[cellInfos addObject:favoritesInfos];
-	[controllers addObject:favoritesControllers];
+	NSArray *headers = @[
+		[NSNull null],
+		@"FAVORITES"
+	];
+	NSArray *controllers = @[
+		@[
+			[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Profile" withRevealBlock:revealBlock]]
+		],
+		@[
+			[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"News Feed" withRevealBlock:revealBlock]],
+			[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Messages" withRevealBlock:revealBlock]],
+			[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Nearby" withRevealBlock:revealBlock]],
+			[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Events" withRevealBlock:revealBlock]],
+			[[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:@"Friends" withRevealBlock:revealBlock]]
+		]
+	];
+	NSArray *cellInfos = @[
+		@[
+			@{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Profile", @"")}
+		],
+		@[
+			@{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"News Feed", @"")},
+			@{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Messages", @"")},
+			@{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Nearby", @"")},
+			@{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Events", @"")},
+			@{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Friends", @"")},
+		]
+	];
 	
 	// Add drag feature to each root navigation controller
 	[controllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
@@ -130,11 +118,22 @@
 
 #pragma mark GHSidebarSearchViewControllerDelegate
 - (void)searchResultsForText:(NSString *)text withScope:(NSString *)scope callback:(SearchResultsBlock)callback {
-	callback([NSArray arrayWithObjects:@"Foo", @"Bar", @"Baz", nil]);
+	callback(@[@"Foo", @"Bar", @"Baz"]);
 }
 
 - (void)searchResult:(id)result selectedAtIndexPath:(NSIndexPath *)indexPath {
 	NSLog(@"Selected Search Result - result: %@ indexPath: %@", result, indexPath);
+}
+
+- (UITableViewCell *)searchResultCellForEntry:(id)entry atIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView {
+	static NSString* identifier = @"GHSearchMenuCell";
+	GHMenuCell* cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+	if (!cell) {
+		cell = [[GHMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+	}
+	cell.textLabel.text = (NSString *)entry;
+	cell.imageView.image = [UIImage imageNamed:@"user"];
+	return cell;
 }
 
 @end

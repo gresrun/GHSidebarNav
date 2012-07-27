@@ -23,9 +23,9 @@
 #pragma mark UIViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	UIView *view = [[UIView alloc] initWithFrame:self.view.bounds];
-	view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	view.backgroundColor = [UIColor redColor];
 	[self.view addSubview:view];
 }

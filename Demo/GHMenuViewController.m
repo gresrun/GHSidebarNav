@@ -30,7 +30,7 @@
 		_cellInfos = cellInfos;
 		
 		_sidebarVC.sidebarViewController = self;
-		_sidebarVC.contentViewController = [[_controllers objectAtIndex:0] objectAtIndex:0];
+		_sidebarVC.contentViewController = _controllers[0][0];
 	}
 	return self;
 }
@@ -41,7 +41,7 @@
 	self.view.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 	
-	[self.view addSubview:_searchBar];;
+	[self.view addSubview:_searchBar];
 	
 	_menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 44.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds) - 44.0f) 
 												  style:UITableViewStylePlain];
@@ -60,23 +60,18 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-	switch (orientation) {
-		case UIInterfaceOrientationLandscapeLeft:
-		case UIInterfaceOrientationLandscapeRight:
-		case UIInterfaceOrientationPortrait:
-			return YES;
-		case UIInterfaceOrientationPortraitUpsideDown:
-			return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-	}
+	return (orientation == UIInterfaceOrientationPortraitUpsideDown)
+		? (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		: YES;
 }
 
 #pragma mark UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [_headers count];
+    return _headers.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [[_cellInfos objectAtIndex:section] count];
+    return ((NSArray *)_cellInfos[section]).count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -85,29 +80,28 @@
     if (cell == nil) {
         cell = [[GHMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-	NSDictionary *info = [[_cellInfos objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-	cell.textLabel.text = [info objectForKey:kSidebarCellTextKey];
-	cell.imageView.image = [info objectForKey:kSidebarCellImageKey];
+	NSDictionary *info = _cellInfos[indexPath.section][indexPath.row];
+	cell.textLabel.text = info[kSidebarCellTextKey];
+	cell.imageView.image = info[kSidebarCellImageKey];
     return cell;
 }
 
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	NSObject *headerText = [_headers objectAtIndex:section];
-	return (headerText == [NSNull null]) ? 0.0f : 21.0f;
+	return (_headers[section] == [NSNull null]) ? 0.0f : 21.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	NSObject *headerText = [_headers objectAtIndex:section];
+	NSObject *headerText = _headers[section];
 	UIView *headerView = nil;
 	if (headerText != [NSNull null]) {
 		headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.height, 21.0f)];
 		CAGradientLayer *gradient = [CAGradientLayer layer];
 		gradient.frame = headerView.bounds;
-		gradient.colors = [NSArray arrayWithObjects:
-						   (id)[[UIColor colorWithRed:(67.0f/255.0f) green:(74.0f/255.0f) blue:(94.0f/255.0f) alpha:1.0f] CGColor], 
-						   (id)[[UIColor colorWithRed:(57.0f/255.0f) green:(64.0f/255.0f) blue:(82.0f/255.0f) alpha:1.0f] CGColor], 
-						   nil];
+		gradient.colors = @[
+			(id)[UIColor colorWithRed:(67.0f/255.0f) green:(74.0f/255.0f) blue:(94.0f/255.0f) alpha:1.0f].CGColor,
+			(id)[UIColor colorWithRed:(57.0f/255.0f) green:(64.0f/255.0f) blue:(82.0f/255.0f) alpha:1.0f].CGColor,
+		];
 		[headerView.layer insertSublayer:gradient atIndex:0];
 		
 		UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectInset(headerView.bounds, 12.0f, 5.0f)];
@@ -131,7 +125,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	_sidebarVC.contentViewController = [[_controllers objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	_sidebarVC.contentViewController = _controllers[indexPath.section][indexPath.row];
 	[_sidebarVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
 }
 
@@ -141,7 +135,7 @@
 	if (scrollPosition == UITableViewScrollPositionNone) {
 		[_menuTableView scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 	}
-	_sidebarVC.contentViewController = [[_controllers objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+	_sidebarVC.contentViewController = _controllers[indexPath.section][indexPath.row];
 }
 
 @end

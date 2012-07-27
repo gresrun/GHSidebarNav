@@ -7,7 +7,6 @@
 
 #import "GHSidebarSearchViewController.h"
 #import "GHRevealViewController.h"
-#import "GHMenuCell.h"
 
 
 #pragma mark -
@@ -29,10 +28,8 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 @implementation GHSidebarSearchViewController
 
 #pragma mark Properties
-@synthesize searchDelegate;
-@synthesize mutableEntries;
-@synthesize searchDisplayController;
-@synthesize searchDelay;
+@synthesize searchDelegate, searchDelay;
+@synthesize searchDisplayController, mutableEntries;
 
 - (UISearchBar *)searchBar {
 	return searchDisplayController.searchBar;
@@ -68,24 +65,19 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 #pragma mark UIViewController
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	self.view.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-	switch (orientation) {
-		case UIInterfaceOrientationPortrait:
-		case UIInterfaceOrientationLandscapeLeft:
-		case UIInterfaceOrientationLandscapeRight:
-			return YES;
-		case UIInterfaceOrientationPortraitUpsideDown:
-			return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-	}
+	return (orientation == UIInterfaceOrientationPortraitUpsideDown)
+		? (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		: YES;
 }
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (searchDelegate) {
-		[searchDelegate searchResult:[mutableEntries objectAtIndex:indexPath.row] selectedAtIndexPath:indexPath];
+		[searchDelegate searchResult:mutableEntries[indexPath.row] selectedAtIndexPath:indexPath];
 	}
 }
 
@@ -95,13 +87,11 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *CellIdentifier = @"GHSearchMenuCell";
-	GHMenuCell *cell = (GHMenuCell*)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[GHMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-	cell.textLabel.text = [mutableEntries objectAtIndex:indexPath.row];
-	cell.imageView.image = [UIImage imageNamed:@"user.png"];
+	UITableViewCell *cell = nil;
+	if (searchDelegate) {
+		id entry = mutableEntries[indexPath.row];
+		cell = [searchDelegate searchResultCellForEntry:entry atIndexPath:indexPath inTableView:tableView];
+	}
 	return cell;
 }
 
@@ -120,7 +110,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-	tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	tableView.backgroundColor = [UIColor clearColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	[self.view addSubview:searchDisplayController.searchResultsTableView];
@@ -133,7 +123,6 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 		[self.searchBar removeFromSuperview];
 		self.searchBar.showsCancelButton = NO;
 		[_searchBarSuperview insertSubview:self.searchBar atIndex:_searchBarSuperIndex];
-		
 		_searchBarSuperview = nil;
 	}];
 }
@@ -159,7 +148,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 - (void)performSearch {
 	NSString *text = self.searchBar.text;
 	NSString *scope = (self.searchBar.showsScopeBar) 
-		? [self.searchBar.scopeButtonTitles objectAtIndex:self.searchBar.selectedScopeButtonIndex] 
+		? self.searchBar.scopeButtonTitles[self.searchBar.selectedScopeButtonIndex] 
 		: nil;
 	if ([@"" isEqualToString:text]) {
 		[mutableEntries removeAllObjects];

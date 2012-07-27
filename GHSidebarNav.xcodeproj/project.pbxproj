@@ -38,6 +38,7 @@
 		6B4BD80014B10447004BE0CC /* GHMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHMenuCell.h; path = Demo/GHMenuCell.h; sourceTree = SOURCE_ROOT; };
 		6B4BD80114B10447004BE0CC /* GHMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHMenuCell.m; path = Demo/GHMenuCell.m; sourceTree = SOURCE_ROOT; };
 		6B71B28C14B8C98E00588FB6 /* GHSidebarSearchViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarSearchViewControllerDelegate.h; sourceTree = "<group>"; };
+		6B74312C15C23FBF00474C2E /* NSObject+Subscripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Subscripts.h"; sourceTree = "<group>"; };
 		6BBA75BA14873DFD004E1A5E /* GHAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHAppDelegate.h; path = Demo/GHAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		6BBA75BB14873DFD004E1A5E /* GHAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GHAppDelegate.m; path = Demo/GHAppDelegate.m; sourceTree = SOURCE_ROOT; };
 		6BBA75BC14873DFD004E1A5E /* GHPushedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GHPushedViewController.h; path = Demo/GHPushedViewController.h; sourceTree = SOURCE_ROOT; };
@@ -74,6 +75,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B74312915C23F4B00474C2E /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6B74312C15C23FBF00474C2E /* NSObject+Subscripts.h */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		6BBA75B914872E10004E1A5E /* Demo */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,6 +114,7 @@
 		6BE3FC99147A096400CDEC04 = {
 			isa = PBXGroup;
 			children = (
+				6B74312915C23F4B00474C2E /* Utils */,
 				6BE3FCAE147A096500CDEC04 /* GHSidebarNav */,
 				6BBA75B914872E10004E1A5E /* Demo */,
 				6BE3FCCA147A115600CDEC04 /* Resources */,

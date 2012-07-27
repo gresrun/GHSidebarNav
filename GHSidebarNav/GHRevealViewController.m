@@ -99,15 +99,15 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 		_tapRecog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSidebar)];
 		_tapRecog.cancelsTouchesInView = YES;
 		
-		self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+		self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 		
 		_sidebarView = [[UIView alloc] initWithFrame:self.view.bounds];
-		_sidebarView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_sidebarView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 		_sidebarView.backgroundColor = [UIColor clearColor];
 		[self.view addSubview:_sidebarView];
 		
 		_contentView = [[UIView alloc] initWithFrame:self.view.bounds];
-		_contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		_contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 		_contentView.backgroundColor = [UIColor clearColor];
 		_contentView.layer.masksToBounds = NO;
 		_contentView.layer.shadowColor = [UIColor blackColor].CGColor;
@@ -122,14 +122,9 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 
 #pragma mark UIViewController
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-	switch (orientation) {
-		case UIInterfaceOrientationLandscapeLeft:
-		case UIInterfaceOrientationLandscapeRight:
-		case UIInterfaceOrientationPortrait:
-			return YES;
-		case UIInterfaceOrientationPortraitUpsideDown:
-			return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
-	}
+	return (orientation == UIInterfaceOrientationPortraitUpsideDown)
+		? (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+		: YES;
 }
 
 #pragma mark Public Methods
