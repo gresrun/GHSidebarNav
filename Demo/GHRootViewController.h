@@ -7,13 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^RevealBlock)();
+@interface GHRootViewController : UIViewController
 
-@interface GHRootViewController : UIViewController {
-@private
-	RevealBlock _revealBlock;
-}
+@property (weak, nonatomic) IBOutlet UIButton *pushButton;
 
-- (id)initWithTitle:(NSString *)title withRevealBlock:(RevealBlock)revealBlock;
+- (id)initWithTitle:(NSString *)title;
+
+- (IBAction)revealSidebar:(id)sender;
 
 @end

@@ -9,21 +9,11 @@
 #import <Foundation/Foundation.h>
 @class GHRevealViewController;
 
-@interface GHMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate> {
-@private
-	GHRevealViewController *_sidebarVC;
-	UISearchBar *_searchBar;
-	UITableView *_menuTableView;
-	NSArray *_headers;
-	NSArray *_controllers;
-	NSArray *_cellInfos;
-}
+@interface GHMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-- (id)initWithSidebarViewController:(GHRevealViewController *)sidebarVC 
-					  withSearchBar:(UISearchBar *)searchBar 
-						withHeaders:(NSArray *)headers 
-					withControllers:(NSArray *)controllers 
-					  withCellInfos:(NSArray *)cellInfos;
+@property (strong, nonatomic) GHRevealViewController *sidebarVC;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UITableView *menuTableView;
 
 - (void)selectRowAtIndexPath:(NSIndexPath *)indexPath 
 					animated:(BOOL)animated 

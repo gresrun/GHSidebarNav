@@ -7,54 +7,51 @@
 
 #import "GHRootViewController.h"
 #import "GHPushedViewController.h"
+#import "GHRevealViewController.h"
 
 
-#pragma mark -
 #pragma mark Private Interface
 @interface GHRootViewController ()
-- (void)pushViewController;
-- (void)revealSidebar;
+- (void)doPush;
 @end
 
-
-#pragma mark -
 #pragma mark Implementation
 @implementation GHRootViewController
 
+#pragma mark Properties
+@synthesize pushButton;
+
 #pragma mark Memory Management
-- (id)initWithTitle:(NSString *)title withRevealBlock:(RevealBlock)revealBlock {
+- (id)initWithTitle:(NSString *)title {
     if (self = [super initWithNibName:nil bundle:nil]) {
 		self.title = title;
-		_revealBlock = [revealBlock copy];
-		self.navigationItem.leftBarButtonItem = 
-			[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
-														  target:self
-														  action:@selector(revealSidebar)];
+        self.navigationItem.leftBarButtonItem =
+            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                          target:self
+                                                          action:@selector(revealSidebar:)];
+        [self.pushButton addTarget:self action:@selector(doPush) forControlEvents:UIControlEventTouchUpInside];
 	}
 	return self;
 }
 
 #pragma mark UIViewController
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	self.view.backgroundColor = [UIColor lightGrayColor];
-	UIButton *pushButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	[pushButton setTitle:@"Push" forState:UIControlStateNormal];
-	[pushButton addTarget:self action:@selector(pushViewController) forControlEvents:UIControlEventTouchUpInside];
-	[pushButton sizeToFit];
-	[self.view addSubview:pushButton];
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([@"PushIt" isEqualToString:segue.identifier]) {
+        UIViewController *vc = segue.destinationViewController;
+        vc.title = [self.title stringByAppendingString:@" - Pushed"];
+    }
+}
+
+#pragma mark Public Methods
+- (IBAction)revealSidebar:(id)sender {
+    GHRevealViewController *revealVC = (GHRevealViewController *)self.parentViewController.parentViewController;
+    [revealVC toggleSidebar:!revealVC.sidebarShowing duration:kGHRevealSidebarDefaultAnimationDuration];
 }
 
 #pragma mark Private Methods
-- (void)pushViewController {
-	NSString *vcTitle = [self.title stringByAppendingString:@" - Pushed"];
-	UIViewController *vc = [[GHPushedViewController alloc] initWithTitle:vcTitle];
-	[self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)revealSidebar {
-	_revealBlock();
+- (void)doPush {
+    UIViewController *vc = [[GHPushedViewController alloc] initWithNibName:nil bundle:nil];
+    vc.title = [self.title stringByAppendingString:@" - Pushed"];
 }
 
 @end

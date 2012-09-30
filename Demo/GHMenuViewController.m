@@ -9,53 +9,85 @@
 #import "GHMenuViewController.h"
 #import "GHMenuCell.h"
 #import "GHRevealViewController.h"
+#import "GHRootViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 
-#pragma mark -
+#pragma mark Constants
+static NSString *const HeaderIdentifier = @"SectionHeader";
+
+#pragma mark Private Interface
+@interface GHMenuViewController ()
+@property (strong, nonatomic) NSArray *headers;
+@property (strong, nonatomic) NSArray *controllers;
+@property (strong, nonatomic) NSArray *cellInfos;
+@end
+
 #pragma mark Implementation
 @implementation GHMenuViewController
 
-#pragma mark Memory Management
-- (id)initWithSidebarViewController:(GHRevealViewController *)sidebarVC 
-					  withSearchBar:(UISearchBar *)searchBar 
-						withHeaders:(NSArray *)headers 
-					withControllers:(NSArray *)controllers 
-					  withCellInfos:(NSArray *)cellInfos {
-	if (self = [super initWithNibName:nil bundle:nil]) {
-		_sidebarVC = sidebarVC;
-		_searchBar = searchBar;
-		_headers = headers;
-		_controllers = controllers;
-		_cellInfos = cellInfos;
-		
-		_sidebarVC.sidebarViewController = self;
-		_sidebarVC.contentViewController = _controllers[0][0];
-	}
-	return self;
-}
+#pragma mark Properties
+@synthesize sidebarVC, searchBar, menuTableView;
+@synthesize headers, controllers, cellInfos;
 
 #pragma mark UIViewController
 - (void)viewDidLoad {
-	[super viewDidLoad];
-	self.view.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
-	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-	
-	[self.view addSubview:_searchBar];
-	
-	_menuTableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0f, 44.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds) - 44.0f) 
-												  style:UITableViewStylePlain];
-	_menuTableView.delegate = self;
-	_menuTableView.dataSource = self;
-	_menuTableView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
-	_menuTableView.backgroundColor = [UIColor clearColor];
-	_menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	[self.view addSubview:_menuTableView];
+    [super viewDidLoad];
+    self.headers = @[
+        [NSNull null],
+        @"FAVORITES"
+    ];
+    self.controllers = @[
+        @[
+            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Profile", @"")]]
+        ],
+        @[
+            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"News Feed", @"")]],
+            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Messages", @"")]],
+            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Nearby", @"")]],
+            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Events", @"")]],
+            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Friends", @"")]]
+        ]
+    ];
+    self.cellInfos = @[
+        @[
+            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Profile", @"")}
+        ],
+        @[
+            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"News Feed", @"")},
+            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Messages", @"")},
+            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Nearby", @"")},
+            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Events", @"")},
+            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Friends", @"")},
+        ]
+    ];
+    [self.menuTableView registerNib:[UINib nibWithNibName:@"GHMenuSectionHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:HeaderIdentifier];
+    self.searchBar.backgroundImage = [UIImage imageNamed:@"searchBarBG.png"];
+    for (UIView *subview in self.searchBar.subviews) {
+		if ([subview isKindOfClass:[UITextField class]]) {
+			UITextField *searchTextField = (UITextField *) subview;
+			searchTextField.textColor = [UIColor colorWithRed:(154.0f/255.0f) green:(162.0f/255.0f) blue:(176.0f/255.0f) alpha:1.0f];
+		}
+	}
+	[self.searchBar setSearchFieldBackgroundImage:[[UIImage imageNamed:@"searchTextBG.png"]
+                                                               resizableImageWithCapInsets:UIEdgeInsetsMake(16.0f, 17.0f, 16.0f, 17.0f)]
+                                         forState:UIControlStateNormal];
+	[self.searchBar setImage:[UIImage imageNamed:@"searchBarIcon.png"]
+            forSearchBarIcon:UISearchBarIconSearch
+                       state:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-	self.view.frame = CGRectMake(0.0f, 0.0f,kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
-	[_searchBar sizeToFit];
+    [super viewWillAppear:animated];
+    self.sidebarVC = (GHRevealViewController *)self.parentViewController;
+    [self.controllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+		[((NSArray *)obj) enumerateObjectsUsingBlock:^(id obj2, NSUInteger idx2, BOOL *stop2){
+			UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.sidebarVC
+																						 action:@selector(dragContentView:)];
+			panGesture.cancelsTouchesInView = YES;
+			[((UINavigationController *)obj2).navigationBar addGestureRecognizer:panGesture];
+		}];
+	}];
 	[self selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];
 }
 
@@ -65,22 +97,25 @@
 		: YES;
 }
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        ? UIInterfaceOrientationMaskAll
+        : UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
 #pragma mark UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return _headers.count;
+    return self.headers.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return ((NSArray *)_cellInfos[section]).count;
+    return ((NSArray *)self.cellInfos[section]).count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"GHMenuCell";
     GHMenuCell *cell = (GHMenuCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[GHMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-	NSDictionary *info = _cellInfos[indexPath.section][indexPath.row];
+	NSDictionary *info = self.cellInfos[indexPath.section][indexPath.row];
 	cell.textLabel.text = info[kSidebarCellTextKey];
 	cell.imageView.image = info[kSidebarCellImageKey];
     return cell;
@@ -88,14 +123,15 @@
 
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return (_headers[section] == [NSNull null]) ? 0.0f : 21.0f;
+	return (self.headers[section] == [NSNull null]) ? 0.0f : 21.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	NSObject *headerText = _headers[section];
+	NSObject *headerText = self.headers[section];
 	UIView *headerView = nil;
 	if (headerText != [NSNull null]) {
-		headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.height, 21.0f)];
+        headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:HeaderIdentifier];
+        
 		CAGradientLayer *gradient = [CAGradientLayer layer];
 		gradient.frame = headerView.bounds;
 		gradient.colors = @[
@@ -104,38 +140,26 @@
 		];
 		[headerView.layer insertSublayer:gradient atIndex:0];
 		
-		UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectInset(headerView.bounds, 12.0f, 5.0f)];
-		textLabel.text = (NSString *) headerText;
-		textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:([UIFont systemFontSize] * 0.8f)];
-		textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-		textLabel.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.25f];
-		textLabel.textColor = [UIColor colorWithRed:(125.0f/255.0f) green:(129.0f/255.0f) blue:(146.0f/255.0f) alpha:1.0f];
-		textLabel.backgroundColor = [UIColor clearColor];
-		[headerView addSubview:textLabel];
-		
-		UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.height, 1.0f)];
-		topLine.backgroundColor = [UIColor colorWithRed:(78.0f/255.0f) green:(86.0f/255.0f) blue:(103.0f/255.0f) alpha:1.0f];
-		[headerView addSubview:topLine];
-		
-		UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 21.0f, [UIScreen mainScreen].bounds.size.height, 1.0f)];
-		bottomLine.backgroundColor = [UIColor colorWithRed:(36.0f/255.0f) green:(42.0f/255.0f) blue:(5.0f/255.0f) alpha:1.0f];
-		[headerView addSubview:bottomLine];
+		UILabel *textLabel = (UILabel *)[headerView viewWithTag:123];
+		textLabel.text = (NSString *)headerText;
 	}
 	return headerView;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	_sidebarVC.contentViewController = _controllers[indexPath.section][indexPath.row];
-	[_sidebarVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+	self.sidebarVC.contentViewController = self.controllers[indexPath.section][indexPath.row];
+	[self.sidebarVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
 }
 
 #pragma mark Public Methods
 - (void)selectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UITableViewScrollPosition)scrollPosition {
-	[_menuTableView selectRowAtIndexPath:indexPath animated:animated scrollPosition:scrollPosition];
-	if (scrollPosition == UITableViewScrollPositionNone) {
-		[_menuTableView scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
-	}
-	_sidebarVC.contentViewController = _controllers[indexPath.section][indexPath.row];
+    if ((NSInteger)self.controllers.count > indexPath.section) {
+        [self.menuTableView selectRowAtIndexPath:indexPath animated:animated scrollPosition:scrollPosition];
+        if (scrollPosition == UITableViewScrollPositionNone) {
+            [self.menuTableView scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
+        }
+        self.sidebarVC.contentViewController = self.controllers[indexPath.section][indexPath.row];
+    }
 }
 
 @end

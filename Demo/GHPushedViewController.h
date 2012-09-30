@@ -9,6 +9,4 @@
 
 @interface GHPushedViewController : UIViewController
 
-- (id)initWithTitle:(NSString *)title;
-
 @end

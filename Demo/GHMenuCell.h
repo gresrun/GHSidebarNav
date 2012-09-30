@@ -12,4 +12,7 @@ extern NSString const *kSidebarCellImageKey;
 
 @interface GHMenuCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
 @end

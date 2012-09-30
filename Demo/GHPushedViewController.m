@@ -12,14 +12,6 @@
 #pragma mark Implementation
 @implementation GHPushedViewController
 
-#pragma mark Memory Management
-- (id)initWithTitle:(NSString *)title {
-	if (self = [super initWithNibName:nil bundle:nil]) {
-		self.title = title;
-	}
-	return self;
-}
-
 #pragma mark UIViewController
 - (void)viewDidLoad {
     [super viewDidLoad];

@@ -21,7 +21,7 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 @interface GHRevealViewController ()
 @property (nonatomic, readwrite, getter = isSidebarShowing) BOOL sidebarShowing;
 @property (nonatomic, readwrite, getter = isSearching) BOOL searching;
-@property (nonatomic, strong) UIView *searchView;
+@property (strong, nonatomic) UITapGestureRecognizer *tapRecog;
 - (void)hideSidebar;
 @end
 
@@ -31,29 +31,26 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 @implementation GHRevealViewController
 
 #pragma mark Properties
-@synthesize sidebarShowing;
-@synthesize searching;
-@synthesize sidebarViewController;
-@synthesize contentViewController;
-@synthesize searchView;
+@synthesize sidebarView, contentView, sidebarViewController, contentViewController;
+@synthesize sidebarShowing, searching, tapRecog;
 
 - (void)setSidebarViewController:(UIViewController *)svc {
 	if (sidebarViewController == nil) {
-		svc.view.frame = _sidebarView.bounds;
+		svc.view.frame = self.sidebarView.bounds;
 		sidebarViewController = svc;
 		[self addChildViewController:sidebarViewController];
-		[_sidebarView addSubview:sidebarViewController.view];
+		[self.sidebarView addSubview:sidebarViewController.view];
 		[sidebarViewController didMoveToParentViewController:self];
 	} else if (sidebarViewController != svc) {
-		svc.view.frame = _sidebarView.bounds;
+		svc.view.frame = self.sidebarView.bounds;
 		[sidebarViewController willMoveToParentViewController:nil];
 		[self addChildViewController:svc];
 		self.view.userInteractionEnabled = NO;
-		[self transitionFromViewController:sidebarViewController 
-						  toViewController:svc 
+		[self transitionFromViewController:sidebarViewController
+						  toViewController:svc
 								  duration:0
 								   options:UIViewAnimationOptionTransitionNone
-								animations:^{} 
+								animations:^{}
 								completion:^(BOOL finished){
 									self.view.userInteractionEnabled = YES;
 									[sidebarViewController removeFromParentViewController];
@@ -66,18 +63,18 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 
 - (void)setContentViewController:(UIViewController *)cvc {
 	if (contentViewController == nil) {
-		cvc.view.frame = _contentView.bounds;
+		cvc.view.frame = self.contentView.bounds;
 		contentViewController = cvc;
 		[self addChildViewController:contentViewController];
-		[_contentView addSubview:contentViewController.view];
+		[self.contentView addSubview:contentViewController.view];
 		[contentViewController didMoveToParentViewController:self];
 	} else if (contentViewController != cvc) {
-		cvc.view.frame = _contentView.bounds;
+		cvc.view.frame = self.contentView.bounds;
 		[contentViewController willMoveToParentViewController:nil];
 		[self addChildViewController:cvc];
 		self.view.userInteractionEnabled = NO;
-		[self transitionFromViewController:contentViewController 
-						  toViewController:cvc 
+		[self transitionFromViewController:contentViewController
+						  toViewController:cvc
 								  duration:0
 								   options:UIViewAnimationOptionTransitionNone
 								animations:^{}
@@ -87,40 +84,28 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 									[cvc didMoveToParentViewController:self];
 									contentViewController = cvc;
 								}
-		];
+         ];
 	}
 }
 
-#pragma mark Memory Management
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-		self.sidebarShowing = NO;
-		self.searching = NO;
-		_tapRecog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSidebar)];
-		_tapRecog.cancelsTouchesInView = YES;
-		
-		self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-		
-		_sidebarView = [[UIView alloc] initWithFrame:self.view.bounds];
-		_sidebarView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-		_sidebarView.backgroundColor = [UIColor clearColor];
-		[self.view addSubview:_sidebarView];
-		
-		_contentView = [[UIView alloc] initWithFrame:self.view.bounds];
-		_contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-		_contentView.backgroundColor = [UIColor clearColor];
-		_contentView.layer.masksToBounds = NO;
-		_contentView.layer.shadowColor = [UIColor blackColor].CGColor;
-		_contentView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-		_contentView.layer.shadowOpacity = 1.0f;
-		_contentView.layer.shadowRadius = 2.5f;
-		_contentView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_contentView.bounds].CGPath;
-		[self.view addSubview:_contentView];
-    }
-    return self;
+#pragma mark UIViewController
+- (void)viewDidLoad {
+    self.sidebarShowing = NO;
+    self.searching = NO;
+    
+    self.tapRecog = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideSidebar)];
+    self.tapRecog.cancelsTouchesInView = YES;
+    
+    self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+    
+    self.contentView.layer.masksToBounds = NO;
+    self.contentView.layer.shadowColor = [UIColor blackColor].CGColor;
+    self.contentView.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+    self.contentView.layer.shadowOpacity = 1.0f;
+    self.contentView.layer.shadowRadius = 2.5f;
+    self.contentView.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.contentView.bounds].CGPath;
 }
 
-#pragma mark UIViewController
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
 	return (orientation == UIInterfaceOrientationPortraitUpsideDown)
 		? (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -133,23 +118,23 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 	if (panGesture.state == UIGestureRecognizerStateChanged) {
 		if (sidebarShowing) {
 			if (translation > 0.0f) {
-				_contentView.frame = CGRectOffset(_contentView.bounds, kGHRevealSidebarWidth, 0.0f);
+				self.contentView.frame = CGRectOffset(self.contentView.bounds, kGHRevealSidebarWidth, 0.0f);
 				self.sidebarShowing = YES;
 			} else if (translation < -kGHRevealSidebarWidth) {
-				_contentView.frame = _contentView.bounds;
+				self.contentView.frame = self.contentView.bounds;
 				self.sidebarShowing = NO;
 			} else {
-				_contentView.frame = CGRectOffset(_contentView.bounds, (kGHRevealSidebarWidth + translation), 0.0f);
+				self.contentView.frame = CGRectOffset(self.contentView.bounds, (kGHRevealSidebarWidth + translation), 0.0f);
 			}
 		} else {
 			if (translation < 0.0f) {
-				_contentView.frame = _contentView.bounds;
+				self.contentView.frame = self.contentView.bounds;
 				self.sidebarShowing = NO;
 			} else if (translation > kGHRevealSidebarWidth) {
-				_contentView.frame = CGRectOffset(_contentView.bounds, kGHRevealSidebarWidth, 0.0f);
+				self.contentView.frame = CGRectOffset(self.contentView.bounds, kGHRevealSidebarWidth, 0.0f);
 				self.sidebarShowing = YES;
 			} else {
-				_contentView.frame = CGRectOffset(_contentView.bounds, translation, 0.0f);
+				self.contentView.frame = CGRectOffset(self.contentView.bounds, translation, 0.0f);
 			}
 		}
 	} else if (panGesture.state == UIGestureRecognizerStateEnded) {
@@ -169,15 +154,15 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 - (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
 	void (^animations)(void) = ^{
 		if (show) {
-			_contentView.frame = CGRectOffset(_contentView.bounds, kGHRevealSidebarWidth, 0.0f);
-			[_contentView addGestureRecognizer:_tapRecog];
+			self.contentView.frame = CGRectOffset(self.contentView.bounds, kGHRevealSidebarWidth, 0.0f);
+			[self.contentView addGestureRecognizer:self.tapRecog];
 		} else {
 			if (self.isSearching) {
-				_sidebarView.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
+				self.sidebarView.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
 			} else {
-				[_contentView removeGestureRecognizer:_tapRecog];
+				[self.contentView removeGestureRecognizer:self.tapRecog];
 			}
-			_contentView.frame = _contentView.bounds;
+			self.contentView.frame = self.contentView.bounds;
 		}
 		self.sidebarShowing = show;
 	};
@@ -193,46 +178,42 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 	}
 }
 
-- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)srchView duration:(NSTimeInterval)duration {
-	[self toggleSearch:showSearch withSearchView:srchView duration:duration completion:^(BOOL finished){}];
+- (void)toggleSearch:(BOOL)showSearch duration:(NSTimeInterval)duration {
+	[self toggleSearch:showSearch duration:duration completion:^(BOOL finished){}];
 }
 
-- (void)toggleSearch:(BOOL)showSearch withSearchView:(UIView *)srchView duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
-	if (showSearch) {
-		srchView.frame = self.view.bounds;
-	} else {
-		_sidebarView.alpha = 0.0f;
-		_contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
-		[self.view addSubview:_contentView];
+- (void)toggleSearch:(BOOL)showSearch duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
+	if (!showSearch) {
+		self.sidebarView.alpha = 0.0f;
+		self.contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
+		[self.view addSubview:self.contentView];
 	}
 	void (^animations)(void) = ^{
 		if (showSearch) {
-			_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
-			[_contentView removeGestureRecognizer:_tapRecog];
-			[_sidebarView removeFromSuperview];
-			self.searchView = srchView;
-			[self.view insertSubview:self.searchView atIndex:0];
+			self.contentView.frame = CGRectOffset(self.contentView.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
+			[self.contentView removeGestureRecognizer:self.tapRecog];
+			self.sidebarView.frame = self.view.bounds;
 		} else {
-			_sidebarView.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
-			_sidebarView.alpha = 1.0f;
-			[self.view insertSubview:_sidebarView atIndex:0];
-			self.searchView.frame = _sidebarView.frame;
-			_contentView.frame = CGRectOffset(_contentView.bounds, kGHRevealSidebarWidth, 0.0f);
+			self.sidebarView.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
+			self.sidebarView.alpha = 1.0f;
+			[self.view insertSubview:self.sidebarView atIndex:0];
+			self.sidebarView.frame = CGRectMake(0, 0, kGHRevealSidebarWidth, self.view.bounds.size.height);
+			self.contentView.frame = CGRectOffset(self.contentView.bounds, kGHRevealSidebarWidth, 0.0f);
 		}
 	};
 	void (^fullCompletion)(BOOL) = ^(BOOL finished){
 		if (showSearch) {
-			_contentView.frame = CGRectOffset(_contentView.bounds, CGRectGetHeight([UIScreen mainScreen].bounds), 0.0f);
-			[_contentView removeFromSuperview];
+			self.contentView.frame = CGRectOffset(self.contentView.bounds, CGRectGetHeight([UIScreen mainScreen].bounds), 0.0f);
+			[self.contentView removeFromSuperview];
 		} else {
-			[_contentView addGestureRecognizer:_tapRecog];
-			[self.searchView removeFromSuperview];
-			self.searchView = nil;
+			[self.contentView addGestureRecognizer:self.tapRecog];
 		}
 		self.sidebarShowing = YES;
 		self.searching = showSearch;
-		completion(finished);
-	};
+        if (completion != nil) {
+            completion(finished);
+        }
+    };
 	if (duration > 0.0) {
 		[UIView animateWithDuration:duration
 							  delay:0
@@ -241,8 +222,10 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 						 completion:fullCompletion];
 	} else {
 		animations();
-		fullCompletion(YES);
-	}
+        if (completion != nil) {
+            fullCompletion(YES);
+        }
+    }
 }
 
 #pragma mark Private Methods
