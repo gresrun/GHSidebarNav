@@ -61,7 +61,7 @@ static NSString *const HeaderIdentifier = @"SectionHeader";
             @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Friends", @"")},
         ]
     ];
-    [self.menuTableView registerNib:[UINib nibWithNibName:@"GHMenuSectionHeaderView" bundle:nil] forHeaderFooterViewReuseIdentifier:HeaderIdentifier];
+    [self.menuTableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:HeaderIdentifier];
     self.searchBar.backgroundImage = [UIImage imageNamed:@"searchBarBG.png"];
     for (UIView *subview in self.searchBar.subviews) {
 		if ([subview isKindOfClass:[UITextField class]]) {
@@ -115,8 +115,11 @@ static NSString *const HeaderIdentifier = @"SectionHeader";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"GHMenuCell";
     GHMenuCell *cell = (GHMenuCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UIView *bgView = [[UIView alloc] init];
+    bgView.backgroundColor = [UIColor colorWithRed:(38.0f/255.0f) green:(44.0f/255.0f) blue:(58.0f/255.0f) alpha:1.0f];
+    cell.selectedBackgroundView = bgView;
 	NSDictionary *info = self.cellInfos[indexPath.section][indexPath.row];
-	cell.textLabel.text = info[kSidebarCellTextKey];
+	cell.titleLabel.text = info[kSidebarCellTextKey];
 	cell.imageView.image = info[kSidebarCellImageKey];
     return cell;
 }
@@ -128,9 +131,11 @@ static NSString *const HeaderIdentifier = @"SectionHeader";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSObject *headerText = self.headers[section];
-	UIView *headerView = nil;
+	UITableViewHeaderFooterView *headerView = nil;
 	if (headerText != [NSNull null]) {
         headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:HeaderIdentifier];
+        headerView.backgroundView = nil;
+        headerView.bounds = CGRectMake(0, 0, 260, 21);
         
 		CAGradientLayer *gradient = [CAGradientLayer layer];
 		gradient.frame = headerView.bounds;
@@ -140,8 +145,22 @@ static NSString *const HeaderIdentifier = @"SectionHeader";
 		];
 		[headerView.layer insertSublayer:gradient atIndex:0];
 		
-		UILabel *textLabel = (UILabel *)[headerView viewWithTag:123];
+        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectInset(headerView.bounds, 12.0f, 5.0f)];
 		textLabel.text = (NSString *)headerText;
+        textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
+		textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
+		textLabel.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.25f];
+		textLabel.textColor = [UIColor colorWithRed:(125.0f/255.0f) green:(129.0f/255.0f) blue:(146.0f/255.0f) alpha:1.0f];
+        textLabel.backgroundColor = [UIColor clearColor];
+        [headerView addSubview:textLabel];
+        
+        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.height, 1.0f)];
+		topLine.backgroundColor = [UIColor colorWithRed:(78.0f/255.0f) green:(86.0f/255.0f) blue:(103.0f/255.0f) alpha:1.0f];
+		[headerView addSubview:topLine];
+        
+		UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 21.0f, [UIScreen mainScreen].bounds.size.height, 1.0f)];
+		bottomLine.backgroundColor = [UIColor colorWithRed:(36.0f/255.0f) green:(42.0f/255.0f) blue:(5.0f/255.0f) alpha:1.0f];
+		[headerView addSubview:bottomLine];
 	}
 	return headerView;
 }

@@ -55,20 +55,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="260" height="460"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <searchBar contentMode="redraw" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="HdQ-fC-m3f">
+                                <color key="tintColor" red="0.22745098039215686" green="0.2627450980392157" blue="0.40784313725490196" alpha="1" colorSpace="calibratedRGB"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="7HE-gf-CFh" id="Cuj-uk-nMe"/>
+                                </connections>
+                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="EDU-T6-jpB" userLabel="Menu Table View">
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search" id="HdQ-fC-m3f">
-                                    <rect key="frame" x="0.0" y="0.0" width="260" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <color key="tintColor" red="0.22745098039215686" green="0.2627450980392157" blue="0.40784313725490196" alpha="1" colorSpace="calibratedRGB"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="7HE-gf-CFh" id="Cuj-uk-nMe"/>
-                                    </connections>
-                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" reuseIdentifier="GHMenuCell" id="GGA-rA-UDN" customClass="GHMenuCell">
-                                        <rect key="frame" x="0.0" y="66" width="260" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="260" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="260" height="43"/>
@@ -76,7 +74,8 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sST-Qk-FZU">
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="50" id="Z4l-sk-Fc3"/>
+                                                        <constraint firstAttribute="height" constant="30" id="2VJ-6g-NCo"/>
+                                                        <constraint firstAttribute="width" constant="30" id="mF0-qq-zBu"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QhZ-p6-9il" userLabel="Title Label">
@@ -104,20 +103,19 @@
                                         <constraints>
                                             <constraint firstItem="QhZ-p6-9il" firstAttribute="trailing" secondItem="GGA-rA-UDN" secondAttribute="trailing" type="default" id="0ad-ci-Jsw"/>
                                             <constraint firstItem="r7R-P5-i1P" firstAttribute="leading" secondItem="GGA-rA-UDN" secondAttribute="leading" type="default" id="19h-l8-pry"/>
-                                            <constraint firstItem="sST-Qk-FZU" firstAttribute="leading" secondItem="GGA-rA-UDN" secondAttribute="leading" type="default" id="9MX-l8-GvR"/>
                                             <constraint firstAttribute="bottom" secondItem="r7R-P5-i1P" secondAttribute="bottom" constant="42" id="B16-mk-uV8"/>
-                                            <constraint firstItem="sST-Qk-FZU" firstAttribute="bottom" secondItem="GGA-rA-UDN" secondAttribute="bottom" type="default" id="BLx-DO-0DU"/>
                                             <constraint firstItem="50m-bc-wek" firstAttribute="top" secondItem="GGA-rA-UDN" secondAttribute="top" constant="43" id="Bex-J3-3dX"/>
+                                            <constraint firstItem="sST-Qk-FZU" firstAttribute="centerY" secondItem="QhZ-p6-9il" secondAttribute="centerY" type="default" id="P0T-d6-1hi"/>
                                             <constraint firstItem="QhZ-p6-9il" firstAttribute="top" secondItem="GGA-rA-UDN" secondAttribute="top" type="default" id="RZJ-Jh-wAz"/>
                                             <constraint firstItem="7hp-hw-jXN" firstAttribute="leading" secondItem="GGA-rA-UDN" secondAttribute="leading" type="default" id="Rdp-Bd-odV"/>
+                                            <constraint firstItem="sST-Qk-FZU" firstAttribute="centerY" secondItem="GGA-rA-UDN" secondAttribute="centerY" type="default" id="RwU-FN-zlm"/>
                                             <constraint firstItem="r7R-P5-i1P" firstAttribute="trailing" secondItem="GGA-rA-UDN" secondAttribute="trailing" type="default" id="Uhu-6r-KYn"/>
                                             <constraint firstItem="7hp-hw-jXN" firstAttribute="top" secondItem="GGA-rA-UDN" secondAttribute="top" type="default" id="VhL-eu-RDr"/>
                                             <constraint firstItem="50m-bc-wek" firstAttribute="trailing" secondItem="GGA-rA-UDN" secondAttribute="trailing" type="default" id="WFg-Ze-FhY"/>
                                             <constraint firstItem="50m-bc-wek" firstAttribute="leading" secondItem="GGA-rA-UDN" secondAttribute="leading" type="default" id="jcx-9r-jq2"/>
                                             <constraint firstAttribute="bottom" secondItem="7hp-hw-jXN" secondAttribute="bottom" constant="43" id="nAo-vJ-m3T"/>
-                                            <constraint firstItem="QhZ-p6-9il" firstAttribute="bottom" secondItem="GGA-rA-UDN" secondAttribute="bottom" type="default" id="nIJ-Ao-uQg"/>
                                             <constraint firstItem="r7R-P5-i1P" firstAttribute="top" secondItem="GGA-rA-UDN" secondAttribute="top" constant="1" id="ouW-I6-pbU"/>
-                                            <constraint firstItem="sST-Qk-FZU" firstAttribute="top" secondItem="GGA-rA-UDN" secondAttribute="top" type="default" id="vH3-ry-3rd"/>
+                                            <constraint firstItem="sST-Qk-FZU" firstAttribute="leading" secondItem="GGA-rA-UDN" secondAttribute="leading" constant="10" id="sUe-Op-1oY"/>
                                             <constraint firstItem="50m-bc-wek" firstAttribute="bottom" secondItem="GGA-rA-UDN" secondAttribute="bottom" type="default" id="vfz-dn-Ixn"/>
                                             <constraint firstItem="7hp-hw-jXN" firstAttribute="trailing" secondItem="GGA-rA-UDN" secondAttribute="trailing" type="default" id="yGI-hN-avD"/>
                                         </constraints>
@@ -133,12 +131,15 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="EDU-T6-jpB" firstAttribute="bottom" secondItem="HZS-2p-1u4" secondAttribute="bottom" type="default" id="7GI-Sl-BOC"/>
+                            <constraint firstItem="HdQ-fC-m3f" firstAttribute="trailing" secondItem="HZS-2p-1u4" secondAttribute="trailing" type="default" id="95i-tA-Nyq"/>
+                            <constraint firstItem="HdQ-fC-m3f" firstAttribute="leading" secondItem="HZS-2p-1u4" secondAttribute="leading" type="default" id="HqE-61-Pmz"/>
+                            <constraint firstItem="EDU-T6-jpB" firstAttribute="top" secondItem="HdQ-fC-m3f" secondAttribute="bottom" type="default" id="One-dg-6N6"/>
                             <constraint firstItem="EDU-T6-jpB" firstAttribute="leading" secondItem="HZS-2p-1u4" secondAttribute="leading" type="default" id="bo5-6Q-unn"/>
-                            <constraint firstItem="EDU-T6-jpB" firstAttribute="top" secondItem="HZS-2p-1u4" secondAttribute="top" type="default" id="dvv-qW-maw"/>
                             <constraint firstItem="EDU-T6-jpB" firstAttribute="trailing" secondItem="HZS-2p-1u4" secondAttribute="trailing" type="default" id="p1D-Vz-gat"/>
+                            <constraint firstItem="HdQ-fC-m3f" firstAttribute="top" secondItem="HZS-2p-1u4" secondAttribute="top" type="default" id="ztc-bZ-Hyp"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -311,6 +312,45 @@
             <point key="canvasLocation" x="1682" y="860"/>
         </scene>
     </scenes>
+    <classes>
+        <class className="GHMenuCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GHMenuCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="titleLabel" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="GHMenuViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GHMenuViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="menuTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
+            </relationships>
+        </class>
+        <class className="GHPushedViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GHPushedViewController.h"/>
+        </class>
+        <class className="GHRevealViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GHRevealViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="contentView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="sidebarView" candidateClass="UIView"/>
+            </relationships>
+        </class>
+        <class className="GHRootViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GHRootViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="revealSidebar:"/>
+                <relationship kind="outlet" name="pushButton" candidateClass="UIButton"/>
+            </relationships>
+        </class>
+        <class className="GHSidebarSearchHelper" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GHSidebarSearchHelper.h"/>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
