@@ -23,6 +23,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 @property (weak, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) NSOperationQueue *searchQueue;
 @property (strong, nonatomic) NSTimer *timer;
+@property (strong, nonatomic) UISearchDisplayController *searchController;
 - (void)performSearch;
 @end
 
@@ -53,7 +54,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.searchDelegate searchResult:self.mutableEntries[indexPath.row] selectedAtIndexPath:indexPath];
+    [self.searchDelegate searchController:self.searchController selectedResult:self.mutableEntries[indexPath.row] atIndexPath:indexPath];
 }
 
 #pragma mark UITableViewDataSource
@@ -73,11 +74,12 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
     [self.searchDelegate searchBegan];
 }
 
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+- (void)searchDisplayController:(UISearchDisplayController *)controller didLoadSearchResultsTableView:(UITableView *)tableView {
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	tableView.backgroundColor = [UIColor clearColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	[tableView reloadData];
+    self.searchController = controller;
     self.searchResultsTableView = tableView;
     self.searchBar = controller.searchBar;
 }
@@ -86,6 +88,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
     [self.searchDelegate searchEnded];
     [controller.searchBar resignFirstResponder];
     controller.searchBar.showsCancelButton = NO;
+    self.searchController = nil;
     self.searchBar = nil;
     self.searchResultsTableView = nil;
 }

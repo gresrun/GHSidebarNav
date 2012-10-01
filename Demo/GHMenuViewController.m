@@ -24,6 +24,7 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 @property (strong, nonatomic) NSArray *headers;
 @property (strong, nonatomic) NSArray *controllers;
 @property (strong, nonatomic) NSArray *cellInfos;
+@property (nonatomic) BOOL searchEntrySelected;
 - (UITableViewCell *)createCellWithTitle:(NSString *)title image:(UIImage *)image;
 @end
 
@@ -145,19 +146,27 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 - (void)searchBegan {
     self.menuTableView.alpha = 0.0;
     [self.sidebarVC toggleSearch:YES duration:kGHRevealSidebarDefaultAnimationDuration];
+    self.searchEntrySelected = NO;
 }
 
 - (void)searchEnded {
-    [self.sidebarVC toggleSearch:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+    if (self.searchEntrySelected) {
+        [self.sidebarVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+    } else {
+        [self.sidebarVC toggleSearch:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+    }
     self.menuTableView.alpha = 1.0;
+    self.searchEntrySelected = NO;
 }
 
 - (void)searchResultsForText:(NSString *)text withScope:(NSString *)scope callback:(SearchResultsBlock)callback {
 	callback(@[@"Foo", @"Bar", @"Baz"]);
 }
 
-- (void)searchResult:(id)result selectedAtIndexPath:(NSIndexPath *)indexPath {
+- (void)searchController:(UISearchDisplayController *)controller selectedResult:(id)result atIndexPath:(NSIndexPath *)indexPath {
 	NSLog(@"Selected Search Result - result: %@ indexPath: %@", result, indexPath);
+    self.searchEntrySelected = YES;
+    [controller setActive:NO animated:YES];
 }
 
 - (UITableViewCell *)searchResultCellForEntry:(id)entry atIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView {

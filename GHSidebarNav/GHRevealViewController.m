@@ -148,10 +148,14 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 }
 
 - (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration {
-	[self toggleSidebar:show duration:duration completion:^(BOOL finshed){}];
+	[self toggleSidebar:show duration:duration completion:nil];
 }
 
 - (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
+    if (self.contentView.superview == nil) {
+		self.contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
+		[self.view addSubview:self.contentView];
+	}
 	void (^animations)(void) = ^{
 		if (show) {
 			self.contentView.frame = CGRectOffset(self.contentView.bounds, kGHRevealSidebarWidth, 0.0f);
@@ -174,17 +178,18 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 						 completion:completion];
 	} else {
 		animations();
-		completion(YES);
-	}
+        if (completion != nil) {
+            completion(YES);
+        }
+    }
 }
 
 - (void)toggleSearch:(BOOL)showSearch duration:(NSTimeInterval)duration {
-	[self toggleSearch:showSearch duration:duration completion:^(BOOL finished){}];
+	[self toggleSearch:showSearch duration:duration completion:nil];
 }
 
 - (void)toggleSearch:(BOOL)showSearch duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
 	if (!showSearch) {
-		self.sidebarView.alpha = 0.0f;
 		self.contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
 		[self.view addSubview:self.contentView];
 	}
@@ -195,7 +200,6 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 			self.sidebarView.frame = self.view.bounds;
 		} else {
 			self.sidebarView.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
-			self.sidebarView.alpha = 1.0f;
 			[self.view insertSubview:self.sidebarView atIndex:0];
 			self.sidebarView.frame = CGRectMake(0, 0, kGHRevealSidebarWidth, self.view.bounds.size.height);
 			self.contentView.frame = CGRectOffset(self.contentView.bounds, kGHRevealSidebarWidth, 0.0f);
