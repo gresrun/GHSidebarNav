@@ -8,7 +8,6 @@
 #import "GHMenuCell.h"
 
 
-#pragma mark -
 #pragma mark Implementation
 @implementation GHMenuCell
 

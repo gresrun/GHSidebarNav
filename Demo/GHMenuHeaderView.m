@@ -7,13 +7,20 @@
 //
 
 #import "GHMenuHeaderView.h"
+#import <QuartzCore/QuartzCore.h>
 
+
+#pragma mark Private Interface
+@interface GHMenuHeaderView ()
+@property (strong, nonatomic) CAGradientLayer *gradientLayer;
+@end
 
 #pragma mark Implementation
 @implementation GHMenuHeaderView
 
 #pragma mark Properties
 @synthesize titleLabel;
+@synthesize gradientLayer;
 
 #pragma mark Memory Management
 - (id)initWithFrame:(CGRect)frame {

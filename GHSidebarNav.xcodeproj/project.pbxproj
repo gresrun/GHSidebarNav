@@ -32,7 +32,7 @@
 /* Begin PBXFileReference section */
 		3726261516191C0600A77CC2 /* GHMenuHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHMenuHeaderView.h; sourceTree = "<group>"; };
 		3726261616191C0600A77CC2 /* GHMenuHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHMenuHeaderView.m; sourceTree = "<group>"; };
-		37D83B3F1614CE7E000BDAE6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		37D83B3F1614CE7E000BDAE6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Demo/Images/Default-568h@2x.png"; sourceTree = "<group>"; };
 		37D83B421614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RevealStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		6B014F5014B3DAC4001E922B /* GHMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHMenuViewController.h; sourceTree = "<group>"; };
 		6B014F5114B3DAC4001E922B /* GHMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHMenuViewController.m; sourceTree = "<group>"; };
@@ -78,14 +78,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		37D83B441614DA0B000BDAE6 /* Images */ = {
-			isa = PBXGroup;
-			children = (
-				37D83B3F1614CE7E000BDAE6 /* Default-568h@2x.png */,
-			);
-			path = Images;
-			sourceTree = "<group>";
-		};
 		6BBA75B914872E10004E1A5E /* Demo */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,7 +92,6 @@
 				6BBA75BE14873DFD004E1A5E /* GHRootViewController.h */,
 				6BBA75BF14873DFD004E1A5E /* GHRootViewController.m */,
 				37D83B421614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard */,
-				37D83B441614DA0B000BDAE6 /* Images */,
 				6BE3FCAF147A096500CDEC04 /* Supporting Files */,
 			);
 			path = Demo;
@@ -171,6 +162,7 @@
 		6BE3FCCA147A115600CDEC04 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				37D83B3F1614CE7E000BDAE6 /* Default-568h@2x.png */,
 				6BBA75CC14873E74004E1A5E /* searchBarBG.png */,
 				6B0CABFE14BD064800394B5D /* searchBarIcon.png */,
 				6B0CABFF14BD064800394B5D /* searchBarIcon@2x.png */,

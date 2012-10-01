@@ -7,12 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <QuartzCore/QuartzCore.h>
 
 
 @interface GHMenuHeaderView : UITableViewHeaderFooterView
 
 @property (strong, nonatomic) UILabel *titleLabel;
-@property (strong, nonatomic) CAGradientLayer *gradientLayer;
 
 @end

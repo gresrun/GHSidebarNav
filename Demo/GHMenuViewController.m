@@ -10,7 +10,6 @@
 #import "GHMenuCell.h"
 #import "GHMenuHeaderView.h"
 #import "GHRevealViewController.h"
-#import "GHRootViewController.h"
 #import "GHSidebarSearchViewControllerDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -21,6 +20,7 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 
 #pragma mark Private Interface
 @interface GHMenuViewController () <GHSidebarSearchViewControllerDelegate>
+@property (strong, nonatomic) GHRevealViewController *revealVC;
 @property (strong, nonatomic) NSArray *headers;
 @property (strong, nonatomic) NSArray *content;
 @property (nonatomic) BOOL searchEntrySelected;
@@ -33,8 +33,8 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 @implementation GHMenuViewController
 
 #pragma mark Properties
-@synthesize revealVC, searchBar, menuTableView;
-@synthesize headers, content, searchEntrySelected;
+@synthesize searchBar, menuTableView;
+@synthesize revealVC, headers, content, searchEntrySelected;
 
 #pragma mark UIViewController
 - (void)viewDidLoad {
@@ -99,18 +99,6 @@ static NSString *const CellIdentifier = @"GHMenuCell";
     [super viewWillAppear:animated];
     self.revealVC = (GHRevealViewController *)self.parentViewController;
 	[self selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
-	return (orientation == UIInterfaceOrientationPortraitUpsideDown)
-		? (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		: YES;
-}
-
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-        ? UIInterfaceOrientationMaskAll
-        : UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 #pragma mark UITableViewDataSource

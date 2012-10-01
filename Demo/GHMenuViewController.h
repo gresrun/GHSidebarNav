@@ -7,12 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-@class GHRevealViewController;
+
 
 @interface GHMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (strong, nonatomic) GHRevealViewController *revealVC;
-@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *menuTableView;
 
 - (void)selectRowAtIndexPath:(NSIndexPath *)indexPath 

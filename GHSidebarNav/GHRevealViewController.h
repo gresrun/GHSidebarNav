@@ -14,8 +14,8 @@ extern const CGFloat kGHRevealSidebarWidth;
 
 @property (nonatomic, readonly, getter = isSidebarShowing) BOOL sidebarShowing;
 @property (nonatomic, readonly, getter = isSearching) BOOL searching;
-@property (strong, nonatomic) IBOutlet UIView *sidebarView;
-@property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIView *sidebarView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) UIViewController *sidebarViewController;
 @property (strong, nonatomic) UIViewController *contentViewController;
 

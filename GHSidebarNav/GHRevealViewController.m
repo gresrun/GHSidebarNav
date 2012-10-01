@@ -9,14 +9,11 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-#pragma mark -
 #pragma mark Constants
 const NSTimeInterval kGHRevealSidebarDefaultAnimationDuration = 0.25;
 const CGFloat kGHRevealSidebarWidth = 260.0f;
 const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 
-
-#pragma mark -
 #pragma mark Private Interface
 @interface GHRevealViewController ()
 @property (nonatomic, readwrite, getter = isSidebarShowing) BOOL sidebarShowing;
@@ -25,8 +22,6 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 - (void)hideSidebar;
 @end
 
-
-#pragma mark -
 #pragma mark Implementation
 @implementation GHRevealViewController
 

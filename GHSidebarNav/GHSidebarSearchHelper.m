@@ -20,6 +20,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 @property (strong, nonatomic) UISearchDisplayController *searchController;
 @property (weak, nonatomic) UITableView *searchResultsTableView;
 @property (weak, nonatomic) UISearchBar *searchBar;
+- (BOOL)restartSearch;
 - (void)performSearch;
 @end
 
@@ -28,7 +29,7 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 
 #pragma mark Properties
 @synthesize searchDelegate, searchDelay;
-@synthesize mutableEntries, searchResultsTableView, searchBar;
+@synthesize mutableEntries, searchQueue, timer, searchResultsTableView, searchBar;
 
 #pragma mark Memory Management
 - (id)init {
@@ -48,7 +49,9 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.searchDelegate searchController:self.searchController selectedResult:self.mutableEntries[indexPath.row] atIndexPath:indexPath];
+    [self.searchDelegate searchController:self.searchController
+                           selectedResult:self.mutableEntries[indexPath.row]
+                              atIndexPath:indexPath];
 }
 
 #pragma mark UITableViewDataSource
@@ -57,8 +60,9 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    id entry = self.mutableEntries[indexPath.row];
-	return [self.searchDelegate searchResultCellForEntry:entry atIndexPath:indexPath inTableView:tableView];
+	return [self.searchDelegate searchResultCellForEntry:self.mutableEntries[indexPath.row]
+                                             atIndexPath:indexPath
+                                             inTableView:tableView];
 }
 
 #pragma mark UISearchDisplayDelegate
@@ -88,20 +92,21 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-	[self.timer invalidate];
-	[self.searchQueue cancelAllOperations];
-	self.timer = [NSTimer scheduledTimerWithTimeInterval:searchDelay target:self selector:@selector(performSearch) userInfo:nil repeats:NO];
-	return NO;
+	return [self restartSearch];
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
+	return [self restartSearch];
+}
+
+#pragma mark Private Methods
+- (BOOL)restartSearch {
     [self.timer invalidate];
 	[self.searchQueue cancelAllOperations];
 	self.timer = [NSTimer scheduledTimerWithTimeInterval:self.searchDelay target:self selector:@selector(performSearch) userInfo:nil repeats:NO];
 	return NO;
 }
 
-#pragma mark Private Methods
 - (void)performSearch {
     [self.timer invalidate];
 	NSString *text = self.searchBar.text;
