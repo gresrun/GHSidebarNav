@@ -13,7 +13,7 @@ extern const NSTimeInterval kGHSidebarDefaultSearchDelay;
 
 @interface GHSidebarSearchHelper : NSObject <UITableViewDataSource, UITableViewDelegate, UISearchDisplayDelegate>
 
-@property (weak, nonatomic) id<GHSidebarSearchViewControllerDelegate> searchDelegate;
+@property (weak, nonatomic) IBOutlet id<GHSidebarSearchViewControllerDelegate> searchDelegate;
 @property (strong, nonatomic) GHRevealViewController *sidebarVC;
 @property (nonatomic) NSTimeInterval searchDelay;
 

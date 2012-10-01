@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3726261716191C0600A77CC2 /* GHMenuHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3726261616191C0600A77CC2 /* GHMenuHeaderView.m */; };
 		37D83B401614CE7E000BDAE6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37D83B3F1614CE7E000BDAE6 /* Default-568h@2x.png */; };
 		37D83B431614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37D83B421614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard */; };
 		6B014F5214B3DAC4001E922B /* GHMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B014F5114B3DAC4001E922B /* GHMenuViewController.m */; };
@@ -30,6 +31,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3726261516191C0600A77CC2 /* GHMenuHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHMenuHeaderView.h; sourceTree = "<group>"; };
+		3726261616191C0600A77CC2 /* GHMenuHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHMenuHeaderView.m; sourceTree = "<group>"; };
 		37D83B3F1614CE7E000BDAE6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		37D83B421614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = RevealStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		6B014F5014B3DAC4001E922B /* GHMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHMenuViewController.h; sourceTree = "<group>"; };
@@ -102,6 +105,8 @@
 				37D83B421614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard */,
 				37D83B441614DA0B000BDAE6 /* Images */,
 				6BE3FCAF147A096500CDEC04 /* Supporting Files */,
+				3726261516191C0600A77CC2 /* GHMenuHeaderView.h */,
+				3726261616191C0600A77CC2 /* GHMenuHeaderView.m */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -257,6 +262,7 @@
 				6B4BD80214B10447004BE0CC /* GHMenuCell.m in Sources */,
 				6B014F5214B3DAC4001E922B /* GHMenuViewController.m in Sources */,
 				6B014F5714B41DB6001E922B /* GHSidebarSearchHelper.m in Sources */,
+				3726261716191C0600A77CC2 /* GHMenuHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

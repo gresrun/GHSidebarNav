@@ -8,19 +8,23 @@
 
 #import "GHMenuViewController.h"
 #import "GHMenuCell.h"
+#import "GHMenuHeaderView.h"
 #import "GHRevealViewController.h"
 #import "GHRootViewController.h"
+#import "GHSidebarSearchViewControllerDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 
 
 #pragma mark Constants
 static NSString *const HeaderIdentifier = @"SectionHeader";
+static NSString *const CellIdentifier = @"GHMenuCell";
 
 #pragma mark Private Interface
-@interface GHMenuViewController ()
+@interface GHMenuViewController () <GHSidebarSearchViewControllerDelegate>
 @property (strong, nonatomic) NSArray *headers;
 @property (strong, nonatomic) NSArray *controllers;
 @property (strong, nonatomic) NSArray *cellInfos;
+- (UITableViewCell *)createCellWithTitle:(NSString *)title image:(UIImage *)image;
 @end
 
 #pragma mark Implementation
@@ -61,7 +65,7 @@ static NSString *const HeaderIdentifier = @"SectionHeader";
             @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Friends", @"")},
         ]
     ];
-    [self.menuTableView registerClass:[UITableViewHeaderFooterView class] forHeaderFooterViewReuseIdentifier:HeaderIdentifier];
+    [self.menuTableView registerClass:[GHMenuHeaderView class] forHeaderFooterViewReuseIdentifier:HeaderIdentifier];
     self.searchBar.backgroundImage = [UIImage imageNamed:@"searchBarBG.png"];
     for (UIView *subview in self.searchBar.subviews) {
 		if ([subview isKindOfClass:[UITextField class]]) {
@@ -113,15 +117,8 @@ static NSString *const HeaderIdentifier = @"SectionHeader";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"GHMenuCell";
-    GHMenuCell *cell = (GHMenuCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    UIView *bgView = [[UIView alloc] init];
-    bgView.backgroundColor = [UIColor colorWithRed:(38.0f/255.0f) green:(44.0f/255.0f) blue:(58.0f/255.0f) alpha:1.0f];
-    cell.selectedBackgroundView = bgView;
 	NSDictionary *info = self.cellInfos[indexPath.section][indexPath.row];
-	cell.titleLabel.text = info[kSidebarCellTextKey];
-	cell.imageView.image = info[kSidebarCellImageKey];
-    return cell;
+    return [self createCellWithTitle:info[kSidebarCellTextKey] image:info[kSidebarCellImageKey]];
 }
 
 #pragma mark UITableViewDelegate
@@ -131,36 +128,10 @@ static NSString *const HeaderIdentifier = @"SectionHeader";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	NSObject *headerText = self.headers[section];
-	UITableViewHeaderFooterView *headerView = nil;
+	GHMenuHeaderView *headerView = nil;
 	if (headerText != [NSNull null]) {
         headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:HeaderIdentifier];
-        headerView.backgroundView = nil;
-        headerView.bounds = CGRectMake(0, 0, 260, 21);
-        
-		CAGradientLayer *gradient = [CAGradientLayer layer];
-		gradient.frame = headerView.bounds;
-		gradient.colors = @[
-			(id)[UIColor colorWithRed:(67.0f/255.0f) green:(74.0f/255.0f) blue:(94.0f/255.0f) alpha:1.0f].CGColor,
-			(id)[UIColor colorWithRed:(57.0f/255.0f) green:(64.0f/255.0f) blue:(82.0f/255.0f) alpha:1.0f].CGColor,
-		];
-		[headerView.layer insertSublayer:gradient atIndex:0];
-		
-        UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectInset(headerView.bounds, 12.0f, 5.0f)];
-		textLabel.text = (NSString *)headerText;
-        textLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
-		textLabel.shadowOffset = CGSizeMake(0.0f, 1.0f);
-		textLabel.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.25f];
-		textLabel.textColor = [UIColor colorWithRed:(125.0f/255.0f) green:(129.0f/255.0f) blue:(146.0f/255.0f) alpha:1.0f];
-        textLabel.backgroundColor = [UIColor clearColor];
-        [headerView addSubview:textLabel];
-        
-        UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [UIScreen mainScreen].bounds.size.height, 1.0f)];
-		topLine.backgroundColor = [UIColor colorWithRed:(78.0f/255.0f) green:(86.0f/255.0f) blue:(103.0f/255.0f) alpha:1.0f];
-		[headerView addSubview:topLine];
-        
-		UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 21.0f, [UIScreen mainScreen].bounds.size.height, 1.0f)];
-		bottomLine.backgroundColor = [UIColor colorWithRed:(36.0f/255.0f) green:(42.0f/255.0f) blue:(5.0f/255.0f) alpha:1.0f];
-		[headerView addSubview:bottomLine];
+		headerView.titleLabel.text = (NSString *)headerText;
 	}
 	return headerView;
 }
@@ -168,6 +139,29 @@ static NSString *const HeaderIdentifier = @"SectionHeader";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	self.sidebarVC.contentViewController = self.controllers[indexPath.section][indexPath.row];
 	[self.sidebarVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+}
+
+#pragma mark GHSidebarSearchViewControllerDelegate
+- (void)searchBegan {
+    self.menuTableView.alpha = 0.0;
+    [self.sidebarVC toggleSearch:YES duration:kGHRevealSidebarDefaultAnimationDuration];
+}
+
+- (void)searchEnded {
+    [self.sidebarVC toggleSearch:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+    self.menuTableView.alpha = 1.0;
+}
+
+- (void)searchResultsForText:(NSString *)text withScope:(NSString *)scope callback:(SearchResultsBlock)callback {
+	callback(@[@"Foo", @"Bar", @"Baz"]);
+}
+
+- (void)searchResult:(id)result selectedAtIndexPath:(NSIndexPath *)indexPath {
+	NSLog(@"Selected Search Result - result: %@ indexPath: %@", result, indexPath);
+}
+
+- (UITableViewCell *)searchResultCellForEntry:(id)entry atIndexPath:(NSIndexPath *)indexPath inTableView:(UITableView *)tableView {
+	return [self createCellWithTitle:entry image:[UIImage imageNamed:@"user.png"]];
 }
 
 #pragma mark Public Methods
@@ -179,6 +173,17 @@ static NSString *const HeaderIdentifier = @"SectionHeader";
         }
         self.sidebarVC.contentViewController = self.controllers[indexPath.section][indexPath.row];
     }
+}
+
+#pragma mark Private Methods
+- (UITableViewCell *)createCellWithTitle:(NSString *)title image:(UIImage *)image {
+    GHMenuCell* cell = [self.menuTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UIView *bgView = [[UIView alloc] init];
+    bgView.backgroundColor = [UIColor colorWithRed:(38.0f/255.0f) green:(44.0f/255.0f) blue:(58.0f/255.0f) alpha:1.0f];
+    cell.selectedBackgroundView = bgView;
+	cell.titleLabel.text = title;
+	cell.imageView.image = image;
+    return cell;
 }
 
 @end
