@@ -58,4 +58,11 @@
     self.gradientLayer.frame = self.bounds;
 }
 
+#pragma mark UITableViewHeaderFooterView
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    self.titleLabel.text = @"";
+}
+
+
 @end

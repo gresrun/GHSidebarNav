@@ -7,11 +7,8 @@
 
 #import <Foundation/Foundation.h>
 
+
 @interface GHRootViewController : UIViewController
-
-@property (weak, nonatomic) IBOutlet UIButton *pushButton;
-
-- (id)initWithTitle:(NSString *)title;
 
 - (IBAction)revealSidebar:(id)sender;
 

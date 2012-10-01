@@ -9,11 +9,6 @@
 
 
 #pragma mark -
-#pragma mark Constants
-NSString const *kSidebarCellTextKey = @"CellText";
-NSString const *kSidebarCellImageKey = @"CellImage";
-
-#pragma mark -
 #pragma mark Implementation
 @implementation GHMenuCell
 

@@ -175,7 +175,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="x4G-El-hfV" kind="push" identifier="PushIt" id="GyY-Nb-KcU"/>
+                                    <segue destination="x4G-El-hfV" kind="push" identifier="" id="GyY-Nb-KcU"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -188,18 +188,51 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <connections>
-                        <outlet property="pushButton" destination="JeY-mB-G3W" id="qpo-5s-eZG"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VRw-vv-baw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1200" y="318"/>
         </scene>
-        <!--Pushed View Controller - Profile - Pushed-->
+        <!--Root View Controller - News Feed-->
+        <scene sceneID="XBR-lz-ku7">
+            <objects>
+                <viewController id="p5F-1H-I9a" customClass="GHRootViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ac5-KW-76b">
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="News Feed" id="9dd-9t-0bd">
+                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="07q-pl-tqu" userLabel="Reveal Button">
+                            <connections>
+                                <action selector="revealSidebar:" destination="p5F-1H-I9a" id="LCR-5u-0dU"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XGl-6d-31p" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1200" y="880"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="SQ3-zI-N2s">
+            <objects>
+                <navigationController storyboardIdentifier="NewsFeedController" definesPresentationContext="YES" id="4lV-8u-VRA" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="p31-N1-nXo">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="p5F-1H-I9a" kind="relationship" relationship="rootViewController" id="5Lh-sp-0iM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZXO-F4-66l" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="717" y="880"/>
+        </scene>
+        <!--View Controller - Profile - Pushed-->
         <scene sceneID="e7e-tr-zEJ">
             <objects>
-                <viewController storyboardIdentifier="" id="x4G-El-hfV" customClass="GHPushedViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="" id="x4G-El-hfV" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qho-Fh-Wce">
                         <rect key="frame" x="0.0" y="44" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -210,78 +243,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KMp-Bu-jN8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1680" y="318"/>
-        </scene>
-        <!--Content Navigation Controller-->
-        <scene sceneID="Oul-6b-TGa">
-            <objects>
-                <navigationController storyboardIdentifier="NewsFeedController" definesPresentationContext="YES" id="xfm-cl-yDJ" userLabel="Content Navigation Controller" sceneMemberID="viewController">
-                    <nil key="simulatedStatusBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yS4-dt-aTj">
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="9Dz-tI-qDl" kind="relationship" relationship="rootViewController" id="84H-m5-uRi"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="D3c-3h-mdt" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="719" y="860"/>
-        </scene>
-        <!--Root View Controller - News Feed-->
-        <scene sceneID="6id-Nf-tDy">
-            <objects>
-                <viewController id="9Dz-tI-qDl" customClass="GHRootViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="UcD-2Z-iT5">
-                        <rect key="frame" x="0.0" y="44" width="320" height="436"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9Wd-gy-Jbl" userLabel="Push Button">
-                                <rect key="frame" x="130" y="186" width="61" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Push">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="Rw8-6h-P9P" kind="push" identifier="PushIt" id="lnp-ux-geC"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="News Feed" id="DG3-Kl-Fe4">
-                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="pW6-Xj-XYf" userLabel="Reveal Button">
-                            <connections>
-                                <action selector="revealSidebar:" destination="9Dz-tI-qDl" id="dqb-zf-mow"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="pushButton" destination="9Wd-gy-Jbl" id="Rp5-d2-xsm"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lWr-Us-cLN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1202" y="860"/>
-        </scene>
-        <!--Pushed View Controller - News Feed - Pushed-->
-        <scene sceneID="qax-yQ-3HR">
-            <objects>
-                <viewController storyboardIdentifier="" id="Rw8-6h-P9P" customClass="GHPushedViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="dc4-jO-eLZ">
-                        <rect key="frame" x="0.0" y="44" width="320" height="436"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="News Feed - Pushed" id="UaP-Tp-OYS"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wzt-6A-THp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1682" y="860"/>
         </scene>
     </scenes>
     <classes>
@@ -299,9 +260,6 @@
                 <relationship kind="outlet" name="searchBar" candidateClass="UISearchBar"/>
             </relationships>
         </class>
-        <class className="GHPushedViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GHPushedViewController.h"/>
-        </class>
         <class className="GHRevealViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GHRevealViewController.h"/>
             <relationships>
@@ -313,7 +271,6 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GHRootViewController.h"/>
             <relationships>
                 <relationship kind="action" name="revealSidebar:"/>
-                <relationship kind="outlet" name="pushButton" candidateClass="UIButton"/>
             </relationships>
         </class>
         <class className="GHSidebarSearchHelper" superclassName="NSObject">

@@ -6,34 +6,28 @@
 //
 
 #import "GHSidebarSearchHelper.h"
-#import "GHRevealViewController.h"
 #import "GHSidebarSearchViewControllerDelegate.h"
 
 
-#pragma mark -
 #pragma mark Constants
 const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 
-
-#pragma mark -
 #pragma mark Private Interface
 @interface GHSidebarSearchHelper ()
 @property (nonatomic, strong) NSMutableArray *mutableEntries;
-@property (weak, nonatomic) UITableView *searchResultsTableView;
-@property (weak, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) NSOperationQueue *searchQueue;
 @property (strong, nonatomic) NSTimer *timer;
 @property (strong, nonatomic) UISearchDisplayController *searchController;
+@property (weak, nonatomic) UITableView *searchResultsTableView;
+@property (weak, nonatomic) UISearchBar *searchBar;
 - (void)performSearch;
 @end
 
-
-#pragma mark -
 #pragma mark Implementation
 @implementation GHSidebarSearchHelper
 
 #pragma mark Properties
-@synthesize searchDelegate, searchDelay, sidebarVC;
+@synthesize searchDelegate, searchDelay;
 @synthesize mutableEntries, searchResultsTableView, searchBar;
 
 #pragma mark Memory Management

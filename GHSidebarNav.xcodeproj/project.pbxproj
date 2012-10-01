@@ -17,7 +17,6 @@
 		6B0CAC0314BD064800394B5D /* searchTextBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B0CAC0014BD064800394B5D /* searchTextBG.png */; };
 		6B4BD80214B10447004BE0CC /* GHMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B4BD80114B10447004BE0CC /* GHMenuCell.m */; };
 		6BBA75C014873DFE004E1A5E /* GHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BB14873DFD004E1A5E /* GHAppDelegate.m */; };
-		6BBA75C114873DFE004E1A5E /* GHPushedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BD14873DFD004E1A5E /* GHPushedViewController.m */; };
 		6BBA75C214873DFE004E1A5E /* GHRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75BF14873DFD004E1A5E /* GHRootViewController.m */; };
 		6BBA75C914873E18004E1A5E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6BBA75C414873E18004E1A5E /* InfoPlist.strings */; };
 		6BBA75CB14873E18004E1A5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BBA75C814873E18004E1A5E /* main.m */; };
@@ -47,8 +46,6 @@
 		6B71B28C14B8C98E00588FB6 /* GHSidebarSearchViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHSidebarSearchViewControllerDelegate.h; sourceTree = "<group>"; };
 		6BBA75BA14873DFD004E1A5E /* GHAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHAppDelegate.h; sourceTree = "<group>"; };
 		6BBA75BB14873DFD004E1A5E /* GHAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHAppDelegate.m; sourceTree = "<group>"; };
-		6BBA75BC14873DFD004E1A5E /* GHPushedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHPushedViewController.h; sourceTree = "<group>"; };
-		6BBA75BD14873DFD004E1A5E /* GHPushedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHPushedViewController.m; sourceTree = "<group>"; };
 		6BBA75BE14873DFD004E1A5E /* GHRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GHRootViewController.h; sourceTree = "<group>"; };
 		6BBA75BF14873DFD004E1A5E /* GHRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GHRootViewController.m; sourceTree = "<group>"; };
 		6BBA75C514873E18004E1A5E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
@@ -96,17 +93,15 @@
 				6BBA75BB14873DFD004E1A5E /* GHAppDelegate.m */,
 				6B4BD80014B10447004BE0CC /* GHMenuCell.h */,
 				6B4BD80114B10447004BE0CC /* GHMenuCell.m */,
+				3726261516191C0600A77CC2 /* GHMenuHeaderView.h */,
+				3726261616191C0600A77CC2 /* GHMenuHeaderView.m */,
 				6B014F5014B3DAC4001E922B /* GHMenuViewController.h */,
 				6B014F5114B3DAC4001E922B /* GHMenuViewController.m */,
-				6BBA75BC14873DFD004E1A5E /* GHPushedViewController.h */,
-				6BBA75BD14873DFD004E1A5E /* GHPushedViewController.m */,
 				6BBA75BE14873DFD004E1A5E /* GHRootViewController.h */,
 				6BBA75BF14873DFD004E1A5E /* GHRootViewController.m */,
 				37D83B421614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard */,
 				37D83B441614DA0B000BDAE6 /* Images */,
 				6BE3FCAF147A096500CDEC04 /* Supporting Files */,
-				3726261516191C0600A77CC2 /* GHMenuHeaderView.h */,
-				3726261616191C0600A77CC2 /* GHMenuHeaderView.m */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -256,7 +251,6 @@
 			files = (
 				6BE3FCDA147A118200CDEC04 /* GHRevealViewController.m in Sources */,
 				6BBA75C014873DFE004E1A5E /* GHAppDelegate.m in Sources */,
-				6BBA75C114873DFE004E1A5E /* GHPushedViewController.m in Sources */,
 				6BBA75C214873DFE004E1A5E /* GHRootViewController.m in Sources */,
 				6BBA75CB14873E18004E1A5E /* main.m in Sources */,
 				6B4BD80214B10447004BE0CC /* GHMenuCell.m in Sources */,

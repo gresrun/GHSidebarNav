@@ -22,18 +22,19 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 #pragma mark Private Interface
 @interface GHMenuViewController () <GHSidebarSearchViewControllerDelegate>
 @property (strong, nonatomic) NSArray *headers;
-@property (strong, nonatomic) NSArray *controllers;
-@property (strong, nonatomic) NSArray *cellInfos;
+@property (strong, nonatomic) NSArray *content;
 @property (nonatomic) BOOL searchEntrySelected;
 - (UITableViewCell *)createCellWithTitle:(NSString *)title image:(UIImage *)image;
+- (void)selectViewControllerForIndexPath:(NSIndexPath *)indexPath;
+- (void)selectViewControllerWithIdentifier:(NSString *)identifier;
 @end
 
 #pragma mark Implementation
 @implementation GHMenuViewController
 
 #pragma mark Properties
-@synthesize sidebarVC, searchBar, menuTableView;
-@synthesize headers, controllers, cellInfos;
+@synthesize revealVC, searchBar, menuTableView;
+@synthesize headers, content, searchEntrySelected;
 
 #pragma mark UIViewController
 - (void)viewDidLoad {
@@ -42,28 +43,40 @@ static NSString *const CellIdentifier = @"GHMenuCell";
         [NSNull null],
         @"FAVORITES"
     ];
-    self.controllers = @[
+    self.content = @[
         @[
-            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Profile", @"")]]
+            @{
+                @"menuTitle": NSLocalizedString(@"Profile", @"Profile"),
+                @"menuImageName": @"user.png",
+                @"controllerName": @"ProfileController"
+            }
         ],
         @[
-            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"News Feed", @"")]],
-            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Messages", @"")]],
-            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Nearby", @"")]],
-            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Events", @"")]],
-            [[UINavigationController alloc] initWithRootViewController:[[GHRootViewController alloc] initWithTitle:NSLocalizedString(@"Friends", @"")]]
-        ]
-    ];
-    self.cellInfos = @[
-        @[
-            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Profile", @"")}
-        ],
-        @[
-            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"News Feed", @"")},
-            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Messages", @"")},
-            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Nearby", @"")},
-            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Events", @"")},
-            @{kSidebarCellImageKey: [UIImage imageNamed:@"user.png"], kSidebarCellTextKey: NSLocalizedString(@"Friends", @"")},
+            @{
+                @"menuTitle": NSLocalizedString(@"News Feed", @"News Feed"),
+                @"menuImageName": @"user.png",
+                @"controllerName": @"NewsFeedController"
+            },
+            @{
+                @"menuTitle": NSLocalizedString(@"Messages", @"Messages"),
+                @"menuImageName": @"user.png",
+                @"controllerName": @"NewsFeedController"
+            },
+            @{
+                @"menuTitle": NSLocalizedString(@"Nearby", @"Nearby"),
+                @"menuImageName": @"user.png",
+                @"controllerName": @"NewsFeedController"
+            },
+            @{
+                @"menuTitle": NSLocalizedString(@"Events", @"Events"),
+                @"menuImageName": @"user.png",
+                @"controllerName": @"NewsFeedController"
+            },
+            @{
+                @"menuTitle": NSLocalizedString(@"Friends", @"Friends"),
+                @"menuImageName": @"user.png",
+                @"controllerName": @"NewsFeedController"
+            }
         ]
     ];
     [self.menuTableView registerClass:[GHMenuHeaderView class] forHeaderFooterViewReuseIdentifier:HeaderIdentifier];
@@ -84,15 +97,7 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    self.sidebarVC = (GHRevealViewController *)self.parentViewController;
-    [self.controllers enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
-		[((NSArray *)obj) enumerateObjectsUsingBlock:^(id obj2, NSUInteger idx2, BOOL *stop2){
-			UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.sidebarVC
-																						 action:@selector(dragContentView:)];
-			panGesture.cancelsTouchesInView = YES;
-			[((UINavigationController *)obj2).navigationBar addGestureRecognizer:panGesture];
-		}];
-	}];
+    self.revealVC = (GHRevealViewController *)self.parentViewController;
 	[self selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];
 }
 
@@ -114,12 +119,12 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return ((NSArray *)self.cellInfos[section]).count;
+    return ((NSArray *)self.content[section]).count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	NSDictionary *info = self.cellInfos[indexPath.section][indexPath.row];
-    return [self createCellWithTitle:info[kSidebarCellTextKey] image:info[kSidebarCellImageKey]];
+	NSDictionary *info = self.content[indexPath.section][indexPath.row];
+    return [self createCellWithTitle:info[@"menuTitle"] image:[UIImage imageNamed:info[@"menuImageName"]]];
 }
 
 #pragma mark UITableViewDelegate
@@ -138,22 +143,22 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	self.sidebarVC.contentViewController = self.controllers[indexPath.section][indexPath.row];
-	[self.sidebarVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+    [self selectViewControllerForIndexPath:indexPath];
+	[self.revealVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
 }
 
 #pragma mark GHSidebarSearchViewControllerDelegate
 - (void)searchBegan {
     self.menuTableView.alpha = 0.0;
-    [self.sidebarVC toggleSearch:YES duration:kGHRevealSidebarDefaultAnimationDuration];
+    [self.revealVC toggleSearch:YES duration:kGHRevealSidebarDefaultAnimationDuration];
     self.searchEntrySelected = NO;
 }
 
 - (void)searchEnded {
     if (self.searchEntrySelected) {
-        [self.sidebarVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+        [self.revealVC toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
     } else {
-        [self.sidebarVC toggleSearch:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+        [self.revealVC toggleSearch:NO duration:kGHRevealSidebarDefaultAnimationDuration];
     }
     self.menuTableView.alpha = 1.0;
     self.searchEntrySelected = NO;
@@ -166,6 +171,8 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 - (void)searchController:(UISearchDisplayController *)controller selectedResult:(id)result atIndexPath:(NSIndexPath *)indexPath {
 	NSLog(@"Selected Search Result - result: %@ indexPath: %@", result, indexPath);
     self.searchEntrySelected = YES;
+    [self selectViewControllerWithIdentifier:@"ProfileController"];
+    [self.menuTableView deselectRowAtIndexPath:self.menuTableView.indexPathForSelectedRow animated:NO];
     [controller setActive:NO animated:YES];
 }
 
@@ -175,12 +182,12 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 
 #pragma mark Public Methods
 - (void)selectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UITableViewScrollPosition)scrollPosition {
-    if ((NSInteger)self.controllers.count > indexPath.section) {
+    if ((NSInteger)self.content.count > indexPath.section) {
         [self.menuTableView selectRowAtIndexPath:indexPath animated:animated scrollPosition:scrollPosition];
         if (scrollPosition == UITableViewScrollPositionNone) {
             [self.menuTableView scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
         }
-        self.sidebarVC.contentViewController = self.controllers[indexPath.section][indexPath.row];
+        [self selectViewControllerForIndexPath:indexPath];
     }
 }
 
@@ -193,6 +200,22 @@ static NSString *const CellIdentifier = @"GHMenuCell";
 	cell.titleLabel.text = title;
 	cell.imageView.image = image;
     return cell;
+}
+
+- (void)selectViewControllerForIndexPath:(NSIndexPath *)indexPath {
+    NSString *identifier = self.content[indexPath.section][indexPath.row][@"controllerName"];
+    [self selectViewControllerWithIdentifier:identifier];
+}
+
+- (void)selectViewControllerWithIdentifier:(NSString *)identifier {
+    UINavigationController *navController = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
+    if (navController.navigationBar.gestureRecognizers.count == 0) {
+        UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealVC
+                                                                                     action:@selector(dragContentView:)];
+        panGesture.cancelsTouchesInView = YES;
+        [navController.navigationBar addGestureRecognizer:panGesture];
+    }
+    self.revealVC.contentViewController = navController;
 }
 
 @end
