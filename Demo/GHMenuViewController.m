@@ -14,7 +14,14 @@
 
 #pragma mark -
 #pragma mark Implementation
-@implementation GHMenuViewController
+@implementation GHMenuViewController {
+	GHRevealViewController *_sidebarVC;
+	UISearchBar *_searchBar;
+	UITableView *_menuTableView;
+	NSArray *_headers;
+	NSArray *_controllers;
+	NSArray *_cellInfos;
+}
 
 #pragma mark Memory Management
 - (id)initWithSidebarViewController:(GHRevealViewController *)sidebarVC 
@@ -51,12 +58,12 @@
 	_menuTableView.backgroundColor = [UIColor clearColor];
 	_menuTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	[self.view addSubview:_menuTableView];
+	[self selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	self.view.frame = CGRectMake(0.0f, 0.0f,kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
 	[_searchBar sizeToFit];
-	[self selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionTop];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
