@@ -190,9 +190,12 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 
 - (void)toggleSearch:(BOOL)showSearch duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
 	if (!showSearch) {
-		self.contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
-		[self.view addSubview:self.contentView];
-	}
+        self.contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
+        [self.view addSubview:self.contentView];
+        [self setSearchIsShowing:NO];
+    } else {
+        [self setSearchIsShowing:YES];
+    }
 	void (^animations)(void) = ^{
 		if (showSearch) {
 			self.contentView.frame = CGRectOffset(self.contentView.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
@@ -235,6 +238,16 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 #pragma mark Private Methods
 - (void)hideSidebar {
 	[self toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
+}
+
+
+#pragma mark - Rotation
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+
+    if (self.searchIsShowing)
+        [self.sidebarView setFrame:self.view.bounds];
 }
 
 @end
