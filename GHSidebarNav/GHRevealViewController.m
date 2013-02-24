@@ -18,6 +18,7 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 @interface GHRevealViewController ()
 @property (nonatomic, readwrite, getter = isSidebarShowing) BOOL sidebarShowing;
 @property (nonatomic, readwrite, getter = isSearching) BOOL searching;
+@property (nonatomic) BOOL searchIsShowing;
 @property (strong, nonatomic) UITapGestureRecognizer *tapRecog;
 - (void)hideSidebar;
 @end
@@ -107,6 +108,12 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 		: YES;
 }
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	if (self.searchIsShowing) {
+		[self.sidebarView setFrame:self.view.bounds];
+	}
+}
+
 #pragma mark Public Methods
 - (void)dragContentView:(UIPanGestureRecognizer *)panGesture {
 	CGFloat translation = [panGesture translationInView:self.view].x;
@@ -147,7 +154,7 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 }
 
 - (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
-    if (self.contentView.superview == nil) {
+	if (self.contentView.superview == nil) {
 		self.contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
 		[self.view addSubview:self.contentView];
 	}
@@ -173,10 +180,10 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 						 completion:completion];
 	} else {
 		animations();
-        if (completion != nil) {
-            completion(YES);
-        }
-    }
+		if (completion != nil) {
+			completion(YES);
+		}
+	}
 }
 
 - (void)toggleSearch:(BOOL)showSearch duration:(NSTimeInterval)duration {
@@ -185,12 +192,12 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 
 - (void)toggleSearch:(BOOL)showSearch duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
 	if (!showSearch) {
-        self.contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
-        [self.view addSubview:self.contentView];
-        [self setSearchIsShowing:NO];
-    } else {
-        [self setSearchIsShowing:YES];
-    }
+		self.contentView.frame = CGRectOffset(self.view.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
+		[self.view addSubview:self.contentView];
+		self.searchIsShowing = NO;
+	} else {
+		self.searchIsShowing = YES;
+	}
 	void (^animations)(void) = ^{
 		if (showSearch) {
 			self.contentView.frame = CGRectOffset(self.contentView.bounds, CGRectGetWidth(self.view.bounds), 0.0f);
@@ -212,10 +219,10 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 		}
 		self.sidebarShowing = YES;
 		self.searching = showSearch;
-        if (completion != nil) {
-            completion(finished);
-        }
-    };
+		if (completion != nil) {
+			completion(finished);
+		}
+	};
 	if (duration > 0.0) {
 		[UIView animateWithDuration:duration
 							  delay:0
@@ -224,25 +231,15 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 						 completion:fullCompletion];
 	} else {
 		animations();
-        if (completion != nil) {
-            fullCompletion(YES);
-        }
-    }
+		if (completion != nil) {
+			fullCompletion(YES);
+		}
+	}
 }
 
 #pragma mark Private Methods
 - (void)hideSidebar {
 	[self toggleSidebar:NO duration:kGHRevealSidebarDefaultAnimationDuration];
-}
-
-
-#pragma mark - Rotation
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-
-    if (self.searchIsShowing)
-        [self.sidebarView setFrame:self.view.bounds];
 }
 
 @end
