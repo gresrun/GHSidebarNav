@@ -19,6 +19,8 @@ extern const CGFloat kGHRevealSidebarWidth;
 @property (strong, nonatomic) UIViewController *sidebarViewController;
 @property (strong, nonatomic) UIViewController *contentViewController;
 
+@property BOOL searchIsShowing;
+
 - (void)dragContentView:(UIPanGestureRecognizer *)panGesture;
 - (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration;
 - (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration completion:(void (^)(BOOL finished))completion;
