@@ -114,6 +114,20 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 	}
 }
 
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    static NSString* const sidebarSegueName = @"sidebarSegue";
+    static NSString* const contentSegueName = @"contentSegue";
+    
+    if ([[segue identifier] isEqualToString:sidebarSegueName]) {
+        sidebarViewController = [segue destinationViewController];
+    }
+    
+    if ([[segue identifier] isEqualToString:contentSegueName]) {
+        contentViewController = [segue destinationViewController];
+    }
+}
+
 #pragma mark Public Methods
 - (void)dragContentView:(UIPanGestureRecognizer *)panGesture {
 	CGFloat translation = [panGesture translationInView:self.view].x;
