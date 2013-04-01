@@ -17,5 +17,7 @@
 - (void)selectRowAtIndexPath:(NSIndexPath *)indexPath 
 					animated:(BOOL)animated 
 			  scrollPosition:(UITableViewScrollPosition)scrollPosition;
+- (void)changeTitle:(NSString *)title forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)changeIcon:(UIImage *)image forRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
