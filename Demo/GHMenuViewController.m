@@ -224,7 +224,7 @@ static const NSInteger kCellIconTag = 200;
     if (currentItemIdentifier != identifier) {
         currentItemIdentifier = identifier;
         UINavigationController *navController = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
-        if (navController.navigationBar.gestureRecognizers.count == 0) {
+        if (![self hasPanRecognizer:navController.navigationBar.gestureRecognizers]) {
             UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self.revealVC
                                                                                          action:@selector(dragContentView:)];
             panGesture.cancelsTouchesInView = YES;
@@ -232,6 +232,17 @@ static const NSInteger kCellIconTag = 200;
         }
         self.revealVC.contentViewController = navController;
     }
+}
+
+- (BOOL)hasPanRecognizer:(NSArray *)recognizers {
+    BOOL hasPan = NO;
+    for (UIGestureRecognizer *recognizer in recognizers) {
+        if ([recognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+            hasPan = YES;
+            break;
+        }
+    }
+    return hasPan;
 }
 
 @end

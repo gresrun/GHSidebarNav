@@ -13,6 +13,8 @@
 const NSTimeInterval kGHRevealSidebarDefaultAnimationDuration = 0.25;
 const CGFloat kGHRevealSidebarWidth = 260.0f;
 const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
+static NSString *const sidebarSegueName = @"sidebarSegue";
+static NSString *const contentSegueName = @"contentSegue";
 
 #pragma mark Private Interface
 @interface GHRevealViewController ()
@@ -114,6 +116,15 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 	}
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([sidebarSegueName isEqualToString:segue.identifier]) {
+        sidebarViewController = [segue destinationViewController];
+    }
+    if ([contentSegueName isEqualToString:segue.identifier]) {
+        contentViewController = [segue destinationViewController];
+    }
+}
+
 #pragma mark Public Methods
 - (void)dragContentView:(UIPanGestureRecognizer *)panGesture {
 	CGFloat translation = [panGesture translationInView:self.view].x;
@@ -145,7 +156,6 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 			? (velocity > 0)
 			: (translation > (kGHRevealSidebarWidth / 2));
 		[self toggleSidebar:show duration:kGHRevealSidebarDefaultAnimationDuration];
-		
 	}
 }
 
