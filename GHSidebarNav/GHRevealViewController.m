@@ -60,25 +60,21 @@ static NSString *const contentSegueName = @"contentSegue";
 }
 
 - (void)setContentViewController:(UIViewController *)cvc {
-	if (contentViewController == nil) {
-		cvc.view.frame = self.contentView.frame;
-		contentViewController = cvc;
+    if (contentViewController == nil) {
+        cvc.view.frame = self.contentView.frame;
+        contentViewController = cvc;
         [self addChildViewController:contentViewController];
-		[self.contentView addSubview:contentViewController.view];
-		[contentViewController didMoveToParentViewController:self];
-	} else if (contentViewController != cvc) {
-        
+        [self.contentView addSubview:contentViewController.view];
+        [contentViewController didMoveToParentViewController:self];
+    } else if (contentViewController != cvc) {
         cvc.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y-20,
                                     self.view.frame.size.width, self.view.frame.size.height);
-        
-		[contentViewController willMoveToParentViewController:nil];
+        [contentViewController willMoveToParentViewController:nil];
         [contentViewController.view removeFromSuperview];
         [contentViewController.navigationController removeFromParentViewController];
         [contentViewController removeFromParentViewController];
-        
         [self addChildViewController:cvc];
-		[self.contentView addSubview:cvc.view];
-        
+        [self.contentView addSubview:cvc.view];
         contentViewController = cvc;
         [contentViewController didMoveToParentViewController:self];
 	}
@@ -104,8 +100,8 @@ static NSString *const contentSegueName = @"contentSegue";
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
 	return (orientation == UIInterfaceOrientationPortraitUpsideDown)
-		? (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		: YES;
+        ? (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        : YES;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -151,8 +147,8 @@ static NSString *const contentSegueName = @"contentSegue";
 	} else if (panGesture.state == UIGestureRecognizerStateEnded) {
 		CGFloat velocity = [panGesture velocityInView:self.view].x;
 		BOOL show = (fabs(velocity) > kGHRevealSidebarFlickVelocity)
-			? (velocity > 0)
-			: (translation > (kGHRevealSidebarWidth / 2));
+            ? (velocity > 0)
+            : (translation > (kGHRevealSidebarWidth / 2));
 		[self toggleSidebar:show duration:kGHRevealSidebarDefaultAnimationDuration];
 	}
 }
