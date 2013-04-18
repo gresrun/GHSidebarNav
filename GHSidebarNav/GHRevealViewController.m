@@ -61,28 +61,26 @@ static NSString *const contentSegueName = @"contentSegue";
 
 - (void)setContentViewController:(UIViewController *)cvc {
 	if (contentViewController == nil) {
-		cvc.view.frame = self.contentView.bounds;
+		cvc.view.frame = self.contentView.frame;
 		contentViewController = cvc;
-		[self addChildViewController:contentViewController];
+        [self addChildViewController:contentViewController];
 		[self.contentView addSubview:contentViewController.view];
 		[contentViewController didMoveToParentViewController:self];
 	} else if (contentViewController != cvc) {
-		cvc.view.frame = self.contentView.bounds;
+        
+        cvc.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y-20,
+                                    self.view.frame.size.width, self.view.frame.size.height);
+        
 		[contentViewController willMoveToParentViewController:nil];
-		[self addChildViewController:cvc];
-		self.view.userInteractionEnabled = NO;
-		[self transitionFromViewController:contentViewController
-						  toViewController:cvc
-								  duration:0
-								   options:UIViewAnimationOptionTransitionNone
-								animations:^{}
-								completion:^(BOOL finished){
-									self.view.userInteractionEnabled = YES;
-									[contentViewController removeFromParentViewController];
-									[cvc didMoveToParentViewController:self];
-									contentViewController = cvc;
-								}
-         ];
+        [contentViewController.view removeFromSuperview];
+        [contentViewController.navigationController removeFromParentViewController];
+        [contentViewController removeFromParentViewController];
+        
+        [self addChildViewController:cvc];
+		[self.contentView addSubview:cvc.view];
+        
+        contentViewController = cvc;
+        [contentViewController didMoveToParentViewController:self];
 	}
 }
 
