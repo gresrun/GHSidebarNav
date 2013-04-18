@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3726261716191C0600A77CC2 /* GHMenuHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3726261616191C0600A77CC2 /* GHMenuHeaderView.m */; };
-		37CF9DDB17091A9700983C7E /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37CF9DDA17091A9700983C7E /* Default-568h@2x.png */; };
 		37D83B401614CE7E000BDAE6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 37D83B3F1614CE7E000BDAE6 /* Default-568h@2x.png */; };
 		37D83B431614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37D83B421614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard */; };
 		6B014F5214B3DAC4001E922B /* GHMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B014F5114B3DAC4001E922B /* GHMenuViewController.m */; };
@@ -234,7 +233,6 @@
 				6B0CAC0314BD064800394B5D /* searchTextBG.png in Resources */,
 				37D83B401614CE7E000BDAE6 /* Default-568h@2x.png in Resources */,
 				37D83B431614D36C000BDAE6 /* RevealStoryboard_iPhone.storyboard in Resources */,
-				37CF9DDB17091A9700983C7E /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
