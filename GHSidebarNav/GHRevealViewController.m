@@ -167,10 +167,12 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 }
 
 - (void)toggleSidebar:(BOOL)show duration:(NSTimeInterval)duration completion:(void (^)(BOOL finsihed))completion {
+    __weak GHRevealViewController *selfRef = self;
 	void (^animations)(void) = ^{
 		if (show) {
 			_contentView.frame = CGRectOffset(_contentView.bounds, kGHRevealSidebarWidth, 0.0f);
 			[_contentView addGestureRecognizer:_tapRecog];
+            [selfRef.contentViewController.view setUserInteractionEnabled:NO];
 		} else {
 			if (self.isSearching) {
 				_sidebarView.frame = CGRectMake(0.0f, 0.0f, kGHRevealSidebarWidth, CGRectGetHeight(self.view.bounds));
@@ -178,8 +180,9 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 				[_contentView removeGestureRecognizer:_tapRecog];
 			}
 			_contentView.frame = _contentView.bounds;
+            [selfRef.contentViewController.view setUserInteractionEnabled:YES];
 		}
-		self.sidebarShowing = show;
+		selfRef.sidebarShowing = show;
 	};
 	if (duration > 0.0) {
 		[UIView animateWithDuration:duration
