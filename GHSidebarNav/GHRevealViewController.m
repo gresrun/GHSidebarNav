@@ -40,12 +40,14 @@ const CGFloat kGHRevealSidebarFlickVelocity = 1000.0f;
 - (void)setSidebarViewController:(UIViewController *)svc {
 	if (sidebarViewController == nil) {
 		svc.view.frame = _sidebarView.bounds;
+    svc.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 		sidebarViewController = svc;
 		[self addChildViewController:sidebarViewController];
 		[_sidebarView addSubview:sidebarViewController.view];
 		[sidebarViewController didMoveToParentViewController:self];
 	} else if (sidebarViewController != svc) {
 		svc.view.frame = _sidebarView.bounds;
+    svc.view.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 		[sidebarViewController willMoveToParentViewController:nil];
 		[self addChildViewController:svc];
 		self.view.userInteractionEnabled = NO;
