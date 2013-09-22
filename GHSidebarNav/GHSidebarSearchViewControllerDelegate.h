@@ -5,7 +5,6 @@
 //  Created by Greg Haines on 1/7/12.
 //
 
-#import <Foundation/Foundation.h>
 
 typedef void (^SearchResultsBlock)(NSArray *);
 

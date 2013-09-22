@@ -25,18 +25,24 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 
 #pragma mark -
 #pragma mark Implementation
-@implementation GHSidebarSearchViewController
+@implementation GHSidebarSearchViewController {
+@private
+	GHRevealViewController *_sidebarVC;
+	NSOperationQueue *_searchQueue;
+	NSTimer *_timer;
+	UIView *_searchBarSuperview;
+	NSUInteger _searchBarSuperIndex;
+}
 
 #pragma mark Properties
-@synthesize searchDelegate, searchDelay;
-@synthesize searchDisplayController, mutableEntries;
+@synthesize searchDisplayController;
 
 - (UISearchBar *)searchBar {
 	return searchDisplayController.searchBar;
 }
 
 - (NSArray *)entries {
-	return mutableEntries;
+	return _mutableEntries;
 }
 
 #pragma mark Memory Management
@@ -68,6 +74,15 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 	self.view.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
 }
 
+- (void)viewDidLayoutSubviews {
+    if ([self respondsToSelector:@selector(topLayoutGuide)]) {
+        CGRect viewBounds = self.view.frame;
+        CGFloat topBarOffset = self.topLayoutGuide.length;
+        self.view.frame = CGRectMake(viewBounds.origin.x, topBarOffset,
+                                     viewBounds.size.width, viewBounds.size.height);
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
 	return (orientation == UIInterfaceOrientationPortraitUpsideDown)
 		? (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -76,21 +91,21 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 
 #pragma mark UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (searchDelegate) {
-		[searchDelegate searchResult:mutableEntries[indexPath.row] selectedAtIndexPath:indexPath];
+	if (_searchDelegate) {
+		[_searchDelegate searchResult:_mutableEntries[indexPath.row] selectedAtIndexPath:indexPath];
 	}
 }
 
 #pragma mark UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return mutableEntries.count;
+    return _mutableEntries.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = nil;
-	if (searchDelegate) {
-		id entry = mutableEntries[indexPath.row];
-		cell = [searchDelegate searchResultCellForEntry:entry atIndexPath:indexPath inTableView:tableView];
+	if (_searchDelegate) {
+		id entry = _mutableEntries[indexPath.row];
+		cell = [_searchDelegate searchResultCellForEntry:entry atIndexPath:indexPath inTableView:tableView];
 	}
 	return cell;
 }
@@ -113,12 +128,11 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	tableView.backgroundColor = [UIColor clearColor];
 	tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	[self.view addSubview:searchDisplayController.searchResultsTableView];
-	[searchDisplayController.searchResultsTableView reloadData];
 }
 
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
-	[_sidebarVC toggleSearch:NO withSearchView:self.view duration:kGHRevealSidebarDefaultAnimationDuration completion:^(BOOL finished){
+    controller.searchResultsTableView.alpha = 0.0;
+    [_sidebarVC toggleSearch:NO withSearchView:self.view duration:kGHRevealSidebarDefaultAnimationDuration completion:^(BOOL finished){
 		[self.searchBar resignFirstResponder];
 		[self.searchBar removeFromSuperview];
 		self.searchBar.showsCancelButton = NO;
@@ -127,20 +141,17 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 	}];
 }
 
-- (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller {
-}
-
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
 	[_timer invalidate];
 	[_searchQueue cancelAllOperations];
-	_timer = [NSTimer scheduledTimerWithTimeInterval:searchDelay target:self selector:@selector(performSearch) userInfo:nil repeats:NO];
+	_timer = [NSTimer scheduledTimerWithTimeInterval:_searchDelay target:self selector:@selector(performSearch) userInfo:nil repeats:NO];
 	return NO;
 }
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
 	[_timer invalidate];
 	[_searchQueue cancelAllOperations];
-	_timer = [NSTimer scheduledTimerWithTimeInterval:searchDelay target:self selector:@selector(performSearch) userInfo:nil repeats:NO];
+	_timer = [NSTimer scheduledTimerWithTimeInterval:_searchDelay target:self selector:@selector(performSearch) userInfo:nil repeats:NO];
 	return NO;
 }
 
@@ -151,10 +162,10 @@ const NSTimeInterval kGHSidebarDefaultSearchDelay = 0.8;
 		? self.searchBar.scopeButtonTitles[self.searchBar.selectedScopeButtonIndex] 
 		: nil;
 	if ([@"" isEqualToString:text]) {
-		[mutableEntries removeAllObjects];
+		[_mutableEntries removeAllObjects];
 		[searchDisplayController.searchResultsTableView reloadData];
 	} else {
-		if (searchDelegate) {
+		if (_searchDelegate) {
 			__block GHSidebarSearchViewController *selfRef = self;
 			__block NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
 				[selfRef.searchDelegate searchResultsForText:text withScope:scope callback:^(NSArray *results){

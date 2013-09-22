@@ -21,7 +21,8 @@ NSString const *kSidebarCellImageKey = @"CellImage";
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	if ((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])) {
 		self.clipsToBounds = YES;
-		
+        self.backgroundColor = [UIColor clearColor];
+
 		UIView *bgView = [[UIView alloc] init];
 		bgView.backgroundColor = [UIColor colorWithRed:(38.0f/255.0f) green:(44.0f/255.0f) blue:(58.0f/255.0f) alpha:1.0f];
 		self.selectedBackgroundView = bgView;

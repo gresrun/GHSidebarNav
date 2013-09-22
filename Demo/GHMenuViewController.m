@@ -66,6 +66,15 @@
 	[_searchBar sizeToFit];
 }
 
+- (void)viewDidLayoutSubviews {
+    if ([self respondsToSelector:@selector(topLayoutGuide)]) {
+        CGRect viewBounds = self.view.frame;
+        CGFloat topBarOffset = self.topLayoutGuide.length;
+        self.view.frame = CGRectMake(viewBounds.origin.x, topBarOffset,
+                                      viewBounds.size.width, viewBounds.size.height);
+    }
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
 	return (orientation == UIInterfaceOrientationPortraitUpsideDown)
 		? (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

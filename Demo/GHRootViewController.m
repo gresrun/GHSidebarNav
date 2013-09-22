@@ -9,17 +9,17 @@
 #import "GHPushedViewController.h"
 
 
-#pragma mark -
 #pragma mark Private Interface
 @interface GHRootViewController ()
 - (void)pushViewController;
 - (void)revealSidebar;
 @end
 
-
-#pragma mark -
 #pragma mark Implementation
-@implementation GHRootViewController
+@implementation GHRootViewController{
+@private
+	RevealBlock _revealBlock;
+}
 
 #pragma mark Memory Management
 - (id)initWithTitle:(NSString *)title withRevealBlock:(RevealBlock)revealBlock {
@@ -44,6 +44,9 @@
 	[pushButton addTarget:self action:@selector(pushViewController) forControlEvents:UIControlEventTouchUpInside];
 	[pushButton sizeToFit];
 	[self.view addSubview:pushButton];
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
 }
 
 #pragma mark Private Methods

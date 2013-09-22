@@ -5,17 +5,11 @@
 //  Created by Greg Haines on 11/20/11.
 //
 
-#import <Foundation/Foundation.h>
 
 extern const NSTimeInterval kGHRevealSidebarDefaultAnimationDuration;
 extern const CGFloat kGHRevealSidebarWidth;
 
-@interface GHRevealViewController : UIViewController {
-@private
-	UIView *_sidebarView;
-	UIView *_contentView;
-	UITapGestureRecognizer *_tapRecog;
-}
+@interface GHRevealViewController : UIViewController
 
 @property (nonatomic, readonly, getter = isSidebarShowing) BOOL sidebarShowing;
 @property (nonatomic, readonly, getter = isSearching) BOOL searching;

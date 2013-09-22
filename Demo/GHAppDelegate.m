@@ -14,7 +14,6 @@
 #import "GHSidebarSearchViewControllerDelegate.h"
 
 
-#pragma mark -
 #pragma mark Private Interface
 @interface GHAppDelegate () <GHSidebarSearchViewControllerDelegate>
 @property (nonatomic, strong) GHRevealViewController *revealController;
@@ -22,14 +21,11 @@
 @property (nonatomic, strong) GHMenuViewController *menuController;
 @end
 
-
-#pragma mark -
 #pragma mark Implementation
 @implementation GHAppDelegate
 
 #pragma mark Properties
-@synthesize window;
-@synthesize revealController, searchController, menuController;
+@synthesize window = _window;
 
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

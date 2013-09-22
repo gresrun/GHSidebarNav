@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Greg Haines. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 @class GHRevealViewController;
+
 
 @interface GHMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 

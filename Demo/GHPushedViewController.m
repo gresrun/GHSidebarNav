@@ -8,7 +8,6 @@
 #import "GHPushedViewController.h"
 
 
-#pragma mark -
 #pragma mark Implementation
 @implementation GHPushedViewController
 
@@ -28,6 +27,9 @@
 	view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	view.backgroundColor = [UIColor redColor];
 	[self.view addSubview:view];
+    if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
 }
 
 @end
